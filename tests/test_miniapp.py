@@ -78,6 +78,20 @@ class MiniAppContractTests(unittest.TestCase):
         self.assertIn('DATA.monsters=XP_MONSTERS', html)
         self.assertIn('MM · 2024', html)
         self.assertTrue(all(('FOR' in m['stats'] and 'CAR' in m['stats']) for m in mo))
+    def test_books_library_is_real_2024_core(self):
+        books = load_arr('books_data.js', 'BOOKS')
+        self.assertEqual(len(books), 19)
+        ids = {b['id'] for b in books}
+        for core in ('XPHB', 'XDMG', 'XMM'):
+            self.assertIn(core, ids)
+        phb = next(b for b in books if b['id'] == 'XPHB')
+        self.assertEqual(phb['year'], 2024)
+        self.assertEqual(phb['group'], 'Nucleo')
+        self.assertTrue(any('Capitolo 3' in t for t in phb['toc']))
+        html = (ROOT/'prototype.html').read_text()
+        self.assertIn('books_data.js', html)
+        self.assertIn('data-view="books"', html)
+        self.assertIn('BOOKS:BOOKS', html)
     def test_spells_aligned_to_2024(self):
         sp = load_arr('spells_data.js', 'XP_SPELLS')
         self.assertEqual(len(sp), 391)

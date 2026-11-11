@@ -23,7 +23,7 @@ Tutte le sezioni dati sono **complete e allineate a 5.5e/2024** (dati da 5e.tool
 - [x] **Mostri** — 503, XMM 2024
 - [x] **Bastioni** — 35, XDMG
 - [x] **Glossario** — 15 condizioni, XPHB
-- [ ] **Libri di regole** (Biblioteca) — rimasta l'unica sezione non-immessa: è un caso a sé (landing con copertine dei manuali, non un catalogo dati come le altre)
+- [x] **Libri di regole** (Biblioteca) — 19 manuali 2024/2025 con indice (TOC); cover stilizzate locali (senza artwork licenziato su Pages pubblica)
 
 ## Risorse e diritti
 
