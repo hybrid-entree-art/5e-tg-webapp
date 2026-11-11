@@ -757,11 +757,44 @@ const TRANSLATIONS_IT = {
     "Workshop": { name: "Bottega" }
   },
 
-  // 10. LIBRI / MANUALI (chiave = ID manuale)
+  // 10. LIBRI / MANUALI (chiave = ID o nome manuale)
   books: {
-    "XPHB": { name: "Manuale del Giocatore 2024" },
-    "XDMG": { name: "Guida del Dungeon Master 2024" },
-    "XMM": { name: "Enciclopedia dei Mostri 2024" }
+    "XPHB": { name: "Libro del giocatore" },
+    "Player's Handbook": { name: "Libro del giocatore" },
+    "XDMG": { name: "Guida del Dungeon Master" },
+    "Dungeon Master's Guide": { name: "Guida del Dungeon Master" },
+    "XMM": { name: "Enciclopedia dei mostri" },
+    "Monster Manual": { name: "Enciclopedia dei mostri" },
+    "HotB": { name: "Eroi della terra di confine" },
+    "Heroes of the Borderlands": { name: "Eroi della terra di confine" },
+    "ClMag": { name: "Classe Mago" },
+    "Magus Class Guide": { name: "Classe Mago" },
+    "ABH": { name: "Il libro delle passioni di Astarion" },
+    "Astarion's Book of Hungers": { name: "Il libro delle passioni di Astarion" },
+    "AU": { name: "Magia sfrenata" },
+    "Arcana Unleashed": { name: "Magia sfrenata" },
+    "PotA": { name: "Eredi del Male Elementale" },
+    "Princes of the Apocalypse": { name: "Eredi del Male Elementale" },
+    "HoldDead": { name: "Trattenere i morti" },
+    "Beyond: Holding the Dead": { name: "Trattenere i morti" },
+    "TGS1": { name: "La bisaccia del Grifone, Libro 1" },
+    "The Griffon's Saddlebag, Book 1": { name: "La bisaccia del Grifone, Libro 1" },
+    "FTD": { name: "Sale del Drago" },
+    "Fizban's Treasury of Dragons": { name: "Sale del Drago" },
+    "CoS": { name: "La maledizione di Strahd" },
+    "Curse of Strahd": { name: "La maledizione di Strahd" },
+    "TCE": { name: "Il calderone di tutto di Tasha" },
+    "Tasha's Cauldron of Everything": { name: "Il calderone di tutto di Tasha" },
+    "XGE": { name: "Guida omnicomprensiva di Xanathar" },
+    "Xanathar's Guide to Everything": { name: "Guida omnicomprensiva di Xanathar" },
+    "BGG": { name: "Bigby Presenta: La gloria dei giganti" },
+    "Bigby Presents: Glory of the Giants": { name: "Bigby Presenta: La gloria dei giganti" },
+    "MPMM": { name: "Mostri del Multiverso" },
+    "Monsters of the Multiverse": { name: "Mostri del Multiverso" },
+    "XSAC": { name: "Compendio dei consigli dei saggi" },
+    "Sage Advice Compendium": { name: "Compendio dei consigli dei saggi" },
+    "XScreen": { name: "Schermo del Dungeon Master" },
+    "Dungeon Master's Screen": { name: "Schermo del Dungeon Master" }
   }
 };
 

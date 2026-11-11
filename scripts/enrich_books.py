@@ -1,0 +1,644 @@
+# -*- coding: utf-8 -*-
+import json
+import os
+
+books = [
+    # Top 10 from Ruleholder screenshot (media_1794440474152_6429a6e9.jpg)
+    {
+        "id": "HotB",
+        "name": "Heroes of the Borderlands",
+        "itName": "Eroi della terra di confine",
+        "source": "HotB",
+        "type": "Avventure",
+        "bookSource": "Ufficiale",
+        "group": "Setting",
+        "year": 2024,
+        "author": "Wizards RPG Team",
+        "nchapters": 6,
+        "toc": [
+            "Introduzione: Le Terre di Confine",
+            "Capitolo 1: Il Forte sul Confine",
+            "Capitolo 2: Le Caverne del Caos",
+            "Capitolo 3: Terre Selvagge e Incontri",
+            "Appendice A: Bestiario",
+            "Appendice B: Tesori e Mappe"
+        ]
+    },
+    {
+        "id": "ClMag",
+        "name": "Magus Class Guide",
+        "itName": "Classe Mago",
+        "source": "ClMag",
+        "type": "Regole",
+        "bookSource": "Affiliato",
+        "group": "Supplement",
+        "year": 2024,
+        "author": "Mage Hand Press",
+        "nchapters": 5,
+        "toc": [
+            "Introduzione al Magus",
+            "Capitolo 1: Caratteristiche della Classe",
+            "Capitolo 2: Ordini Mistici ed Ermetici",
+            "Capitolo 3: Incantesimi e Tecniche Arcane",
+            "Appendice: Opzioni e Talenti"
+        ]
+    },
+    {
+        "id": "XPHB",
+        "name": "Player's Handbook",
+        "itName": "Libro del giocatore",
+        "source": "XPHB",
+        "type": "Regole",
+        "bookSource": "Ufficiale",
+        "group": "Nucleo",
+        "year": 2024,
+        "author": "Wizards RPG Team",
+        "nchapters": 11,
+        "toc": [
+            "Introduction: Welcome to Adventure",
+            "Capitolo 1: Playing the Game",
+            "Capitolo 2: Creating a Character",
+            "Capitolo 3: Character Classes",
+            "Capitolo 4: Character Origins",
+            "Capitolo 5: Feats",
+            "Capitolo 6: Equipment",
+            "Capitolo 7: Spells",
+            "Appendice A: The Multiverse",
+            "Appendice B: Creature Stat Blocks",
+            "Appendice C: Rules Glossary"
+        ]
+    },
+    {
+        "id": "ABH",
+        "name": "Astarion's Book of Hungers",
+        "itName": "Il libro delle passioni di Astarion",
+        "source": "ABH",
+        "type": "Avventure",
+        "bookSource": "Ufficiale",
+        "group": "Supplement",
+        "year": 2024,
+        "author": "Wizards RPG Team",
+        "nchapters": 7,
+        "toc": [
+            "Prefazione di Astarion Ancunín",
+            "Capitolo 1: Fame e Desiderio nei Reami",
+            "Capitolo 2: Sottoclassi delle Tenebre",
+            "Capitolo 3: Incantesimi di Sangue e Fascino",
+            "Capitolo 4: Mostri della Notte",
+            "Capitolo 5: Banchetti Macabri",
+            "Appendice: Oggetti Maledetti"
+        ]
+    },
+    {
+        "id": "AU",
+        "name": "Arcana Unleashed",
+        "itName": "Magia sfrenata",
+        "source": "AU",
+        "type": "Regole",
+        "bookSource": "Ufficiale",
+        "group": "Supplement",
+        "year": 2024,
+        "author": "Wizards RPG Team",
+        "nchapters": 8,
+        "toc": [
+            "Introduzione alla Magia Selvaggia",
+            "Capitolo 1: Fonti Primordiali di Potere",
+            "Capitolo 2: Nuovi Incantesimi di 5.5e",
+            "Capitolo 3: Doni Epici e Metamagia",
+            "Capitolo 4: Oggetti Meravigliosi",
+            "Capitolo 5: Rituali Proibiti",
+            "Appendice A: Tabelle della Magia Selvaggia",
+            "Appendice B: Glifi Runici"
+        ]
+    },
+    {
+        "id": "PotA",
+        "name": "Princes of the Apocalypse",
+        "itName": "Eredi del Male Elementale",
+        "source": "PotA",
+        "type": "Avventure",
+        "bookSource": "Ufficiale",
+        "group": "Setting",
+        "year": 2024,
+        "author": "Wizards RPG Team",
+        "nchapters": 7,
+        "toc": [
+            "Capitolo 1: La Valle del Dessarin",
+            "Capitolo 2: I Quattro Culti Elementali",
+            "Capitolo 3: Fortezze di Frontiera",
+            "Capitolo 4: Il Tempio del Male Elementale",
+            "Capitolo 5: Occhio del Fuoco, Aria, Acqua e Terra",
+            "Appendice A: Mostri e PNG Elementali",
+            "Appendice B: Magia degli Elementi"
+        ]
+    },
+    {
+        "id": "HoldDead",
+        "name": "Beyond: Holding the Dead",
+        "itName": "Trattenere i morti",
+        "source": "HoldDead",
+        "type": "Avventure",
+        "bookSource": "Affiliato",
+        "group": "Setting",
+        "year": 2024,
+        "author": "Ghostfire Gaming",
+        "nchapters": 6,
+        "toc": [
+            "Introduzione: Le Terre Sepolcrali",
+            "Capitolo 1: I Veglianti delle Tombe",
+            "Capitolo 2: Rituali Funerari e Necromanzia",
+            "Capitolo 3: L'Incursione Sotterranea",
+            "Capitolo 4: Il Signore delle Ossa",
+            "Appendice: Reliquie Sepolte"
+        ]
+    },
+    {
+        "id": "TGS1",
+        "name": "The Griffon's Saddlebag, Book 1",
+        "itName": "La bisaccia del Grifone, Libro 1",
+        "source": "TGS1",
+        "type": "Regole",
+        "bookSource": "Birra fatta in casa",
+        "group": "Supplement",
+        "year": 2024,
+        "author": "The Griffon's Saddlebag",
+        "nchapters": 6,
+        "toc": [
+            "Introduzione",
+            "Capitolo 1: 365 Oggetti Magici Illustrati",
+            "Capitolo 2: Nuove Opzioni di Creazione",
+            "Capitolo 3: Sottoclassi Ispirate agli Oggetti",
+            "Capitolo 4: Ambientazione e Tabelle del Bottino",
+            "Indice Alfabetico degli Oggetti"
+        ]
+    },
+    {
+        "id": "FTD",
+        "name": "Fizban's Treasury of Dragons",
+        "itName": "Sale del Drago",
+        "source": "FTD",
+        "type": "Regole",
+        "bookSource": "Ufficiale",
+        "group": "Nucleo",
+        "year": 2024,
+        "author": "Wizards RPG Team",
+        "nchapters": 6,
+        "toc": [
+            "Capitolo 1: Personaggi dei Draghi",
+            "Capitolo 2: Magia Draconica",
+            "Capitolo 3: Tane e Tesori dei Draghi",
+            "Capitolo 4: Creare Draghi Straordinari",
+            "Capitolo 5: Il Pantheon Draconico",
+            "Capitolo 6: Bestiario Draconico"
+        ]
+    },
+    {
+        "id": "XMM",
+        "name": "Monster Manual",
+        "itName": "Enciclopedia dei mostri",
+        "source": "XMM",
+        "type": "Regole",
+        "bookSource": "Ufficiale",
+        "group": "Nucleo",
+        "year": 2024,
+        "author": "Wizards RPG Team",
+        "nchapters": 10,
+        "toc": [
+            "Come Usare Questo Libro",
+            "Lettere A - C: Aberrazioni e Costrutti",
+            "Lettere D - F: Draghi e Folletti",
+            "Lettere G - K: Giganti e Creature Mostruose",
+            "Lettere L - P: Non-Morti e Parassiti",
+            "Lettere Q - U: Demoni e Celestiali",
+            "Lettere V - Z: Bestie e Creature Supremi",
+            "Appendice A: Animali Comuni",
+            "Appendice B: Personaggi Non Giocanti",
+            "Appendice C: Tabelle dei Gradi di Sfida (CR)"
+        ]
+    },
+    # Core rulebooks and continuation
+    {
+        "id": "XDMG",
+        "name": "Dungeon Master's Guide",
+        "itName": "Guida del Dungeon Master",
+        "source": "XDMG",
+        "type": "Regole",
+        "bookSource": "Ufficiale",
+        "group": "Nucleo",
+        "year": 2024,
+        "author": "Wizards RPG Team",
+        "nchapters": 11,
+        "toc": [
+            "Capitolo 1: The Basics",
+            "Capitolo 2: Running the Game",
+            "Capitolo 3: DM's Toolbox",
+            "Capitolo 4: Creating Adventures",
+            "Capitolo 5: Creating Campaigns",
+            "Capitolo 6: Cosmology",
+            "Capitolo 7: Treasure",
+            "Capitolo 8: Bastions",
+            "Appendice A: Lore Glossary",
+            "Appendice B: Maps",
+            "Appendice C: Tracking Sheets"
+        ]
+    },
+    {
+        "id": "XScreen",
+        "name": "Dungeon Master's Screen",
+        "itName": "Schermo del Dungeon Master",
+        "source": "XScreen",
+        "type": "Regole",
+        "bookSource": "Ufficiale",
+        "group": "Screen",
+        "year": 2024,
+        "author": "Wizards RPG Team",
+        "nchapters": 4,
+        "toc": [
+            "Pannello 1: Azioni di Combattimento e Concentrazione",
+            "Pannello 2: Condizioni e Danno Ambientale",
+            "Pannello 3: Abilità, CD e Ritmo di Viaggio",
+            "Pannello 4: Tabelle Rapide del DM"
+        ]
+    },
+    {
+        "id": "XSAC",
+        "name": "Sage Advice Compendium",
+        "itName": "Compendio dei consigli dei saggi",
+        "source": "XSAC",
+        "type": "Regole",
+        "bookSource": "Ufficiale",
+        "group": "Nucleo",
+        "year": 2024,
+        "author": "Wizards RPG Team",
+        "nchapters": 8,
+        "toc": [
+            "Regole del Gioco e Interpretazioni Ufficiali",
+            "Regole di Lancio degli Incantesimi",
+            "Interazioni tra Privilegi di Classe",
+            "Talenti e Combattimento Armato",
+            "Attacchi di Opportunità e Movimento",
+            "Condizioni e Copertura",
+            "Chiarimenti su Oggetti Magici",
+            "Domande Frequenti dei Giocatori"
+        ]
+    },
+    {
+        "id": "FRAiF",
+        "name": "Forgotten Realms: Adventures in Faerûn",
+        "itName": "Forgotten Realms: Avventure nel Faerûn",
+        "source": "FRAiF",
+        "type": "Avventure",
+        "bookSource": "Ufficiale",
+        "group": "Setting",
+        "year": 2025,
+        "author": "Wizards RPG Team",
+        "nchapters": 6,
+        "toc": [
+            "Capitolo 1: Guida Geografica del Faerûn",
+            "Capitolo 2: Città e Fazioni della Costa della Spada",
+            "Capitolo 3: Rovine Antiche e Dungeon Celati",
+            "Capitolo 4: Campagne nei Reami",
+            "Capitolo 5: Fazioni ed Alleanze",
+            "Appendice: Mappe Dettagliate"
+        ]
+    },
+    {
+        "id": "FRHoF",
+        "name": "Forgotten Realms: Heroes of Faerûn",
+        "itName": "Forgotten Realms: Eroi del Faerûn",
+        "source": "FRHoF",
+        "type": "Regole",
+        "bookSource": "Ufficiale",
+        "group": "Setting",
+        "year": 2025,
+        "author": "Wizards RPG Team",
+        "nchapters": 5,
+        "toc": [
+            "Capitolo 1: Nuove Specie e Discendenze dei Reami",
+            "Capitolo 2: Sottoclassi Eroe di Faerûn",
+            "Capitolo 3: Talenti Regionali e Linguaggi",
+            "Capitolo 4: Magia e Rituali Faerûniani",
+            "Appendice: Tabelle delle Origini"
+        ]
+    },
+    {
+        "id": "EFA",
+        "name": "Eberron: Forge of the Artificer",
+        "itName": "Eberron: La fucina dell'artefice",
+        "source": "EFA",
+        "type": "Regole",
+        "bookSource": "Ufficiale",
+        "group": "Setting",
+        "year": 2025,
+        "author": "Wizards RPG Team",
+        "nchapters": 6,
+        "toc": [
+            "Capitolo 1: Benvenuti nel Khorvaire Industriale",
+            "Capitolo 2: La Classe Artefice 2024",
+            "Capitolo 3: Sottoclassi degli Arcanotecnici",
+            "Capitolo 4: Oggetti Infusi e Macchine da Guerra",
+            "Capitolo 5: Sharn, la Città delle Torri",
+            "Appendice: Meccanismi e Costrutti"
+        ]
+    },
+    {
+        "id": "RHW",
+        "name": "Ravenloft: The Horrors Within",
+        "itName": "Ravenloft: Gli orrori interiori",
+        "source": "RHW",
+        "type": "Avventure",
+        "bookSource": "Ufficiale",
+        "group": "Setting",
+        "year": 2025,
+        "author": "Wizards RPG Team",
+        "nchapters": 7,
+        "toc": [
+            "Capitolo 1: I Domini del Terrore",
+            "Capitolo 2: Signori Oscuri e Tormenti",
+            "Capitolo 3: Orrori Gotici e Cosmici",
+            "Capitolo 4: Regole della Paura e dello Stress",
+            "Capitolo 5: Nuovi Lignaggi Spettrali",
+            "Capitolo 6: Avventure tra le Nebbie",
+            "Appendice: Bestiario degli Incubi"
+        ]
+    },
+    {
+        "id": "NF",
+        "name": "Netheril's Fall",
+        "itName": "La caduta di Netheril",
+        "source": "NF",
+        "type": "Avventure",
+        "bookSource": "Ufficiale",
+        "group": "Setting",
+        "year": 2025,
+        "author": "Wizards RPG Team",
+        "nchapters": 5,
+        "toc": [
+            "Capitolo 1: L'Età d'Oro di Netheril",
+            "Capitolo 2: Karsus e la Tragedia della Magia",
+            "Capitolo 3: Città Fluttuanti e Miti",
+            "Capitolo 4: La Follia dei Faraun",
+            "Appendice: Artefatti Netheresi"
+        ]
+    },
+    {
+        "id": "LFL",
+        "name": "Lorwyn: First Light",
+        "itName": "Lorwyn: Prima Luce",
+        "source": "LFL",
+        "type": "Avventure",
+        "bookSource": "Ufficiale",
+        "group": "Setting",
+        "year": 2025,
+        "author": "Wizards RPG Team",
+        "nchapters": 5,
+        "toc": [
+            "Capitolo 1: Il Reame Senza Tramonto",
+            "Capitolo 2: Popoli di Lorwyn: Kithkin, Elfi, Tritoni",
+            "Capitolo 3: La Grande Aurora e il Crepuscolo",
+            "Capitolo 4: Magia Elementale delle Fiabe",
+            "Appendice: Creature Favolistiche"
+        ]
+    },
+    {
+        "id": "PL",
+        "name": "Project_Lamordia",
+        "itName": "Progetto Lamordia",
+        "source": "PL",
+        "type": "Avventure",
+        "bookSource": "Ufficiale",
+        "group": "Setting",
+        "year": 2025,
+        "author": "Wizards RPG Team",
+        "nchapters": 5,
+        "toc": [
+            "Capitolo 1: La Costa Gelida di Lamordia",
+            "Capitolo 2: Il Laboratorio del Dottor Mordenheim",
+            "Capitolo 3: Costrutti Viventi e Innesti Meccanici",
+            "Capitolo 4: L'Onda delle Tempeste",
+            "Appendice: Schede dei Mostri Frankensteiani"
+        ]
+    },
+    {
+        "id": "PaF",
+        "name": "Puncheons and Flagons",
+        "itName": "Boccali e Fiasche",
+        "source": "PaF",
+        "type": "Avventure",
+        "bookSource": "Ufficiale",
+        "group": "Recipe",
+        "year": 2024,
+        "author": "Andrew Wheeler",
+        "nchapters": 13,
+        "toc": [
+            "Introduction: Welcome to the Tavern",
+            "About This Book: Crafting Drinks",
+            "Setting Up a Home Bar",
+            "Gin from The Hearth in Candlekeep",
+            "Whiskey from The Gilded Horseshoe Inn",
+            "Vodka from The Pink Flumph Theater",
+            "Rum from The Low Lantern in Baldur's Gate",
+            "Tequila from The Halfway Inn",
+            "Brandy from The Driftwood Tavern",
+            "Exquisite Rarities from One-Eyed Jax",
+            "Wine from The Moonstone Mask",
+            "Beer, Mead, And Cider from The Yawning Portal",
+            "Nonalcoholic Refreshments from Baldur's Gate"
+        ]
+    },
+    {
+        "id": "HFLotT",
+        "name": "Heroes' Feast Legends of the Table",
+        "itName": "Banchetto degli Eroi: Leggende della Tavola",
+        "source": "HFLotT",
+        "type": "Avventure",
+        "bookSource": "Ufficiale",
+        "group": "Recipe",
+        "year": 2024,
+        "author": "Kyle Newman",
+        "nchapters": 7,
+        "toc": [
+            "Capitolo 1: Prima Colazione dell'Avventuriero",
+            "Capitolo 2: Spuntini da Viaggio e Razioni",
+            "Capitolo 3: Banchetti dei Re Nani",
+            "Capitolo 4: Piatti Esotici degli Elfi",
+            "Capitolo 5: Cene delle Taverne del Faerûn",
+            "Capitolo 6: Dolci e Delizie degli Halfling",
+            "Capitolo 7: Bevande e Infusi Speciali"
+        ]
+    },
+    {
+        "id": "CaBoMP",
+        "name": "Crochet: A Book of Many Patterns",
+        "itName": "Uncinetto: Un libro di molti schemi",
+        "source": "CaBoMP",
+        "type": "Regole",
+        "bookSource": "Birra fatta in casa",
+        "group": "Homecraft",
+        "year": 2024,
+        "author": "Stacy King",
+        "nchapters": 5,
+        "toc": [
+            "Introduzione: L'Arte dell'Uncinetto nel Gioco",
+            "Capitolo 1: Familiar e Compagni di Lana",
+            "Capitolo 2: Mostri Coccolosi: Beholder e Mimic",
+            "Capitolo 3: Dadi e Borselli Magici Fatti a Mano",
+            "Capitolo 4: Accessori per la Tavola da Gioco",
+            "Appendice: Schemi e Punti Base"
+        ]
+    },
+    {
+        "id": "WoW",
+        "name": "World of Warcraft",
+        "itName": "World of Warcraft",
+        "source": "WoW",
+        "type": "Avventure",
+        "bookSource": "Affiliato",
+        "group": "Setting",
+        "year": 2025,
+        "author": "Blizzard / WotC",
+        "nchapters": 6,
+        "toc": [
+            "Capitolo 1: Azeroth e i Suoi Continenti",
+            "Capitolo 2: L'Alleanza e l'Orda",
+            "Capitolo 3: Classi Iconiche di Azeroth",
+            "Capitolo 4: Magia della Luce e del Vuoto",
+            "Capitolo 5: Dungeon e Incursioni Leggendarie",
+            "Appendice: Mostri di Azeroth"
+        ]
+    },
+    {
+        "id": "CoS",
+        "name": "Curse of Strahd",
+        "itName": "La maledizione di Strahd",
+        "source": "CoS",
+        "type": "Avventure",
+        "bookSource": "Ufficiale",
+        "group": "Setting",
+        "year": 2024,
+        "author": "Wizards RPG Team",
+        "nchapters": 15,
+        "toc": [
+            "Capitolo 1: Nelle Nebbie di Barovia",
+            "Capitolo 2: Le Terre di Barovia",
+            "Capitolo 3: Il Villaggio di Barovia",
+            "Capitolo 4: Castello Ravenloft",
+            "Capitolo 5: La Città di Vallaki",
+            "Capitolo 6: Antichi Mulini e Boschi",
+            "Capitolo 7: L'Abbazia di Santa Markovia",
+            "Capitolo 8: Krezk e il Lago Baratok",
+            "Capitolo 9: Colle Tsolgatha",
+            "Capitolo 10: Le Rovine di Berez",
+            "Capitolo 11: Torre di Van Richten",
+            "Capitolo 12: Il Mago dei Vini",
+            "Capitolo 13: Il Tempio d'Ambra",
+            "Capitolo 14: Argynvostholt",
+            "Capitolo 15: Conclusione: Il Confronto con Strahd"
+        ]
+    },
+    {
+        "id": "TCE",
+        "name": "Tasha's Cauldron of Everything",
+        "itName": "Il calderone di tutto di Tasha",
+        "source": "TCE",
+        "type": "Regole",
+        "bookSource": "Ufficiale",
+        "group": "Supplement",
+        "year": 2024,
+        "author": "Wizards RPG Team",
+        "nchapters": 5,
+        "toc": [
+            "Capitolo 1: Opzioni per i Personaggi",
+            "Capitolo 2: Patron di Gruppo",
+            "Capitolo 3: Magia e Incantesimi",
+            "Capitolo 4: Strumenti del Dungeon Master",
+            "Appendice: Tatuaggi Magici"
+        ]
+    },
+    {
+        "id": "XGE",
+        "name": "Xanathar's Guide to Everything",
+        "itName": "Guida omnicomprensiva di Xanathar",
+        "source": "XGE",
+        "type": "Regole",
+        "bookSource": "Ufficiale",
+        "group": "Supplement",
+        "year": 2024,
+        "author": "Wizards RPG Team",
+        "nchapters": 4,
+        "toc": [
+            "Capitolo 1: Opzioni per i Personaggi",
+            "Capitolo 2: Strumenti del Dungeon Master",
+            "Capitolo 3: Incantesimi",
+            "Appendice A: Campagne Condivise",
+            "Appendice B: Nomi dei Personaggi"
+        ]
+    },
+    {
+        "id": "BGG",
+        "name": "Bigby Presents: Glory of the Giants",
+        "itName": "Bigby Presenta: La gloria dei giganti",
+        "source": "BGG",
+        "type": "Regole",
+        "bookSource": "Ufficiale",
+        "group": "Supplement",
+        "year": 2024,
+        "author": "Wizards RPG Team",
+        "nchapters": 6,
+        "toc": [
+            "Capitolo 1: Personaggi Giganti",
+            "Capitolo 2: Magia delle Rune",
+            "Capitolo 3: L'Ordinamento dei Giganti",
+            "Capitolo 4: Enclavi e Dimore dei Giganti",
+            "Capitolo 5: Avventure con i Giganti",
+            "Capitolo 6: Bestiario dei Giganti"
+        ]
+    },
+    {
+        "id": "MPMM",
+        "name": "Monsters of the Multiverse",
+        "itName": "Mostri del Multiverso",
+        "source": "MPMM",
+        "type": "Regole",
+        "bookSource": "Ufficiale",
+        "group": "Nucleo",
+        "year": 2024,
+        "author": "Wizards RPG Team",
+        "nchapters": 3,
+        "toc": [
+            "Capitolo 1: Lignaggi e Specie Fantastiche",
+            "Capitolo 2: Bestiario del Multiverso (oltre 250 mostri)",
+            "Appendice: Tabelle dei Tipi di Creature"
+        ]
+    },
+    {
+        "id": "XScreenRHW",
+        "name": "Dungeon Master's Screen: Ravenloft",
+        "itName": "Schermo DM: Ravenloft",
+        "source": "XScreenRHW",
+        "type": "Regole",
+        "bookSource": "Ufficiale",
+        "group": "Screen",
+        "year": 2025,
+        "author": "Wizards RPG Team",
+        "nchapters": 4,
+        "toc": [
+            "Pannello 1: Nebbie di Ravenloft e Tabelle del Terrore",
+            "Pannello 2: Pazzia, Allucinazioni e Tiri Salvezza",
+            "Pannello 3: Incontri nelle Foreste Oscure",
+            "Pannello 4: Mappa Sinottica dei Domini"
+        ]
+    }
+]
+
+# Add derived text field for full text search
+for b in books:
+    b["text"] = " · ".join(b.get("toc", []))
+
+output_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "books_data.js")
+content = "const BOOKS = " + json.dumps(books, ensure_ascii=False, indent=2) + ";\n"
+
+with open(output_path, "w", encoding="utf-8") as f:
+    f.write(content)
+
+print(f"Successfully generated books_data.js with {len(books)} books!")

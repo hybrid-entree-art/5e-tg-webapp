@@ -145,6 +145,24 @@ Il motore di contenuti formatta il testo del Player's Handbook generando element
   * Aggiunto test suite automatica `tests/test_phb_content.js`.
   * Creato questo documento di coordinamento `AGENTS_COLLABORATION.md`.
 
+### [2026-11-12] - UI Biblioteca Ruleholder (Rulebooks Catalog)
+* **Autore:** Agente Contenuti & UI
+* **Riferimento UX:** Screenshot di Ruleholder `media_1794440474152_6429a6e9.jpg` (Biblioteca D&D 5.5e).
+* **Novità:**
+  * **Breadcrumbs:** `📖 Elenco > 📚 Biblioteca` con link rapido di navigazione.
+  * **Toolbar a due gruppi di filtri pillola + Ricerca istantanea + Ordinamento:**
+    * Gruppo Tipo: `[ Tutto ]` | `[ Regole ]` | `[ Avventure ]`
+    * Gruppo Fonte: `[ Tutto ]` | `[ Ufficiale ]` | `[ Affiliato ]` | `[ Birra fatta in casa ]`
+    * Barra di ricerca `🔍 Cerca per nome` con match bilingue (italiano e inglese) e pulsante di cancellazione rapida.
+    * Pulsante ordinamento `[ ⇅ ]` con toggle sequenziale (Predefinito, A-Z, Z-A).
+  * **Griglia Poster Responsive 5 colonne (`.rh-books-grid`):**
+    * Poster verticali con `aspect-ratio: 1 / 1.44`, angoli arrotondati 8px, ombreggiatura e striscia rossa d'accento per i manuali ufficiali.
+    * Copertine caricate via 5e.tools webp con fallback automatico e pulito (cover in pelle scura e pergamena SVG/CSS).
+    * Titolo italiano prominente sotto il poster, con sottotitolo inglese e anno di pubblicazione.
+    * I primi 10 manuali della collezione riproducono fedelmente le prime 2 righe dello screenshot: *Eroi della terra di confine*, *Classe Mago*, *Libro del giocatore*, *Il libro delle passioni di Astarion*, *Magia sfrenata*, *Eredi del Male Elementale*, *Trattenere i morti*, *La bisaccia del Grifone, Libro 1*, *Sale del Drago*, *Enciclopedia dei mostri*.
+  * **Integrazione Lettore:** Il click su qualsiasi manuale apre direttamente la lettura interattiva o l'indice generale TOC a 3 colonne via `openBookReader(bookId)`.
+  * **Test Suite:** Aggiunto `tests/test_books_ui_ruleholder.js` con copertura completa su dati, DOM, CSS, filtri, ricerca e ordinamento.
+
 ### [2026-11-11] - UI Specie Ruleholder & Singolo Switch Tema
 * **Autore:** Agente Contenuti & UI
 * **Novità:**
