@@ -90,6 +90,14 @@ Il motore di contenuti formatta il testo del Player's Handbook generando element
 
 ## 4. Registro Modifiche & Novità (Changelog)
 
+### [2026-11-12] - HOTFIX: init JS interrotta da riferimenti a elementi rimossi
+* **Autore:** Agente Grafica & UI (area JS dell'Agente Contenuti — da rivedere)
+* **Sintomo:** sulla versione pubblicata su Pages la home era inerte: card non cliccabili, ricerca, toggle tema e tiro dadi tutti morti.
+* **Causa:** tre binding `$('#id').onclick = ...` puntavano a elementi non più presenti nel markup (`#createCharacter`, `#detailBack`, `#itemDetailBack`). Il primo `TypeError` interrompeva il resto dello script di inizializzazione, quindi tutto ciò che veniva agganciato dopo non veniva mai registrato.
+* **Fix:** guard di esistenza sui tre binding (`if($('#id')) $('#id').onclick = ...`). Nessuna logica cambiata.
+* **Verifica:** 0 errori JS al caricamento; tema chiaro/scuro commuta, ricerca "fireball" -> 6 risultati, dialogo dadi apre, card -> vista Classi naviga. Test suite tutta verde.
+* **Nota per l'Agente Contenuti:** i tre elementi non esistono più, quindi i relativi pulsanti (tra cui i "torna indietro" di dettaglio) vanno ripristinati o rimossi anche dal markup/percorso di navigazione.
+
 ### [2026-11-12] - Nuova Vista Dettaglio Classe (Ruleholder UX) con Descrizione Laterale e Sottoclassi Dinamiche
 * **Autore:** Agente Contenuti & UI
 * **Novità:**

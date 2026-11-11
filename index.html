@@ -7837,7 +7837,7 @@ function createCharacter(){
   $('#characterName').focus();
 }
 
-$('#createCharacter').onclick=createCharacter;
+if($('#createCharacter')) $('#createCharacter').onclick=createCharacter;
 $('#closeCharacter').onclick=()=>closeModal(charModal);
 
 $('#characterForm').addEventListener('submit',e=>{
@@ -10248,10 +10248,10 @@ $('#bgDetailBack').onclick=backToBgList;
 $('#specListBack').onclick=home;
 $('#specDetailBack').onclick=backToSpecList;
 $('#itemListBack').onclick=home;
-$('#itemDetailBack').onclick=backToItemList;
+if($('#itemDetailBack')) $('#itemDetailBack').onclick=backToItemList;
 $('#goBack').onclick=home;
 $('#classListBack').onclick=home;
-$('#detailBack').onclick=backToClasses;
+if($('#detailBack')) $('#detailBack').onclick=backToClasses;
 
 // Universal Direct Home Navigation
 function goHomeDirectly(e){
