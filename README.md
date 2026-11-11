@@ -9,20 +9,21 @@ Web app statica ospitata su **GitHub Pages** e aperta come **Telegram Mini App**
 
 Nel browser del PC/telefono la pagina funziona anche fuori da Telegram; dentro Telegram, viene caricata tramite lo script `telegram-web-app.js`.
 
-## Todo contenuti
+## Stato contenuti
 
-Il prototipo è in fase di allineamento alla **5.5e (2024)** e va completato sezione per sezione seguendo i riferimenti visivi forniti:
+Tutte le sezioni dati sono **complete e allineate a 5.5e/2024** (dati da 5e.tools):
 
-- [ ] **Regole** (biblioteca, indice del manuale) — da collegare allo SRD localizzato
-- [ ] **Classi** — presente (12 classi, artwork Ruleholder)
-- [ ] **Background** — da compilare (es. Artista/Intrattenitore, Nobile…)
-- [ ] **Specie** — da compilare (Aasimar, Nano, Tiefling…)
-- [ ] **Talenti** — da compilare
-- [ ] **Incantesimi** — presente (361 voci PHB; verificare edizione 2014)
-- [ ] **Equipaggiamento** — da compilare
-- [ ] **Oggetti magici** — da compilare
-- [ ] **Mostri** — presente (450 voci MM; verificare edizione 2014)
-- [ ] **Bastioni** e **Glossario** — da compilare
+- [x] **Classi** — 12, XPHB + artwork Ruleholder
+- [x] **Retaggi** — 16, XPHB
+- [x] **Specie** — 10, XPHB
+- [x] **Talenti** — 77, XPHB
+- [x] **Incantesimi** — 391, XPHB
+- [x] **Equipaggiamento** — 123, XPHB
+- [x] **Oggetti magici** — 584, XDMG
+- [x] **Mostri** — 503, XMM 2024
+- [x] **Bastioni** — 35, XDMG
+- [x] **Glossario** — 15 condizioni, XPHB
+- [ ] **Libri di regole** (Biblioteca) — rimasta l'unica sezione non-immessa: è un caso a sé (landing con copertine dei manuali, non un catalogo dati come le altre)
 
 ## Risorse e diritti
 
