@@ -14,6 +14,9 @@ def load_bgs():
 def load_species():
     return load('species_data.js', 'SPECIES')
 
+def load_arr(name, const):
+    return load(name, const)
+
 class MiniAppContractTests(unittest.TestCase):
     def test_backgrounds_data_is_real_2024_phb(self):
         bgs = load_bgs()
@@ -49,6 +52,22 @@ class MiniAppContractTests(unittest.TestCase):
         self.assertIn('data-view="species"', html)
         self.assertIn('specListView', html)
         self.assertIn('renderSpecDetail', html)
+    def test_feats_equipment_magic_data_is_real_2024(self):
+        feats = load_arr('feats_data.js', 'FEATS')
+        self.assertEqual(len(feats), 77)
+        self.assertTrue(all(f['category'] and f['text'] for f in feats))
+        equip = load_arr('equipment_data.js', 'EQUIPMENT')
+        self.assertEqual(len(equip), 123)
+        self.assertTrue(any(e['name'] == 'Acid' for e in equip))
+        magic = load_arr('magic_data.js', 'MAGIC')
+        self.assertEqual(len(magic), 584)
+        self.assertTrue(all(m['rarity'] for m in magic))
+    def test_generic_item_sections_wired(self):
+        html = (ROOT/'prototype.html').read_text()
+        for frag in ('feats_data.js', 'equipment_data.js', 'magic_data.js',
+                     'data-view="feats"', 'data-view="equipment"', 'data-view="magic"',
+                     'ITEMKINDS', 'itemListView', 'renderItemList'):
+            self.assertIn(frag, html)
     def test_attribution_and_local_updater_kept(self):
         self.assertTrue((ROOT/'NOTICE-SRD.md').exists())
         script = (ROOT/'scripts'/'Update-5etools.ps1').read_text()
