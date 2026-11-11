@@ -1,57 +1,58 @@
-# Compendio — installazione privata di 5e.tools
+# Compendio — Mini App Telegram · D&D 5.5e (2024)
 
-Questa repo non ospita più una Telegram Mini App. GitHub Pages è disattivato e il repository è privato.
+Web app statica ospitata su **GitHub Pages** e aperta come **Telegram Mini App**. Un compendio da tavolo in italiano ispirato al design delle schermate di riferimento: catalogo filtrabile, indice del manuale, schede di classe/dettaglio e tooltip, salvando la scheda del personaggio in locale.
 
-Per usare **5e.tools completo (regole, dati e immagini) sul tuo PC**, lo script qui sotto scarica i due repository upstream direttamente sul computer. Non copia il corpus nel repository `hybrid-entree-art/5e-tg-webapp`: il mirror immagini è molto grande e il suo contenuto non è materiale che questo progetto possa rilicenziare o ripubblicare.
+## Apri
 
-## Prima installazione o aggiornamento — Windows
+- Pagina web: https://hybrid-entree-art.github.io/5e-tg-webapp/prototype.html
+- Repo: https://github.com/hybrid-entree-art/5e-tg-webapp
 
-Prerequisiti: Git, Node.js e npm installati.
+Nel browser del PC/telefono la pagina funziona anche fuori da Telegram; dentro Telegram, viene caricata tramite lo script `telegram-web-app.js`.
 
-Apri PowerShell nella cartella del repository e lancia:
+## Todo contenuti
+
+Il prototipo è in fase di allineamento alla **5.5e (2024)** e va completato sezione per sezione seguendo i riferimenti visivi forniti:
+
+- [ ] **Regole** (biblioteca, indice del manuale) — da collegare allo SRD localizzato
+- [ ] **Classi** — presente (12 classi, artwork Ruleholder)
+- [ ] **Background** — da compilare (es. Artista/Intrattenitore, Nobile…)
+- [ ] **Specie** — da compilare (Aasimar, Nano, Tiefling…)
+- [ ] **Talenti** — da compilare
+- [ ] **Incantesimi** — presente (361 voci PHB; verificare edizione 2014)
+- [ ] **Equipaggiamento** — da compilare
+- [ ] **Oggetti magici** — da compilare
+- [ ] **Mostri** — presente (450 voci MM; verificare edizione 2014)
+- [ ] **Bastioni** e **Glossario** — da compilare
+
+## Risorse e diritti
+
+- **SRD 5.2.1** (CC BY 4.0): attribuzione in `NOTICE-SRD.md`.
+- **Artwork classi**: da `ruleholder.com`, usati sulla base del permesso dichiarato dall’utente; provenienza annotata in `assets/classes/README.md`.
+- Il testo e le immagini integrali dei manuali (Player's Handbook, Monster Manual…) **non** vanno ripubblicati in una repo/Pages pubblica senza conferma dei diritti: usa lo SRD per la porzione pubblica e mantieni privato quanto necessario.
+
+## Contenuti
+
+- `prototype.html` — UI completa (home, classi, incantesimi, mostri, dettaglio classe, creazione personaggio in `localStorage`).
+- `data_inject.js` — dataset iniziale (incantesimi/mostri; edizione da verificare).
+- `class_data.js` — dati classi XPHB 2024.
+- `assets/classes/*.webp` — artwork classi.
+- `scripts/Update-5etools.ps1` — updater per una copia locale completa di 5e.tools (vedi sotto).
+
+## Copia locale completa (facoltativa)
+
+Per avere il **mirror completo** di 5e.tools sul PC (aggiornamento manuale):
 
 ```powershell
 Set-ExecutionPolicy -Scope Process Bypass
 .\scripts\Update-5etools.ps1
 ```
 
-La prima volta clona il sito completo in `C:\Users\<utente>\5etools-src` e le immagini in `5etools-src\img`. Le volte successive fa `git pull --ff-only` su entrambi, poi `npm install`.
+Poi avvia con `npm run serve:dev` dentro `~/5etools-src` e apri http://localhost:5050/index.html. Genera la cache offline con `-BuildServiceWorker`; salta le immagini con `-SkipImages`. Dettagli in `scripts/Update-5etools.ps1`.
 
-Avvia il sito localmente:
+## Sviluppo e test
 
-```powershell
-Set-Location "$HOME\5etools-src"
-npm run serve:dev
+```bash
+python3 -m unittest discover -s tests -v
+git add -A && git commit -m "..."
+git push origin main   # Pages ripubblica automaticamente da main
 ```
-
-Apri **http://localhost:5050/index.html**. Il server deve restare aperto mentre lo usi.
-
-Aggiornamento ordinario: ripeti lo script PowerShell sopra, poi riavvia `npm run serve:dev`. Se hai modificato file del mirror localmente, lo script si ferma invece di sovrascrivere le modifiche.
-
-## Immagini opzionali
-
-Se vuoi evitare il download delle immagini, avvia così:
-
-```powershell
-.\scripts\Update-5etools.ps1 -SkipImages
-```
-
-Per ricostruire la cache offline/service worker, che è opzionale:
-
-```powershell
-.\scripts\Update-5etools.ps1 -BuildServiceWorker
-```
-
-## Edizioni
-
-La repo configurata è `5etools-mirror-3/5etools-src`, cioè l’edizione corrente 2024/5.5e. Non mescolarla con il repository `5etools-2014-src`: teniamo la 2014 separata per un eventuale profilo/volume futuro.
-
-## Nota su accesso e contenuti
-
-`localhost` è accessibile solo dal tuo PC: non è un link Telegram né un servizio pubblico. La Mini App Telegram è stata fermata; Pages non pubblica più questa copia. I mirror 5e.tools dichiarano che il materiale è destinato alla consultazione per prodotti posseduti e rimandano alle leggi applicabili. Mantieni il download per il tuo uso privato e verifica i diritti prima di ridistribuire testo o immagini.
-
-## Fonti
-
-- Installazione e aggiornamenti: https://wiki.tercept.net/en/5eTools/InstallGuide
-- Codice 5e.tools: https://github.com/5etools-mirror-3/5etools-src
-- Immagini: https://github.com/5etools-mirror-3/5etools-img
