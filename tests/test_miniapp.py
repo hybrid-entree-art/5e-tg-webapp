@@ -68,6 +68,21 @@ class MiniAppContractTests(unittest.TestCase):
                      'data-view="feats"', 'data-view="equipment"', 'data-view="magic"',
                      'ITEMKINDS', 'itemListView', 'renderItemList'):
             self.assertIn(frag, html)
+    def test_bastions_and_glossary_data_is_real_2024(self):
+        bas = load_arr('bastions_data.js', 'BASTIONS')
+        self.assertEqual(len(bas), 35)
+        self.assertTrue(all(f['name'] and f['text'] for f in bas))
+        g = load_arr('glossary_data.js', 'GLOSSARY')
+        self.assertEqual(len(g), 15)
+        names = {x['name'] for x in g}
+        self.assertIn('Blinded', names)
+        blinded = next(x for x in g if x['name'] == 'Blinded')
+        self.assertEqual(blinded['it'], 'Cecità')
+    def test_bastions_glossary_wired(self):
+        html = (ROOT/'prototype.html').read_text()
+        for frag in ('bastions_data.js', 'glossary_data.js', 'data-view="bastions"',
+                     'data-view="glossary"', 'BASTIONS:BASTIONS', 'GLOSSARY:GLOSSARY'):
+            self.assertIn(frag, html)
     def test_attribution_and_local_updater_kept(self):
         self.assertTrue((ROOT/'NOTICE-SRD.md').exists())
         script = (ROOT/'scripts'/'Update-5etools.ps1').read_text()

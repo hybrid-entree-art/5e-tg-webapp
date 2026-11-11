@@ -65,8 +65,8 @@
         <button class="category cat-equipment" data-view="equipment" type="button"><span class="cat-glyph small">⚒</span><span class="cat-top"><span class="cat-kicker">Equipaggiamento</span><span class="cat-arrow">↗</span></span><span class="cat-bottom"><span class="cat-title">Attrezzatura</span><span class="cat-sub">123 oggetti · PHB 2024</span></span></button>
         <button class="category cat-magic" data-view="magic" type="button"><span class="cat-glyph">✧</span><span class="cat-top"><span class="cat-kicker">Tesori</span><span class="cat-arrow">↗</span></span><span class="cat-bottom"><span class="cat-title">Oggetti magici</span><span class="cat-sub">584 meraviglie · DMG 2024</span></span></button>
         <button class="category cat-monsters" data-view="monsters" type="button"><span class="cat-glyph">♜</span><span class="cat-top"><span class="cat-kicker">Bestiario</span><span class="cat-arrow">↗</span></span><span class="cat-bottom"><span class="cat-title">Mostri</span><span class="cat-sub">450 creature · MM</span></span></button>
-        <button class="category cat-bastions soon" type="button" aria-disabled="true"><span class="cat-glyph">♙</span><span class="cat-top"><span class="cat-kicker">Avventura</span><span class="cat-arrow">Prossimamente</span></span><span class="cat-bottom"><span class="cat-title">Bastioni</span><span class="cat-sub">Il tuo rifugio</span></span></button>
-        <button class="category cat-glossary soon" type="button" aria-disabled="true"><span class="cat-glyph">❧</span><span class="cat-top"><span class="cat-kicker">Riferimento</span><span class="cat-arrow">Prossimamente</span></span><span class="cat-bottom"><span class="cat-title">Glossario</span><span class="cat-sub">Termini di gioco</span></span></button>
+        <button class="category cat-bastions" data-view="bastions" type="button"><span class="cat-glyph">♙</span><span class="cat-top"><span class="cat-kicker">Avventura</span><span class="cat-arrow">↗</span></span><span class="cat-bottom"><span class="cat-title">Bastioni</span><span class="cat-sub">35 strutture · DMG 2024</span></span></button>
+        <button class="category cat-glossary" data-view="glossary" type="button"><span class="cat-glyph">❧</span><span class="cat-top"><span class="cat-kicker">Riferimento</span><span class="cat-arrow">↗</span></span><span class="cat-bottom"><span class="cat-title">Glossario</span><span class="cat-sub">15 condizioni · PHB 2024</span></span></button>
       </div>
     </section>
     <section id="classListView" class="hidden"><div class="class-list-head"><button class="back" id="classListBack" aria-label="Torna alla home">←</button><div><div class="eyebrow">Creazione del personaggio</div><h2 class="class-list-title">Scegli la tua classe</h2><div class="results-note" id="classListCount"></div></div></div><div class="class-grid" id="classGrid"></div></section>
@@ -94,6 +94,8 @@
 <script src="feats_data.js"></script>
 <script src="equipment_data.js"></script>
 <script src="magic_data.js"></script>
+<script src="bastions_data.js"></script>
+<script src="glossary_data.js"></script>
 <script>
 const schools={A:'Abiurazione',C:'Convocazione',D:'Divinazione',EN:'Ammaliamento',EV:'Invocazione',I:'Illusione',N:'Necromanzia',T:'Trasmutazione'};
 const rngmap={point:'Distanza',self:'Incantatore',touch:'Contatto',radius:'Raggio',cone:'Cono',line:'Linea',cube:'Cubo',hemisphere:'Emisfero',sphere:'Sfera',plane:'Piano',special:'Speciale',unlimited:'Illimitata',sight:'Vista'};
@@ -146,10 +148,14 @@ const ITEMKINDS={
  equipment:{key:'EQUIPMENT',coll:'oggetti',title:'Equipaggiamento',note:'123 oggetti · PHB 2024',kicker:'Equipaggiamento · PHB 2024',tag:x=>x.type,text:x=>x.text||'',
   meta:x=>[x.type,x.rarity&&x.rarity!=='—'?x.rarity:''].filter(Boolean).concat(x.value?Math.round(x.value/100)+' PO':[],x.weight?x.weight+' lib.':[]),match:(x,q)=>x.name.toLowerCase().includes(q)},
  magic:{key:'MAGIC',coll:'meraviglie',title:'Oggetti magici',note:'584 meraviglie · DMG 2024',kicker:'Oggetto magico · DMG 2024',tag:x=>x.rarity||'—',text:x=>x.text||'',
-  meta:x=>[x.rarity],match:(x,q)=>x.name.toLowerCase().includes(q)}
+  meta:x=>[x.rarity],match:(x,q)=>x.name.toLowerCase().includes(q)},
+ bastions:{key:'BASTIONS',coll:'strutture',title:'Bastioni',note:'35 strutture · DMG 2024',kicker:'Struttura del Bastione · DMG 2024',tag:x=>x.type||'Speciale',text:x=>x.text||'',
+  meta:x=>[x.type,x.level?('Livello '+x.level):''].concat(x.orders||[]),match:(x,q)=>x.name.toLowerCase().includes(q)},
+ glossary:{key:'GLOSSARY',coll:'termini',title:'Glossario',note:'15 condizioni · PHB 2024',kicker:'Condizione · PHB 2024',tag:x=>x.category||'Condizione',text:x=>x.text||'',
+  meta:x=>[x.it||x.name],match:(x,q)=>x.name.toLowerCase().includes(q)||(x.it||'').toLowerCase().includes(q)}
 };
 let activeGroup=null,itemGroupFilter='Tutti';
-const GROUP_DATA={FEATS:FEATS||[],EQUIPMENT:EQUIPMENT||[],MAGIC:MAGIC||[]};
+const GROUP_DATA={FEATS:FEATS||[],EQUIPMENT:EQUIPMENT||[],MAGIC:MAGIC||[],BASTIONS:BASTIONS||[],GLOSSARY:GLOSSARY||[]};
 function showItemList(kind){const k=ITEMKINDS[kind];activeGroup=k;view='itemlist';activeItem=null;query='';itemGroupFilter='Tutti';$('#q').value='';$('#homeView .hero').classList.add('hidden');$('.search-wrap').classList.add('hidden');$('#directory').classList.add('hidden');$('#searchResults').classList.add('hidden');$('#resultsView').classList.add('hidden');$('#classListView').classList.add('hidden');$('#classDetailView').classList.add('hidden');$('#bgListView').classList.add('hidden');$('#bgDetailView').classList.add('hidden');$('#specListView').classList.add('hidden');$('#specDetailView').classList.add('hidden');$('#itemDetailView').classList.add('hidden');$('#itemListView').classList.remove('hidden');$('#itemListEyebrow').textContent='Riferimento';$('#itemListTitle').textContent=k.title;$('#itemListNote').textContent=k.note;renderGroupFilters();renderItemList();window.scrollTo({top:0,behavior:'smooth'});}
 function groupItems(){return GROUP_DATA[activeGroup.key]||[];}
 function renderGroupFilters(){const k=activeGroup;const tags=['Tutti'];for(const it of groupItems()){const t=k.tag(it);if(t&&!tags.includes(t))tags.push(t);}tags.sort((a,b)=>a==='Tutti'?-1:b==='Tutti'?1:a.localeCompare(b));$('#itemFilters').innerHTML=tags.map(t=>`<button class="filter ${t===itemGroupFilter?'active':''}" data-gf="${esc(t)}">${esc(t)}</button>`).join('');$$('#itemFilters .filter').forEach(b=>b.onclick=()=>{itemGroupFilter=b.dataset.gf;renderGroupFilters();renderItemList();});}
