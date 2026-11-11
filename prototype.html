@@ -6808,6 +6808,54 @@ const CORE_RULES_REGISTRY = {
     badge: 'Regola',
     text: 'Alcuni oggetti magici richiedono una connessione speciale detta Sintonizzazione prima di poterne sfruttare i poteri. Un personaggio può essere sintonizzato a un massimo di 3 oggetti.',
     sectionId: 'attunement'
+  },
+  'bright light': {
+    title: 'Bright Light',
+    sub: "Rules Glossary · Player's Handbook 2024",
+    source: 'PHB 2024',
+    badge: 'Luce',
+    text: 'Bright Light lets most creatures see normally. Even gloomy days provide Bright Light, as do torches, lanterns, fires, and other sources of illumination within a specific radius.',
+    sectionId: 'bright-light'
+  },
+  'luce intensa': {
+    title: 'Luce Intensa',
+    sub: "Glossario Regole · Player's Handbook 2024",
+    source: 'PHB 2024',
+    badge: 'Luce',
+    text: 'La Luce Intensa consente alla maggior parte delle creature di vedere normalmente.',
+    sectionId: 'bright-light'
+  },
+  'dim light': {
+    title: 'Dim Light',
+    sub: "Rules Glossary · Player's Handbook 2024",
+    source: 'PHB 2024',
+    badge: 'Luce',
+    text: 'Dim Light, also called shadows, creates a Lightly Obscured area. An area of Dim Light is usually a boundary between a source of Bright Light and surrounding Darkness.',
+    sectionId: 'dim-light'
+  },
+  'luce fioca': {
+    title: 'Luce Fioca',
+    sub: "Glossario Regole · Player's Handbook 2024",
+    source: 'PHB 2024',
+    badge: 'Luce',
+    text: "La Luce Fioca crea un'area Leggermente Oscurata, come al tramonto o al confine tra luce e oscurità.",
+    sectionId: 'dim-light'
+  },
+  'magic action': {
+    title: 'Magic Action',
+    sub: "Rules Glossary · Player's Handbook 2024",
+    source: 'PHB 2024',
+    badge: 'Azione',
+    text: 'When you take the Magic action, you cast a spell that has a casting time of an action or use a magic item or feature that requires a Magic action.',
+    sectionId: 'magic'
+  },
+  'azione magica': {
+    title: 'Azione Magica',
+    sub: "Glossario Regole · Player's Handbook 2024",
+    source: 'PHB 2024',
+    badge: 'Azione',
+    text: "Quando compi un'Azione Magica, lanci un incantesimo con tempo di lancio di un'azione o attivi una capacità magica che la richiede.",
+    sectionId: 'magic'
   }
 };
 
@@ -6975,51 +7023,73 @@ function resolveEntity(name, typeHint) {
 function linkKnownEntities(html) {
   if (!html || typeof html !== 'string') return html;
 
-  const conditions = [
-    'Blinded', 'Charmed', 'Deafened', 'Exhaustion', 'Frightened', 
-    'Grappled', 'Incapacitated', 'Invisible', 'Paralyzed', 'Petrified', 
-    'Poisoned', 'Prone', 'Restrained', 'Stunned', 'Unconscious',
-    'Accecato', 'Affascinato', 'Assordato', 'Sfinimento', 'Spaventato',
-    'Afferrato', 'Incapace', 'Invisibile', 'Paralizzato', 'Pietrificato',
-    'Avvelenato', 'Prono', 'Trattenuto', 'Stordito', 'Privo di Sensi'
-  ];
+  // 1. 5e.tools explicit tags: {@spell ...}, {@condition ...}, {@sense ...}, {@item ...}, {@creature ...}, {@feat ...}
+  let processed = html.replace(/\{@(spell|condition|sense|item|creature|feat|action|hazard)\s+([^}]+)\}/gi, (match, tagType, tagContent) => {
+    const parts = tagContent.split('|');
+    const name = parts[0].trim();
+    const display = (parts[1] && parts[1].trim()) || name;
+    let type = 'rule';
+    if (tagType === 'spell') type = 'spell';
+    else if (tagType === 'condition') type = 'condition';
+    else if (tagType === 'sense') type = 'rule';
+    else if (tagType === 'item') type = 'item';
+    else if (tagType === 'creature') type = 'creature';
+    else if (tagType === 'feat') type = 'feat';
+    return `<a class="rh-ref-link ref-${type}" data-type="${type}" data-name="${display}">${display}</a>`;
+  });
 
-  const commonSpells = [
+  // Tokenize by HTML tags to only replace inside pure text nodes
+  const tokens = processed.split(/(<[^>]+>)/g);
+  let insideLink = 0;
+
+  // Ambiguous spell words (words that only mean a spell when in spell/casting context)
+  const ambiguousSpells = [
+    'Light', 'Shield', 'Resistance', 'Darkness', 'Command', 'Sleep', 'Jump',
+    'Friends', 'Aid', 'Bless', 'Heroism', 'Sanctuary', 'Fly', 'Web', 'Blink',
+    'Haste', 'Slow', 'Fear', 'Teleport', 'Wish', 'Guidance'
+  ];
+  const ambigRegex = new RegExp(
+    `(\\b(?:cast|casts|casting|cast a|cast the|know|knows|learn|learns|prepare|prepares|prepared the)\\s+)?` +
+    `\\b(${ambiguousSpells.join('|')})\\b` +
+    `(\\s+(?:cantrip|spell))?`,
+    'gi'
+  );
+
+  // Distinctive spells that never collide with ordinary English
+  const distinctiveSpells = [
     'Pass without Trace', 'Speak with Animals', 'Dancing Lights', 'Minor Illusion',
     'Faerie Fire', 'Hellish Rebuke', 'Ray of Sickness', 'Ray of Frost', 'Acid Splash',
     'Fire Bolt', 'Poison Spray', 'Shocking Grasp', 'Chill Touch', 'Sacred Flame',
     'Spare the Dying', 'Vicious Mockery', 'Blade Ward', 'True Strike', 'Mage Hand',
     'Prestidigitation', 'Druidcraft', 'Produce Flame', 'Shillelagh', 'Thaumaturgy',
-    'Guidance', 'Resistance', 'Mending', 'Darkness', 'Light', 'Invisibility',
-    'Fireball', 'Command', 'Shield', 'Misty Step', 'Bless', 'Cure Wounds', 'Healing Word'
-  ];
+    'Mending', 'Misty Step', 'Cure Wounds', 'Healing Word', 'Eldritch Blast',
+    'Magic Missile', 'Fireball', "Tasha's Hideous Laughter", 'Animal Friendship',
+    'Armor of Agathys', 'Arms of Hadar', 'Color Spray', 'Chromatic Orb',
+    'Dissonant Whispers', 'Expeditious Retreat', 'False Life', 'Feather Fall',
+    'Hold Person', "Hunter's Mark", 'Lesser Restoration', 'Mirror Image',
+    'Scorching Ray', 'Thunderwave', 'Witch Bolt'
+  ].sort((a, b) => b.length - a.length);
+  const distinctSpellRegex = new RegExp(`\\b(${distinctiveSpells.map(s => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|')})\\b`, 'gi');
 
-  const rulesTerms = [
-    'Long Rest', 'Short Rest', 'Darkvision', 'Scurovista', 'Riposo Lungo', 'Riposo Breve',
-    'Concentration', 'Concentrazione', 'Ritual', 'Rituale', 'Attunement', 'Sintonizzazione'
-  ];
+  // Rules terms
+  const ruleTerms = [
+    'Bright Light', 'Dim Light', 'Darkvision', 'Scurovista',
+    'Long Rest', 'Short Rest', 'Riposo Lungo', 'Riposo Breve',
+    'Concentration', 'Concentrazione', 'Attunement', 'Sintonizzazione',
+    'Magic action', 'Azione Magica', 'Opportunity Attack', "Attacco d'Opportunità"
+  ].sort((a, b) => b.length - a.length);
+  const ruleRegex = new RegExp(`\\b(${ruleTerms.map(r => r.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|')})\\b`, 'gi');
 
-  // Descending length so multi-word phrases match before substrings
-  const allTerms = [
-    ...conditions.map(c => ({ term: c, type: 'condition' })),
-    ...commonSpells.map(s => ({ term: s, type: 'spell' })),
-    ...rulesTerms.map(r => ({ term: r, type: 'rule' }))
-  ].sort((a, b) => b.term.length - a.term.length);
-
-  const termMap = new Map();
-  const patternParts = [];
-  allTerms.forEach(item => {
-    const lower = item.term.toLowerCase();
-    if (!termMap.has(lower)) {
-      termMap.set(lower, item);
-      patternParts.push(item.term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
-    }
-  });
-
-  const fullRegex = new RegExp(`\\b(${patternParts.join('|')})\\b`, 'gi');
-
-  const tokens = html.split(/(<[^>]+>)/g);
-  let insideLink = 0;
+  // Conditions
+  const conditions = [
+    'Incapacitated', 'Unconscious', 'Frightened', 'Paralyzed', 'Petrified',
+    'Restrained', 'Exhaustion', 'Deafened', 'Grappled', 'Poisoned',
+    'Invisible', 'Blinded', 'Charmed', 'Stunned', 'Prone',
+    'Accecato', 'Affascinato', 'Assordato', 'Sfinimento', 'Spaventato',
+    'Afferrato', 'Incapace', 'Invisibile', 'Paralizzato', 'Pietrificato',
+    'Avvelenato', 'Prono', 'Trattenuto', 'Stordito', 'Privo di Sensi'
+  ].sort((a, b) => b.length - a.length);
+  const condRegex = new RegExp(`\\b(${conditions.join('|')})\\b`, 'gi');
 
   return tokens.map(token => {
     if (token.startsWith('<')) {
@@ -7033,11 +7103,28 @@ function linkKnownEntities(html) {
 
     if (insideLink > 0) return token;
 
-    return token.replace(fullRegex, (matched) => {
-      const info = termMap.get(matched.toLowerCase());
-      const type = info ? info.type : 'rule';
-      return `<a class="rh-ref-link ref-${type}" data-type="${type}" data-name="${matched}">${matched}</a>`;
+    let res = token;
+
+    // 1. Rules (Bright Light, Dim Light, Darkvision, Long Rest...)
+    res = res.replace(ruleRegex, (matched) => `<a class="rh-ref-link ref-rule" data-type="rule" data-name="${matched}">${matched}</a>`);
+
+    // 2. Distinctive spells
+    res = res.replace(distinctSpellRegex, (matched) => `<a class="rh-ref-link ref-spell" data-type="spell" data-name="${matched}">${matched}</a>`);
+
+    // 3. Ambiguous spells (requires spell/cantrip prefix or suffix)
+    res = res.replace(ambigRegex, (fullMatch, prefix, spellWord, suffix) => {
+      const hasPrefix = Boolean(prefix && prefix.trim());
+      const hasSuffix = Boolean(suffix && suffix.trim());
+      if (!hasPrefix && !hasSuffix) return fullMatch;
+      const p = prefix || '';
+      const s = suffix || '';
+      return `${p}<a class="rh-ref-link ref-spell" data-type="spell" data-name="${spellWord}">${spellWord}</a>${s}`;
     });
+
+    // 4. Conditions
+    res = res.replace(condRegex, (matched) => `<a class="rh-ref-link ref-condition" data-type="condition" data-name="${matched}">${matched}</a>`);
+
+    return res;
   }).join('');
 }
 
