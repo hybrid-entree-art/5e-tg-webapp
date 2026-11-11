@@ -146,6 +146,19 @@ Il motore di contenuti formatta il testo del Player's Handbook generando element
     * **Modalità Mobile Ergonomica (`@media(max-width: 860px)`):** Barra di commutazione capitoli rapida (`.rh-reader-mobile-bar`) che apre e chiude la sidebar senza occupare spazio visivo sul foglio di lettura.
   * **Test Suite Dedicata (`tests/test_reader_ui_ruleholder.js`):** Valida al 100% l'integrità del DOM HTML (30 elementi), delle regole CSS (30 selettori), delle funzioni JavaScript (16 API) e della fedeltà al Capitolo 2 autentico in inglese.
 
+### [2026-11-12] - Home: artwork di categoria con soggetto che esce dai bordi + glow
+* **Autore:** Agente Grafica & UI
+* **Asset:** `assets/menu/*.webp` — 11 cutout con trasparenza dal menu di `ruleholder.com` (`media.ruleholder.com/images/menu/`), scaricati il 2026-11-12 su autorizzazione dell'utente. Attribuzione e mappatura categorie in `assets/menu/README.md`.
+* **Novità:**
+  * Ogni card del direttorio usa l'artwork della propria categoria come soggetto, ancorato in basso con velo sfumato per la leggibilità del testo (`.category:after`).
+  * **Hover / focus:** la card passa a `overflow:visible` e il soggetto si ingrandisce (+16%) **uscendo dai bordi** (verificato: 33px sopra, 13px per lato), con alone ambra (`.category:before` a opacità 1) e `drop-shadow` caldo sull'artwork.
+  * **Tocco:** su telefono l'hover non esiste, quindi la stessa scena parte in `:active` (pressione) — non è dentro `@media (hover:none)` perché quella query non è affidabile su tutti i WebView.
+  * La card "Libri di regole" mantiene il layout orizzontale, con artwork a destra e velo orizzontale.
+  * Le icone SVG restano nel DOM ma sono nascoste sulle card con artwork (`display:none`), visibili solo sulla card wide: il soggetto prende il posto del glifo.
+  * Tema chiaro: velo chiaro e glow in ambra scura, ombre più morbide.
+* **Peso:** nuove immagini ~600 KB (11 file, dopo aver scartato le varianti `-bg`).
+* **Verifica:** 11/11 immagini caricate senza 404; nessun overflow né testo tagliato a 320/390/768/1280px; test suite verde (7 node + 12 python).
+
 ### [2026-11-12] - Integrazione Home v2 (Grafica & UI) e Ripristino Schede / Robustezza Listener
 * **Autore:** Agente Contenuti & Agente Grafica & UI
 * **Novità:**

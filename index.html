@@ -4831,6 +4831,129 @@ body:not(.dark-reader) .rh-popover-nav-btn:hover {
   .category{min-height:118px}
 }
 
+
+/* =====================================================================
+   ARTWORK DI CATEGORIA — il soggetto esce dai bordi + glow (hover / tap)
+   Fonte immagini: media.ruleholder.com/images/menu — vedi assets/menu/README.md
+   ===================================================================== */
+.cat-rules{--art:url(assets/menu/sources.webp)}
+.cat-classes{--art:url(assets/menu/classes.webp)}
+.cat-backgrounds{--art:url(assets/menu/backgrounds.webp)}
+.cat-species{--art:url(assets/menu/species.webp)}
+.cat-feats{--art:url(assets/menu/feats.webp)}
+.cat-spells{--art:url(assets/menu/spells.webp)}
+.cat-equipment{--art:url(assets/menu/equipment.webp)}
+.cat-magic{--art:url(assets/menu/magic-items.webp)}
+.cat-monsters{--art:url(assets/menu/monsters.webp)}
+.cat-bastions{--art:url(assets/menu/bastions.webp)}
+.cat-glossary{--art:url(assets/menu/glossary.webp)}
+
+.category{
+  overflow:hidden;
+  min-height:154px;
+  padding:12px;
+  justify-content:flex-end;
+  isolation:isolate;
+}
+.cat-glyph{display:none}
+.cat-art{
+  position:absolute;
+  inset:0;
+  z-index:1;
+  background-image:var(--art);
+  background-repeat:no-repeat;
+  background-position:center bottom;
+  background-size:contain;
+  pointer-events:none;
+  transform-origin:50% 88%;
+  transform:translateY(4%) scale(1);
+  filter:drop-shadow(0 10px 16px rgba(0,0,0,.55));
+  transition:transform .38s cubic-bezier(.2,.8,.2,1), filter .38s ease;
+  will-change:transform;
+}
+/* velo scuro per la leggibilità del testo (fisso sulla card) */
+.category:after{
+  content:'';
+  position:absolute;
+  inset:0;
+  z-index:2;
+  pointer-events:none;
+  background:linear-gradient(180deg, rgba(11,9,8,0) 40%, rgba(11,9,8,.55) 74%, rgba(11,9,8,.95) 100%);
+  border-radius:inherit;
+}
+.cat-bottom{position:relative;z-index:3;margin-top:0}
+.cat-top{position:absolute;top:10px;right:10px;z-index:4}
+.cat-title{text-shadow:0 1px 10px rgba(0,0,0,.65)}
+.cat-sub{text-shadow:0 1px 8px rgba(0,0,0,.55)}
+
+/* alone di luce dietro al soggetto */
+.category:before{
+  content:'';
+  display:block;
+  position:absolute;
+  inset:-35%;
+  z-index:0;
+  background:radial-gradient(closest-side, rgba(245,158,11,.30), rgba(234,88,12,.10) 55%, transparent 72%);
+  opacity:0;
+  transition:opacity .38s ease;
+  pointer-events:none;
+}
+
+/* HOVER / FOCUS: il soggetto rompe il bordo e si accende */
+.category:hover,
+.category:focus-visible{
+  overflow:visible;
+  z-index:6;
+  border-color:rgba(245,158,11,.55);
+  box-shadow:0 0 0 1px rgba(245,158,11,.30), 0 24px 44px -20px rgba(0,0,0,.92), 0 0 46px rgba(245,158,11,.22);
+}
+.category:hover:before,
+.category:focus-visible:before{opacity:1}
+.category:hover .cat-art,
+.category:focus-visible .cat-art{
+  transform:translateY(-9%) scale(1.16);
+  filter:drop-shadow(0 0 16px rgba(245,158,11,.55)) drop-shadow(0 16px 22px rgba(0,0,0,.6));
+}
+.category:hover .cat-arrow,
+.category:focus-visible .cat-arrow{color:var(--rh-accent-primary);border-color:rgba(245,158,11,.6);background:rgba(245,158,11,.10)}
+
+/* Card in evidenza: artwork a destra, testo a sinistra */
+.category.wide{
+  min-height:112px;
+  padding:16px 18px;
+  justify-content:flex-start;
+  flex-direction:row;
+  align-items:center;
+}
+.category.wide .cat-glyph{display:grid}
+.category.wide .cat-art{inset:0 0 0 auto;width:48%;background-position:right bottom;transform-origin:100% 90%;transform:none}
+.category.wide:after{background:linear-gradient(90deg, rgba(11,9,8,.94) 28%, rgba(11,9,8,.62) 58%, rgba(11,9,8,0) 86%)}
+.category.wide:hover .cat-art,
+.category.wide:focus-visible .cat-art{transform:translate(6%,-6%) scale(1.14)}
+.category.wide .cat-bottom{z-index:3}
+
+/* Tema chiaro */
+.warm .category:after{background:linear-gradient(180deg, rgba(255,253,249,0) 40%, rgba(255,253,249,.60) 74%, rgba(255,253,249,.96) 100%)}
+.warm .category.wide:after{background:linear-gradient(90deg, rgba(255,253,249,.96) 28%, rgba(255,253,249,.62) 58%, rgba(255,253,249,0) 86%)}
+.warm .cat-art{filter:drop-shadow(0 10px 14px rgba(90,60,20,.38))}
+.warm .cat-title,.warm .cat-sub{text-shadow:none}
+.warm .category:hover,.warm .category:focus-visible{box-shadow:0 0 0 1px rgba(184,108,18,.35), 0 24px 44px -22px rgba(90,60,20,.55), 0 0 40px rgba(184,108,18,.18)}
+
+/* Pressione / tocco: stessa scena dell'hover (su telefono l'hover non esiste) */
+.category:active{
+  overflow:visible;
+  z-index:6;
+  border-color:rgba(245,158,11,.55);
+  box-shadow:0 0 0 1px rgba(245,158,11,.30), 0 24px 44px -20px rgba(0,0,0,.92), 0 0 46px rgba(245,158,11,.22);
+}
+.category:active:before{opacity:1}
+.category:active .cat-art{transform:translateY(-7%) scale(1.12);filter:drop-shadow(0 0 16px rgba(245,158,11,.55))}
+.category.wide:active .cat-art{transform:translate(5%,-5%) scale(1.10)}
+@media(max-width:760px){
+  .category{min-height:148px;padding:11px}
+  .category.wide{min-height:104px;padding:14px}
+}
+
 </style>
 </head>
 <body>
@@ -4885,6 +5008,7 @@ body:not(.dark-reader) .rh-popover-nav-btn:hover {
         <div class="dir-group-head"><span class="dir-group-label">Manuali</span><span class="dir-group-rule" aria-hidden="true"></span></div>
         <div class="category-grid">
           <button class="category wide cat-rules" data-view="books" type="button">
+            <span class="cat-art" aria-hidden="true"></span>
             <span class="cat-glyph" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg></span>
             <span class="cat-top"><span class="cat-kicker">Biblioteca</span><span class="cat-arrow" aria-hidden="true">↗</span></span>
             <span class="cat-bottom"><span class="cat-title">Libri di regole</span><span class="cat-sub">19 manuali · 2024+</span></span>
@@ -4896,21 +5020,25 @@ body:not(.dark-reader) .rh-popover-nav-btn:hover {
         <div class="dir-group-head"><span class="dir-group-label">Creazione del personaggio</span><span class="dir-group-rule" aria-hidden="true"></span></div>
         <div class="category-grid">
           <button class="category cat-classes" data-view="classes" type="button">
+            <span class="cat-art" aria-hidden="true"></span>
             <span class="cat-glyph" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 11 2 2 4-4"/></svg></span>
             <span class="cat-top"><span class="cat-kicker">Creazione</span><span class="cat-arrow" aria-hidden="true">↗</span></span>
             <span class="cat-bottom"><span class="cat-title">Classi</span><span class="cat-sub">12 archetipi</span></span>
           </button>
           <button class="category cat-backgrounds" data-view="backgrounds" type="button">
+            <span class="cat-art" aria-hidden="true"></span>
             <span class="cat-glyph" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m15.5 8.5-2 5-5 2 2-5z"/></svg></span>
             <span class="cat-top"><span class="cat-kicker">Creazione</span><span class="cat-arrow" aria-hidden="true">↗</span></span>
             <span class="cat-bottom"><span class="cat-title">Retaggi</span><span class="cat-sub">16 origini · PHB 2024</span></span>
           </button>
           <button class="category cat-species" data-view="species" type="button">
+            <span class="cat-art" aria-hidden="true"></span>
             <span class="cat-glyph" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
             <span class="cat-top"><span class="cat-kicker">Creazione</span><span class="cat-arrow" aria-hidden="true">↗</span></span>
             <span class="cat-bottom"><span class="cat-title">Specie</span><span class="cat-sub">10 popoli · PHB 2024</span></span>
           </button>
           <button class="category cat-feats" data-view="feats" type="button">
+            <span class="cat-art" aria-hidden="true"></span>
             <span class="cat-glyph" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="9" r="6"/><path d="m8.5 14.5-1.5 7 5-3 5 3-1.5-7"/></svg></span>
             <span class="cat-top"><span class="cat-kicker">Creazione</span><span class="cat-arrow" aria-hidden="true">↗</span></span>
             <span class="cat-bottom"><span class="cat-title">Talenti</span><span class="cat-sub">77 doti · PHB 2024</span></span>
@@ -4922,31 +5050,37 @@ body:not(.dark-reader) .rh-popover-nav-btn:hover {
         <div class="dir-group-head"><span class="dir-group-label">Al tavolo</span><span class="dir-group-rule" aria-hidden="true"></span></div>
         <div class="category-grid">
           <button class="category cat-spells" data-view="spells" type="button">
+            <span class="cat-art" aria-hidden="true"></span>
             <span class="cat-glyph" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M15 4V2"/><path d="M15 16v-2"/><path d="M8 9h2"/><path d="M20 9h2"/><path d="M17.8 11.8 19 13"/><path d="M15 9h.01"/><path d="M17.8 6.2 19 5"/><path d="M3 21l9-9"/><path d="M12.2 6.2 11 5"/></svg></span>
             <span class="cat-top"><span class="cat-kicker">Magia</span><span class="cat-arrow" aria-hidden="true">↗</span></span>
             <span class="cat-bottom"><span class="cat-title">Incantesimi</span><span class="cat-sub">391 voci · PHB 2024</span></span>
           </button>
           <button class="category cat-monsters" data-view="monsters" type="button">
+            <span class="cat-art" aria-hidden="true"></span>
             <span class="cat-glyph" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 2a9 9 0 0 0-9 9c0 3 1.4 5 3 6.5V21h12v-3.5C19.6 16 21 14 21 11a9 9 0 0 0-9-9z"/><circle cx="9" cy="11" r="1.4"/><circle cx="15" cy="11" r="1.4"/><path d="M10 21v-3"/><path d="M14 21v-3"/></svg></span>
             <span class="cat-top"><span class="cat-kicker">Bestiario</span><span class="cat-arrow" aria-hidden="true">↗</span></span>
             <span class="cat-bottom"><span class="cat-title">Mostri</span><span class="cat-sub">503 creature · MM 2024</span></span>
           </button>
           <button class="category cat-equipment" data-view="equipment" type="button">
+            <span class="cat-art" aria-hidden="true"></span>
             <span class="cat-glyph" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 10a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"/><path d="M9 6V4a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2"/><path d="M8 21v-4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v4"/></svg></span>
             <span class="cat-top"><span class="cat-kicker">Equipaggiamento</span><span class="cat-arrow" aria-hidden="true">↗</span></span>
             <span class="cat-bottom"><span class="cat-title">Attrezzatura</span><span class="cat-sub">123 oggetti · PHB 2024</span></span>
           </button>
           <button class="category cat-magic" data-view="magic" type="button">
+            <span class="cat-art" aria-hidden="true"></span>
             <span class="cat-glyph" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 3h12l4 6-10 13L2 9z"/><path d="M11 3 8 9l4 13 4-13-3-6"/><path d="M2 9h20"/></svg></span>
             <span class="cat-top"><span class="cat-kicker">Tesori</span><span class="cat-arrow" aria-hidden="true">↗</span></span>
             <span class="cat-bottom"><span class="cat-title">Oggetti magici</span><span class="cat-sub">584 meraviglie · DMG 2024</span></span>
           </button>
           <button class="category cat-bastions" data-view="bastions" type="button">
+            <span class="cat-art" aria-hidden="true"></span>
             <span class="cat-glyph" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 21V9l4 3V9l4 3 4-3v3l4-3v12"/><path d="M10 21v-5h4v5"/></svg></span>
             <span class="cat-top"><span class="cat-kicker">Avventura</span><span class="cat-arrow" aria-hidden="true">↗</span></span>
             <span class="cat-bottom"><span class="cat-title">Bastioni</span><span class="cat-sub">35 strutture · DMG 2024</span></span>
           </button>
           <button class="category cat-glossary" data-view="glossary" type="button">
+            <span class="cat-art" aria-hidden="true"></span>
             <span class="cat-glyph" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 7V4h16v3"/><path d="M9 20h6"/><path d="M12 4v16"/></svg></span>
             <span class="cat-top"><span class="cat-kicker">Riferimento</span><span class="cat-arrow" aria-hidden="true">↗</span></span>
             <span class="cat-bottom"><span class="cat-title">Glossario</span><span class="cat-sub">15 condizioni · PHB 2024</span></span>
