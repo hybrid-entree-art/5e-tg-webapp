@@ -136,6 +136,7 @@ Il motore di contenuti formatta il testo del Player's Handbook generando element
   * **Accessibilità verificata:** contrasti misurati (h1 17.5:1, testi secondari 10.2:1, etichette di gruppo 6.5:1), `focus-visible` sulle card, nessun overflow né testo tagliato a 320 / 390 / 768 / 1280px.
   * **FAB:** icona d20 corretta (era un cubo), 48px con blur di sfondo.
   * **Tema chiaro "pergamena":** superfici, bordi e tinte delle card riallineate.
+  * **Revisione incrociata (bot UI-designer) e correzioni:** placeholder ricerca accorciato a "Cerca nel compendio…" (verificato: 10px di margine a 320px, 15px a 390px, prima veniva tagliato); FAB rimosso perché copriva le card — il tiro dadi resta nel pulsante dado della barra sticky, che è sempre visibile (rimossa l'icona Home, ridondante col brand: ora 3 azioni reali a 44px di target); etichette di gruppo portate a 10px con contrasto AA su entrambi i temi (7.7:1 scuro, 6.0:1 chiaro); card "Manuali" a tutta riga per non lasciare mezza riga vuota su desktop.
   * **Nota sugli hook conservati:** `.cat-kicker`, `.cat-title`, `.cat-sub` e `data-view` restano nel DOM con gli stessi nomi, quindi la traduzione automatica e i selettori JS continuano a funzionare (il kicker è nascosto via CSS, non rimosso).
 
 ### [2026-11-11] - Ingestione Player's Handbook Completo & Architettura Modulare

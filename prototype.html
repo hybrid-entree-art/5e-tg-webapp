@@ -4077,7 +4077,10 @@ body:not(.dark-reader) .rh-popover-nav-btn:hover {
 /* ---------- Masthead: meno rumore, sole azioni reali ---------- */
 .masthead{height:64px;margin-bottom:10px}
 .masthead .tools{gap:5px}
-#userBtn,#fabHeaderDice{display:none!important}
+#userBtn,#navHomeBtn{display:none!important}
+/* Il dado torna nella barra sticky (sempre raggiungibile) e il FAB sparisce:
+   nessun pulsante flottante sopra le card del direttorio. */
+.fab-dice{display:none!important}
 .icon-btn{width:36px;height:36px;border-radius:9px;background:transparent;border-color:transparent;color:var(--rh-text-muted)}
 .icon-btn:hover{background:var(--rh-bg-surface-elevated);border-color:var(--rh-border-muted);color:var(--rh-accent-primary)}
 .brand-mark{border-radius:10px;font-family:var(--display);font-weight:700;letter-spacing:-.02em}
@@ -4199,10 +4202,10 @@ body:not(.dark-reader) .rh-popover-nav-btn:hover {
 .dir-group:last-child{margin-bottom:0}
 .dir-group-head{display:flex;align-items:center;gap:10px;margin:0 0 10px}
 .dir-group-label{
-  font:700 9.5px var(--condensed);
-  letter-spacing:.2em;
+  font:700 10px var(--condensed);
+  letter-spacing:.18em;
   text-transform:uppercase;
-  color:rgba(245,240,232,.60);
+  color:rgba(245,240,232,.66);
   white-space:nowrap;
 }
 .dir-group-rule{flex:1;height:1px;background:linear-gradient(90deg, var(--rh-border-subtle), transparent)}
@@ -4291,11 +4294,12 @@ body:not(.dark-reader) .rh-popover-nav-btn:hover {
 
 /* Card in evidenza (Manuali) */
 .category.wide{
+  grid-column:1/-1;
   flex-direction:row;
   align-items:center;
   gap:14px;
-  min-height:104px;
-  padding:16px;
+  min-height:96px;
+  padding:16px 18px;
 }
 .category.wide .cat-glyph{margin-bottom:0;width:44px;height:44px;border-radius:12px}
 .category.wide .cat-glyph svg{width:22px;height:22px}
@@ -4349,7 +4353,7 @@ body:not(.dark-reader) .rh-popover-nav-btn:hover {
 }
 .warm .category:hover{border-color:rgba(184,108,18,.45);box-shadow:0 12px 26px -16px rgba(90,60,20,.45)}
 .warm .cat-glyph{background:rgba(184,108,18,.10);border-color:rgba(184,108,18,.26)}
-.warm .dir-group-label{color:rgba(60,45,30,.62)}
+.warm .dir-group-label{color:#6a5744}
 .warm .cat-rules:after{background:repeating-linear-gradient(90deg, rgba(184,108,18,.22) 0 2px, transparent 2px 8px)}
 .warm .fab-dice{background:linear-gradient(160deg,#fffdf9,#f2e9da);border-color:rgba(184,108,18,.5)}
 
@@ -4357,7 +4361,7 @@ body:not(.dark-reader) .rh-popover-nav-btn:hover {
 @media(max-width:760px){
   .masthead{height:58px;gap:10px}
   .masthead .tools{gap:4px}
-  .icon-btn{width:40px;height:40px;border-radius:10px}
+  .icon-btn{width:44px;height:44px;border-radius:11px}
   .brand{gap:10px}
   .brand-mark{width:32px;height:32px}
   .brand-name{font-size:14.5px}
@@ -4366,7 +4370,8 @@ body:not(.dark-reader) .rh-popover-nav-btn:hover {
   .hero-plate{padding:18px 15px 15px;border-radius:14px}
   .hero h1{font-size:clamp(25px,7.4vw,32px);margin:12px 0 7px}
   .hero .intro{font-size:12.5px;margin-bottom:14px}
-  .hero-plate .search{height:44px;font-size:12.5px}
+  .hero-plate .search{height:44px;font-size:12.5px;padding:0 34px 0 36px}
+  .hero-plate .search-input-box svg{left:11px}
   .hero-plate .bilingual-mode-btn{height:44px;padding:0 10px}
   .section-head{flex-direction:column;align-items:flex-start;gap:3px;margin-bottom:14px}
   .category-grid{gap:9px}
@@ -4401,7 +4406,7 @@ body:not(.dark-reader) .rh-popover-nav-btn:hover {
     </button>
     <div class="tools">
       <button class="icon-btn" id="navHomeBtn" onclick="goHomeDirectly(event)" aria-label="Home" title="Torna alla Home / Elenco"><svg viewBox="0 0 24 24"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></button>
-      <button class="icon-btn" id="fabHeaderDice" aria-label="Tira dadi" title="Tira dadi"><svg viewBox="0 0 24 24"><path d="m12 2 9 5.2v9.6L12 22l-9-5.2V7.2L12 2Z"/><path d="M12 22V12m0 0L21 7.2M12 12 3 7.2"/></svg></button>
+      <button class="icon-btn" id="fabHeaderDice" aria-label="Tira dadi" title="Tira dadi"><svg viewBox="0 0 24 24"><path d="M12 2.4 21 7.4v9.2L12 21.6 3 16.6V7.4z"/><path d="M12 2.4v9.2m0 0 9-4.2M12 11.6 3 7.4"/><path d="m7.4 4.9 4.6 6.7 4.6-6.7"/></svg></button>
       <button class="icon-btn" id="focusSearch" aria-label="Cerca" title="Cerca"><svg viewBox="0 0 24 24"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 4.4 4.4"/></svg></button>
       <button class="icon-btn rh-theme-toggle" id="themeBtn" aria-label="Cambia tema chiaro / scuro" title="Cambia tema chiaro / scuro"><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8" fill="none"/><path d="M12 3a9 9 0 0 0 0 18z" fill="currentColor"/></svg></button>
       <button class="icon-btn" id="userBtn" aria-label="Telegram" title="Telegram"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.4"/><path d="M5 20c.5-3.1 3.1-5 7-5s6.5 1.9 7 5"/></svg></button>
@@ -4416,7 +4421,7 @@ body:not(.dark-reader) .rh-popover-nav-btn:hover {
         <div class="search-wrap">
           <div class="search-input-box">
             <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 4.4 4.4"/></svg>
-            <input class="search" id="q" placeholder="Cerca nel compendio (es. Mago, Fireball, Orco, Musicista)..." autocomplete="off" aria-label="Cerca nel compendio">
+            <input class="search" id="q" placeholder="Cerca nel compendio…" autocomplete="off" aria-label="Cerca nel compendio">
             <button type="button" class="search-clear-btn hidden" id="clearSearchBtn" aria-label="Cancella ricerca" title="Cancella ricerca">✕</button>
           </div>
           <button type="button" class="bilingual-mode-btn" id="bilingualModeBtn" title="Modalità Nomi (ITA / ENG): Clicca per alternare" aria-label="Modalità nomi italiano e inglese">
