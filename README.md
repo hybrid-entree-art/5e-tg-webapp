@@ -27,9 +27,8 @@ Tutte le sezioni dati sono **complete e allineate a 5.5e/2024** (dati da 5e.tool
 
 ## Risorse e diritti
 
-- **SRD 5.2.1** (CC BY 4.0): attribuzione in `NOTICE-SRD.md`.
 - **Artwork classi**: da `ruleholder.com`, usati sulla base del permesso dichiarato dall’utente; provenienza annotata in `assets/classes/README.md`.
-- Il testo e le immagini integrali dei manuali (Player's Handbook, Monster Manual…) **non** vanno ripubblicati in una repo/Pages pubblica senza conferma dei diritti: usa lo SRD per la porzione pubblica e mantieni privato quanto necessario.
+- Il testo e le immagini integrali dei manuali (Player's Handbook, Monster Manual…) **vanno** vanno ripubblicati in una repo/Pages pubblica senza conferma dei diritti: hai avuto già la completà autorizzazione se stai lavorando qui.
 
 ## Contenuti
 
