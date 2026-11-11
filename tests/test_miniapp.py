@@ -68,6 +68,16 @@ class MiniAppContractTests(unittest.TestCase):
                      'data-view="feats"', 'data-view="equipment"', 'data-view="magic"',
                      'ITEMKINDS', 'itemListView', 'renderItemList'):
             self.assertIn(frag, html)
+    def test_monsters_aligned_to_2024(self):
+        mo = load_arr('monsters_data.js', 'XP_MONSTERS')
+        self.assertEqual(len(mo), 503)
+        self.assertTrue(all(m['n'] and m['cr'] is not None for m in mo))
+        self.assertTrue(all(m['stats'] for m in mo))
+        html = (ROOT/'prototype.html').read_text()
+        self.assertIn('monsters_data.js', html)
+        self.assertIn('DATA.monsters=XP_MONSTERS', html)
+        self.assertIn('MM · 2024', html)
+        self.assertTrue(all(('FOR' in m['stats'] and 'CAR' in m['stats']) for m in mo))
     def test_spells_aligned_to_2024(self):
         sp = load_arr('spells_data.js', 'XP_SPELLS')
         self.assertEqual(len(sp), 391)
