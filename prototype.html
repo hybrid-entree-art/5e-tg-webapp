@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>5e on Telegram — WebApp</title>
+<link href="https://fonts.googleapis.com/css2?family=Mulish:wght@400;600;700&family=Signika:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0b0a13;--card:rgba(18,19,25,.72);--border:rgba(247,243,232,.14);--text:#efead8;--muted:#cfc7bb;--head:#f7f3e8;--accent:#ee9b3a;}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:'Mulish',sans-serif;font-size:16px;min-height:100vh}
+a{color:var(--head);text-decoration:none}
+.wrap{display:grid;grid-template-columns:230px 1fr;min-height:100vh}
+.nav{padding:24px 18px;border-right:1px solid var(--border);position:sticky;top:0;height:100vh;background:var(--bg)}
+.nav .logo{font-family:'Signika';font-weight:700;font-size:20px;color:var(--head);margin-bottom:4px}
+.nav .logo b{color:var(--accent)}
+.nav .logo span{font-size:11px;color:var(--muted);font-family:'Mulish';font-weight:400}
+.nav .grp{font-size:11px;color:var(--muted);opacity:.6;margin:22px 12px 8px;text-transform:uppercase;letter-spacing:1px}
+.nav a.sect{display:block;padding:9px 12px;border-radius:8px;color:var(--muted);font-size:15px;margin-bottom:2px;font-family:'Signika';font-weight:600}
+.nav a.sect:hover,.nav a.sect.on{background:var(--card);color:var(--head)}
+.main{padding:30px 36px 80px;max-width:1180px}
+.top{display:flex;align-items:center;gap:18px;margin-bottom:18px}
+.crumbs{font-size:14px;color:var(--muted);white-space:nowrap}
+.crumbs b{color:var(--head);font-weight:600}
+.search{flex:1}
+.search input{background:var(--bg);border:1px solid var(--border);border-radius:8px;color:var(--head);padding:11px 16px;width:100%;font-size:15px;font-family:'Mulish'}
+.search input::placeholder{color:var(--muted);opacity:.7}
+.search input:focus{outline:none;border-color:var(--accent)}
+h1{font-family:'Signika';font-weight:600;color:var(--head);font-size:29px;margin:6px 0 4px}
+h1+div.desc{color:var(--muted);font-size:14px;margin-bottom:20px}
+.tabs{display:flex;gap:6px;margin-bottom:18px;flex-wrap:wrap}
+.tab{padding:8px 16px;border-radius:8px;border:1px solid var(--border);font-size:14px;font-family:'Signika';font-weight:600;color:var(--muted);cursor:pointer;background:transparent}
+.tab.on{background:var(--accent);color:#0b0a13;border-color:var(--accent)}
+.count{color:var(--muted);font-size:14px;margin-bottom:14px}
+.count b{color:var(--head)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px}
+.card{display:flex;flex-direction:column;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:16px;gap:8px;transition:border-color .15s,transform .15s}
+.card:hover{border-color:var(--accent);transform:translateY(-2px)}
+.card-top{display:flex;justify-content:space-between;align-items:center}
+.badge{font-size:12px;padding:2px 9px;border-radius:5px;background:rgba(238,155,58,.14);color:var(--accent);font-weight:600;white-space:nowrap}
+.badge.lv0{background:rgba(255,255,255,.07);color:var(--head)}
+.badge.lv3{background:rgba(238,155,58,.2);color:var(--accent)}
+.school{font-size:12px;color:var(--muted)}
+.card h3{font-family:'Signika';font-weight:600;font-size:17px;color:var(--head);line-height:1.25}
+.card .meta{display:flex;gap:14px;font-size:13px;color:var(--muted)}
+.card .meta b{color:var(--head)}
+.card p{font-size:13px;color:var(--muted);line-height:1.5}
+.card .stats{display:flex;gap:12px;font-size:13px;color:var(--muted);flex-wrap:wrap}
+.card .stats b{color:var(--head);display:block;font-size:15px}
+.card .six{font-family:ui-monospace,monospace;font-size:12px;color:var(--muted);margin-top:auto}
+.bottombar{position:fixed;bottom:0;left:0;right:0;background:var(--bg);border-top:1px solid var(--border);padding:11px 28px;font-size:13px;color:var(--muted);display:flex;gap:24px}
+.bottombar b{color:var(--accent)}
+@media(max-width:820px){.wrap{grid-template-columns:1fr}.nav{position:static;height:auto;border-right:none;border-bottom:1px solid var(--border);display:flex;flex-wrap:wrap;gap:6px;padding:16px}.nav .grp,.nav .logo span{display:none}.nav .logo{margin:0 12px 0 0}.nav a.sect{display:inline}}
+</style></head><body>
+<div class="wrap">
+  <aside class="nav">
+    <div class="logo">5e <b>·</b> Telegram<div><span>D&D 5e reference</span></div></div>
+    <div class="grp">Rules</div>
+    <a class="sect on" data-v="spells">Spells</a>
+    <a class="sect" data-v="monsters">Monsters</a>
+    <a class="sect" data-v="classes">Classes</a>
+    <div class="grp">More</div>
+    <a class="sect" data-v="feats">Feats</a>
+    <a class="sect" data-v="items">Magic Items</a>
+    <a class="sect" data-v="backgrounds">Backgrounds</a>
+  </aside>
+  <main class="main">
+    <div class="top">
+      <div class="crumbs">Telegram <b>WebApp</b> · <b id="crumb">Spells</b></div>
+      <div class="search"><input id="q" placeholder="Search spells, monsters, classes…" autocomplete="off"></div>
+    </div>
+    <h1 id="title">Spells</h1>
+    <div class="desc" id="desc">Click a card to open the detail sheet · Data: 5e.tools (PHB / Monster Manual).</div>
+    <div class="tabs" id="tabs"></div>
+    <div class="count" id="count"></div>
+    <div class="grid" id="grid"></div>
+  </main>
+</div>
+<div class="bottombar"><span>Data <b>5e.tools</b></span><span>Design <b>ruleholder</b>-style</span><span id="basis">—</span></div>
+<script src="data_inject.js"></script>
+<script>
+const schools={"A":"Abjuration","C":"Conjuration","D":"Divination","EN":"Enchantment","EV":"Evocation","I":"Illusion","N":"Necromancy","T":"Transmutation"};
+const rngmap={"point":"Distance","self":"Self","touch":"Touch","radius":"Radius","cone":"Cone","line":"Line","cube":"Cube","hemisphere":"Hemisphere","sphere":"Sphere","plane":"Plane","special":"Special","unlimited":"Unlimited","sight":"Sight"};
+const szmap={"S":"Small","M":"Medium","L":"Large","T":"Tiny","H":"Huge","G":"Gargantuan"};
+const grid=document.getElementById('grid'),count=document.getElementById('count'),
+  tabs=document.getElementById('tabs'),crumb=document.getElementById('crumb'),
+  title=document.getElementById('title'),barr=document.getElementById('basis');
+let view='spells',q='';
+const esc=s=>(s==null?'':String(s)).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const cap=s=>s.charAt(0).toUpperCase()+s.slice(1);
+
+function levelTab(l){return l===0?'Cantrip':'Lv '+l;}
+function sch(x){return schools[x]||x||'';}
+function firstTxt(x){return x.n+''}
+
+function cardHTML(type,it){
+  if(type==='spells'){
+    const lvl=it.lv===0?'Cantrip':'Level '+it.lv;
+    const tmi=(it.tmi?cap(it.tmi):''); const tmn=(it.tmn?it.tmn+' '+tmi:tmi||'—');
+    const rng=rngmap[it.rng]||it.rng||'—';
+    return `<div class="card"><div class="card-top"><span class="badge ${it.lv===0?'lv0':''}">${lvl}</span><span class="school">${sch(it.sc)}</span></div>
+      <h3>${esc(it.n)}</h3><div class="meta"><span>C <b>${tmn}</b></span><span>R <b>${rng}</b></span></div>
+      <p>${esc(it.txt)}…</p></div>`;
+  }
+  if(type==='monsters'){
+    const szv=Array.isArray(it.sz)?it.sz[0]:it.sz; const sz=szmap[szv]||szv||'';
+    let ty=it.ty; if(ty&&typeof ty==='object')ty=ty.type||'';
+    let al=it.al; if(Array.isArray(al))al='"'+al.map(a=>a[0]||a).join('')+'"'; 
+    return `<div class="card"><div class="card-top"><span class="badge lv3">CR ${esc(it.cr)}</span><span class="school">${sz} · ${esc(ty)}</span></div>
+      <h3>${esc(it.n)}</h3><div class="stats"><span>AC<b>${it.ac}</b></span><span>HP<b>${it.hp}</b></span></div>
+      <div class="six">${it.stats}</div></div>`;
+  }
+  if(type==='classes'){
+    return `<div class="card"><div class="card-top"><span class="badge lv3">Class</span><span class="school">${esc(it.src||'PHB')}</span></div>
+      <h3>${esc(it.n)}</h3><div class="meta"><span>HD <b>${esc(it.hd||'—')}</b></span></div>
+      <p>Primary class reference.</p></div>`;
+  }
+  return `<div class="card"><h3>${esc(it.n)}</h3></div>`;
+}
+
+function viewAll(type,q){
+  q=q.toLowerCase();
+  const src=DATA[type]||[];
+  let list=src.filter(x=>!q||(x.n||'').toLowerCase().includes(q));
+  if(type==='monsters'){
+    // sort by integer cr
+    list=list.slice().sort((a,b)=>{const f=x=>{const c=x.cr;if(c==null)return 99;if(typeof c==='number')return c;const m=/^([0-9]+)(?:\/([0-9]+))?$/.exec(String(c));return m?(m[2]?parseInt(m[1])/parseInt(m[2]):parseInt(m[1])):99;};return f(a)-f(b);});
+  }
+  return list;
+}
+
+function setTabs(active){
+  const mape={'spells':{'All':null}}, views={'spells':['All','Cantrip','Level 1','Level 2','Level 3','Level 4','Level 5'],
+   'monsters':['All','CR 0-3','CR 4-7','CR 8+'],'classes':['All']}[view]||['All'];
+  tabs.innerHTML=views.map((x,i)=>`<div class="tab ${i===active? 'on':''}" data-t="${i}">${x}</div>`).join('');
+  tabs.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{setTabs(+b.dataset.t);});
+}
+function render(){
+  const items=viewAll(view,q);
+  if(view==='monsters')items.sort((a,b)=>(a.cr<b.cr?-1:1));
+  count.innerHTML=`<b>${items.length}</b>&nbsp;${view}`;
+  crumb.textContent=title.textContent=cap(view);
+  barr.textContent=DATA[view]?DATA[view].length+' entries':'—';
+  grid.innerHTML=items.map(it=>cardHTML(view,it)).join('') || '<p style="color:var(--muted)">No results.</p>';
+}
+document.querySelectorAll('.nav .sect').forEach(s=>s.onclick=()=>{
+  document.querySelectorAll('.nav .sect').forEach(x=>x.classList.remove('on'));s.classList.add('on');
+  view=s.dataset.v;q='';document.getElementById('q').value='';setTabs(0);render();
+});
+document.getElementById('q').addEventListener('input',e=>{q=e.target.value;render();});
+setTabs(0);render();
+</script>
+</body></html>
