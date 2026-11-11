@@ -1789,6 +1789,141 @@ dialog input:focus,dialog select:focus{border-color:var(--rh-border-focus);outli
   color: #9c9182;
 }
 
+/* Player's Handbook Content Elements */
+.rh-book-body {
+  font-size: 15px;
+  line-height: 1.74;
+}
+.rh-book-p {
+  margin: 0 0 14px;
+}
+.rh-book-h {
+  font-family: var(--display);
+  font-weight: 700;
+  color: #7a2021;
+  margin: 28px 0 12px;
+}
+.dark-reader .rh-book-h {
+  color: #e28789;
+}
+h2.rh-book-h { font-size: 22px; border-bottom: 1px solid rgba(122, 32, 33, 0.2); padding-bottom: 6px; }
+h3.rh-book-h { font-size: 18px; }
+h4.rh-book-h { font-size: 16px; }
+h5.rh-book-h { font-size: 14.5px; }
+
+.rh-book-quote {
+  border-left: 3px solid #7a2021;
+  background: rgba(122, 32, 33, 0.05);
+  padding: 12px 18px;
+  margin: 18px 0;
+  border-radius: 0 8px 8px 0;
+  font-style: italic;
+}
+.dark-reader .rh-book-quote {
+  border-left-color: #e28789;
+  background: rgba(226, 135, 137, 0.08);
+}
+.rh-book-quote cite {
+  display: block;
+  font-size: 12.5px;
+  color: var(--rh-text-muted);
+  margin-top: 6px;
+  font-style: normal;
+  text-align: right;
+}
+
+.rh-book-inset {
+  border: 1px solid #d4a359;
+  background: #fbf5e6;
+  border-radius: 10px;
+  padding: 18px;
+  margin: 22px 0;
+}
+.dark-reader .rh-book-inset {
+  border-color: #785a2c;
+  background: #191612;
+}
+.rh-inset-title {
+  font: 700 15px var(--sans);
+  color: #7a2021;
+  margin: 0 0 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.dark-reader .rh-inset-title {
+  color: #f59e0b;
+}
+
+.rh-book-list {
+  padding-left: 22px;
+  margin: 12px 0 16px;
+}
+.rh-book-list li {
+  margin-bottom: 6px;
+  line-height: 1.6;
+}
+
+.rh-book-table-wrap {
+  overflow-x: auto;
+  margin: 20px 0;
+  border-radius: 8px;
+  border: 1px solid var(--rh-border-subtle);
+}
+.rh-book-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13.5px;
+}
+.rh-book-table th {
+  background: #7a2021;
+  color: #fff;
+  padding: 9px 12px;
+  text-align: left;
+  font-weight: 700;
+}
+.dark-reader .rh-book-table th {
+  background: #36171a;
+  color: #f5e8e8;
+}
+.rh-book-table td {
+  padding: 8px 12px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+.dark-reader .rh-book-table td {
+  border-bottom-color: rgba(255, 255, 255, 0.06);
+}
+.rh-book-table tr:nth-child(even) td {
+  background: rgba(0, 0, 0, 0.02);
+}
+.dark-reader .rh-book-table tr:nth-child(even) td {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.rh-dice-pill {
+  display: inline-block;
+  padding: 1px 7px;
+  border-radius: 6px;
+  background: rgba(245, 158, 11, 0.15);
+  color: #b45309;
+  font-weight: 700;
+  cursor: pointer;
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  font-family: var(--sans);
+}
+.dark-reader .rh-dice-pill {
+  color: #f59e0b;
+  background: rgba(245, 158, 11, 0.2);
+}
+.rh-ref-link {
+  color: #7a2021;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  cursor: pointer;
+}
+.dark-reader .rh-ref-link {
+  color: #e28789;
+}
+
 @media(max-width:768px){
   .reader-split-view {
     grid-template-columns: 1fr;
@@ -3621,6 +3756,19 @@ dialog input:focus,dialog select:focus{border-color:var(--rh-border-focus);outli
 <script src="monsters_data.js"></script>
 <script src="books_data.js"></script>
 <script src="translations_it.js"></script>
+<script src="data/phb/00_intro.js"></script>
+<script src="data/phb/01_playing_the_game.js"></script>
+<script src="data/phb/02_creating_a_character.js"></script>
+<script src="data/phb/03_character_classes.js"></script>
+<script src="data/phb/04_character_origins.js"></script>
+<script src="data/phb/05_feats.js"></script>
+<script src="data/phb/06_equipment.js"></script>
+<script src="data/phb/07_spells.js"></script>
+<script src="data/phb/08_appendix_a_multiverse.js"></script>
+<script src="data/phb/09_appendix_b_creatures.js"></script>
+<script src="data/phb/10_rules_glossary.js"></script>
+<script src="data/phb/11_credits.js"></script>
+<script src="phb_content.js"></script>
 <script>
 const schools={A:'Abiurazione',V:'Invocazione',C:'Convocazione',D:'Divinazione',EN:'Ammaliamento',EV:'Invocazione',I:'Illusione',N:'Necromanzia',T:'Trasmutazione'};
 if(typeof XP_SPELLS!=='undefined'&&XP_SPELLS&&XP_SPELLS.length){DATA.spells=XP_SPELLS;}
@@ -7420,6 +7568,29 @@ function readerJump(secId){
 }
 
 function renderReaderTOC(book){
+  if (window.PHB_CONTENT && (book.id === 'XPHB' || !book.id || (book.name && book.name.includes("Player's Handbook")))) {
+    const chapters = PHB_CONTENT.chapters;
+    const cols = [[], [], []];
+    chapters.forEach((ch, idx) => {
+      const colIdx = Math.min(Math.floor(idx / 4), 2);
+      cols[colIdx].push(ch);
+    });
+
+    $('#readerTocGrid').innerHTML = cols.map(colChapters => `
+      <div class="toc-col">
+        ${colChapters.map(ch => `
+          <h3 class="toc-heading-red" onclick="readerJump('${ch.id}')">${esc(ch.title)}</h3>
+          <ul class="toc-list">
+            ${(ch.sections || []).slice(0, 10).map(sec => `
+              <li onclick="readerJump('${sec.id}')">${esc(sec.title)}</li>
+            `).join('')}
+            ${(ch.sections || []).length > 10 ? `<li class="sub-item" onclick="readerJump('${ch.id}')">+ ${(ch.sections || []).length - 10} more topics...</li>` : ''}
+          </ul>
+        `).join('')}
+      </div>
+    `).join('');
+    return;
+  }
   // 3-Column Parchment TOC matching Screenshot 1
   $('#readerTocGrid').innerHTML = `
     <div class="toc-col">
@@ -7530,6 +7701,22 @@ function renderReaderTOC(book){
 }
 
 function renderReaderNavTree(book){
+  if (window.PHB_CONTENT && (book.id === 'XPHB' || !book.id || (book.name && book.name.includes("Player's Handbook")))) {
+    $('#readerNavTree').innerHTML = PHB_CONTENT.chapters.map(ch => `
+      <div class="nav-group">
+        <div class="nav-group-title" onclick="readerJump('${ch.id}')">${esc(ch.title)} <span>▾</span></div>
+        <div class="nav-group-items">
+          ${(ch.sections || []).map(sec => `
+            <button type="button" class="nav-item-btn ${sec.id === activeReaderSection ? 'active' : ''}" data-sec="${sec.id}" onclick="renderReaderSection('${sec.id}')">
+              <span>${esc(sec.title)}</span>
+              <span class="nav-arrow">›</span>
+            </button>
+          `).join('')}
+        </div>
+      </div>
+    `).join('');
+    return;
+  }
   const groups = {};
   XPHB_SECTIONS.forEach(s => {
     if(!groups[s.group]) groups[s.group] = [];
@@ -7552,13 +7739,53 @@ function renderReaderNavTree(book){
 }
 
 function renderReaderSection(secId){
-  activeReaderSection = secId || 'intro';
+  activeReaderSection = secId || '00_intro';
   triggerHaptic('light');
 
   // Update active item in sidebar tree
   $$('.nav-item-btn').forEach(b => {
     b.classList.toggle('active', b.dataset.sec === activeReaderSection);
   });
+
+  // If PHB_CONTENT is available, render authentic English content!
+  if (window.PHB_CONTENT) {
+    let found = PHB_CONTENT.getSection(activeReaderSection);
+    let chapterMeta = null;
+    if (found) {
+      chapterMeta = found.chapter;
+    } else {
+      const ch = PHB_CONTENT.getChapter(activeReaderSection);
+      if (ch) {
+        found = {
+          id: ch.id,
+          title: ch.title,
+          html: ch.html,
+          chapter: ch
+        };
+        chapterMeta = ch;
+      }
+    }
+
+    if (found) {
+      const pane = $('#readerArticlePane');
+      pane.innerHTML = `
+        <div class="rh-read-kicker">${esc(chapterMeta ? chapterMeta.title : "Player's Handbook (2024)")}</div>
+        <h1 class="rh-read-h1">${esc(found.title)}</h1>
+        ${found.id === '00_intro' || found.id === 'what-you-need' ? `
+          <div class="rh-hero-cover-frame">
+            ${getPhbCoverSvg()}
+          </div>
+          <div class="rh-cover-caption">Player's Handbook 2024 (D&amp;D 5.5e Core Rulebook). Art by Tyler Jacobson.</div>
+        ` : ''}
+        <div class="rh-book-body" style="margin-top:18px;">
+          ${found.html || '<p class="rh-book-p">Content loaded from 2024 Player\'s Handbook.</p>'}
+        </div>
+      `;
+      bindDicePills();
+      window.scrollTo({top:0,behavior:'smooth'});
+      return;
+    }
+  }
 
   // Update Stepper buttons
   const idx = XPHB_SECTIONS.findIndex(s => s.id === activeReaderSection);
@@ -7769,6 +7996,18 @@ function renderReaderSection(secId){
 }
 
 function readerPrevSection(){
+  if (window.PHB_CONTENT) {
+    const allSecs = [];
+    PHB_CONTENT.chapters.forEach(ch => {
+      allSecs.push(ch.id);
+      (ch.sections || []).forEach(s => allSecs.push(s.id));
+    });
+    const idx = allSecs.indexOf(activeReaderSection);
+    if (idx > 0) {
+      renderReaderSection(allSecs[idx - 1]);
+    }
+    return;
+  }
   const idx = XPHB_SECTIONS.findIndex(s => s.id === activeReaderSection);
   if(idx > 0){
     renderReaderSection(XPHB_SECTIONS[idx - 1].id);
@@ -7776,6 +8015,18 @@ function readerPrevSection(){
 }
 
 function readerNextSection(){
+  if (window.PHB_CONTENT) {
+    const allSecs = [];
+    PHB_CONTENT.chapters.forEach(ch => {
+      allSecs.push(ch.id);
+      (ch.sections || []).forEach(s => allSecs.push(s.id));
+    });
+    const idx = allSecs.indexOf(activeReaderSection);
+    if (idx >= 0 && idx < allSecs.length - 1) {
+      renderReaderSection(allSecs[idx + 1]);
+    }
+    return;
+  }
   const idx = XPHB_SECTIONS.findIndex(s => s.id === activeReaderSection);
   if(idx < XPHB_SECTIONS.length - 1){
     renderReaderSection(XPHB_SECTIONS[idx + 1].id);
