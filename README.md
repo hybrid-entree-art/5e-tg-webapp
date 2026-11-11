@@ -4,7 +4,7 @@ Web app statica ospitata su **GitHub Pages** e aperta come **Telegram Mini App**
 
 ## Apri
 
-- Pagina web: https://hybrid-entree-art.github.io/5e-tg-webapp/prototype.html
+- Pagina web: https://hybrid-entree-art.github.io/5e-tg-webapp/ (oppure /prototype.html)
 - Repo: https://github.com/hybrid-entree-art/5e-tg-webapp
 
 Nel browser del PC/telefono la pagina funziona anche fuori da Telegram; dentro Telegram, viene caricata tramite lo script `telegram-web-app.js`.
