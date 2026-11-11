@@ -90,6 +90,17 @@ Il motore di contenuti formatta il testo del Player's Handbook generando element
 
 ## 4. Registro Modifiche & Novità (Changelog)
 
+### [2026-11-12] - Integrazione Home v2 (Grafica & UI) e Ripristino Schede / Robustezza Listener
+* **Autore:** Agente Contenuti & Agente Grafica & UI
+* **Novità:**
+  * **Integrazione del Layer Grafico Home v2 (`origin/design/home-v2`):**
+    * **Placca Hero (`.hero-plate`):** La barra di ricerca compendio principale e il toggle bilingue ITA/ENG vivono ora nella placca centrale, con texture diagonale dorata e bordi sfumati.
+    * **Direttorio in 3 Gruppi Semantici (`.dir-group`):** Riorganizzate le 11 card del compendio in *"Manuali"*, *"Creazione del personaggio"* e *"Al tavolo"*, con icone SVG pulite e bordi a tinta.
+    * **Masthead ripulito:** Rimosse le azioni duplicate/rumorose, target touch ergonomici e dado reindirizzato alla barra comandi.
+  * **Risoluzione Blocco Schede & Guardie DOM:**
+    * Ripristinato il riquadro e pulsante di creazione scheda (`#createCharacter`) nella vista classe per permettere la generazione istantanea della scheda rapida del personaggio.
+    * Aggiunto controllo di esistenza (null-guard) su tutti i listener di back button e modali (`#createCharacter`, `#detailBack`, `#itemDetailBack`, ecc.) per azzerare qualsiasi TypeError a runtime che poteva bloccare l'esecuzione degli script o l'interazione con le card e le schede.
+
 ### [2026-11-12] - Nuova Vista Dettaglio Classe (Ruleholder UX) con Descrizione Laterale e Sottoclassi Dinamiche
 * **Autore:** Agente Contenuti & UI
 * **Novità:**
