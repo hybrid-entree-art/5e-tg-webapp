@@ -90,6 +90,25 @@ Il motore di contenuti formatta il testo del Player's Handbook generando element
 
 ## 4. Registro Modifiche & Novità (Changelog)
 
+### [2026-11-12] - Nuova Vista Dettaglio Classe (Ruleholder UX) con Descrizione Laterale e Sottoclassi Dinamiche
+* **Autore:** Agente Contenuti & UI
+* **Novità:**
+  * **Layout a Due Colonne Ruleholder (come per le Specie):** 
+    * Seguendo l'istruzione dell'utente (*"con l'unica differenza che la descrizione la metterei nel laterlare come per la specie"*), la narrazione del lore e l'artwork ufficiale sono collocati nella colonna destra (scheda laterale), anziché essere nascosti in un tab separato.
+    * **Colonna Sinistra (Meccaniche, Tabelle e Privilegi):**
+      * **Card Specifiche Principali (`.rh-class-spec-card`):** Caratteristiche principali, Dado Vita, Competenze nei tiri salvezza, Competenze nelle abilità, Addestramento armi, Strumenti, Armature, Equipaggiamento iniziale (scelta A o B), Requisiti di Multiclasse.
+      * **Card Progressione con Selettore Sottoclassi (`#rhClassSubclassSelect`):** Include il dropdown dinamico delle 4 sottoclassi 2024 (`Senza sottoclasse` o collegi/domini specifici) e il pulsante per gli incantesimi di classe (`Incantesimi di classe`).
+      * **Tabella di Progressione Livelli 1-20 (`.rh-prog-table`):** Mostra Lv, BU (+2..+6), Peculiarità e tutte le colonne di risorse di classe (es. Dado Ispirazione Bardica, Trucchetti, Incantesimi preparati, Slot 1-9). La selezione di una sottoclasse inietta e fonde in tempo reale i privilegi della sottoclasse nella colonna "Peculiarità" (es. per il Collegio del Fascino: Liv 3 *Magia incantevole, Mantello dell'Ispirazione*, Liv 6 *Mantello di grandezza*, Liv 14 *Grandezza indistruttibile*).
+      * **TOC di Navigazione Rapida (`.rh-class-nav-box`):** Lista di link di salto che scorrono fluidamente alla card del privilegio corrispondente aprendola automaticamente, con evidenziazione dorata per i privilegi di sottoclasse (`.subclass-nav`).
+      * **Suite Privilegi ("Peculiarità", `.rh-class-features-section`):** Intestazione con pulsante `» Espandi tutto` / `« Comprimi tutto`. Card a fisarmonica con kicker di livello (`CLASSE DI LIVELLO X` per privilegi base; `X° LIVELLO · SOTTOCLASSE · [NOME]` in ambra dorata per la sottoclasse). Controlli contestuali inline: pulsante incantesimi di classe per il privilegio Incantesimi, e selettore di sottoclasse direttamente nella card di livello 3. Tutti i testi sono collegati interattivamente con `linkKnownEntities` e `parseDiceInText`.
+    * **Colonna Destra (Scheda Laterale - Lore & Illustrazione):**
+      * **Frame Artwork Ufficiale (`.rh-class-art-frame`):** Ritratto cutout a corpo intero su alone radioso sfumato (`.rh-class-hero-img`) con didascalia/tagline della classe.
+      * **Card Narrativa ("Descrizione", `.rh-class-lore-card`):** Tutti i paragrafi di storia e contesto estratti ufficialmente da XPHB.
+      * **Riquadro Tematico di Ruolo (`.rh-class-callout-card`):** Box stilizzato in ambra con titolo (es. *Il repertorio di Bard*) e domande di interpretazione scenica e di stile d'azione.
+  * **Dataset Esteso `class_data.js`:** 
+    * 12 classi del Player's Handbook 2024 complete di tutte le specifiche tecniche, tabelle progressione 1-20, e 48 sottoclassi con privilegi completi a ciascun livello.
+  * **Test Suite Dedicata (`tests/test_class_ui_ruleholder.js`):** Valida al 100% l'integrità dei dati delle classi, dei componenti HTML e delle classi CSS Ruleholder.
+
 ### [2026-11-11] - Collegamenti Interattivi, Anteprime Popover (Ruleholder) & Navigazione Diretta
 * **Autore:** Agente Contenuti & UI
 * **Novità:**

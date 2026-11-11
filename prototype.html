@@ -3153,6 +3153,598 @@ h5.rh-book-h { font-size: 14.5px; }
 }
 
 /* =====================================================================
+   RULEHOLDER CLASS DETAIL VIEW (Screenshots media_1794437538413 to media_1794437538478)
+   ===================================================================== */
+.rh-class-detail-header {
+  margin: 12px 0 20px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+.warm .rh-class-detail-header {
+  border-bottom-color: rgba(0, 0, 0, 0.08);
+}
+.rh-class-header-titles {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.rh-class-detail-title {
+  font: 800 clamp(28px, 4.5vw, 38px) var(--display);
+  color: #fff;
+  margin: 0;
+  letter-spacing: -0.02em;
+}
+.warm .rh-class-detail-title { color: #1a1410; }
+.rh-class-header-meta {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+}
+.rh-class-alias {
+  font-size: 14.5px;
+  color: #9f9ba9;
+  font-weight: 500;
+}
+.warm .rh-class-alias { color: #766d62; }
+.rh-class-quote {
+  font-size: 14px;
+  font-style: italic;
+  color: #b7b0c3;
+  margin: 8px 0 0;
+  line-height: 1.5;
+}
+.warm .rh-class-quote { color: #6a5e53; }
+
+/* 2-Column Responsive Layout (Matching Species View) */
+.rh-class-detail-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.32fr) minmax(0, 0.68fr);
+  gap: 32px;
+  align-items: start;
+  margin-top: 10px;
+}
+@media (max-width: 980px) {
+  .rh-class-detail-layout {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+}
+
+.rh-class-main-column {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  min-width: 0;
+}
+
+/* Core Specs Card */
+.rh-class-spec-card {
+  background: #141118;
+  border: 1px solid #282233;
+  border-radius: 16px;
+  padding: 22px 26px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+.warm .rh-class-spec-card {
+  background: #fffdf9;
+  border-color: #ddd4c2;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+}
+.rh-class-card-title {
+  font: 700 20px var(--sans);
+  color: #ffffff;
+  margin: 0 0 16px;
+  letter-spacing: -0.01em;
+}
+.warm .rh-class-card-title { color: #1a1410; }
+
+.rh-class-core-specs {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: #dcd7e6;
+}
+.warm .rh-class-core-specs { color: #3e352d; }
+.rh-class-spec-row {
+  display: block;
+}
+.rh-class-spec-row b {
+  color: #ffffff;
+  font-weight: 700;
+  margin-right: 6px;
+}
+.warm .rh-class-spec-row b { color: #1a1410; }
+
+/* Progression Suite */
+.rh-class-progression-card {
+  background: #141118;
+  border: 1px solid #282233;
+  border-radius: 16px;
+  padding: 20px 24px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+  overflow: hidden;
+}
+.warm .rh-class-progression-card {
+  background: #fffdf9;
+  border-color: #ddd4c2;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+}
+.rh-class-prog-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-bottom: 16px;
+}
+.rh-class-prog-controls {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.rh-subclass-dropdown-wrap {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+.rh-subclass-icon {
+  position: absolute;
+  left: 10px;
+  pointer-events: none;
+  font-size: 13px;
+  color: #e0a868;
+}
+.rh-subclass-select {
+  appearance: none;
+  -webkit-appearance: none;
+  background: #1e1926;
+  color: #f1ecf9;
+  border: 1px solid #3c324a;
+  border-radius: 10px;
+  padding: 7px 32px 7px 32px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23a49eb1' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 14px;
+  transition: border-color 0.15s, background-color 0.15s;
+}
+.rh-subclass-select:focus, .rh-subclass-select:hover {
+  border-color: #e0a868;
+  outline: none;
+}
+.warm .rh-subclass-select {
+  background-color: #f4ede3;
+  color: #231c15;
+  border-color: #d2c6b4;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236a5e53' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+}
+
+.rh-class-spells-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(99, 102, 241, 0.12);
+  color: #a5b4fc;
+  border: 1px solid rgba(99, 102, 241, 0.35);
+  border-radius: 10px;
+  padding: 7px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.rh-class-spells-btn:hover {
+  background: rgba(99, 102, 241, 0.22);
+  border-color: #818cf8;
+  color: #ffffff;
+}
+.warm .rh-class-spells-btn {
+  background: rgba(79, 70, 229, 0.08);
+  color: #4338ca;
+  border-color: rgba(79, 70, 229, 0.25);
+}
+
+/* Progression Table Styling */
+.rh-prog-table-wrapper {
+  overflow-x: auto;
+  border-radius: 10px;
+  border: 1px solid #282233;
+  background: #110e15;
+}
+.warm .rh-prog-table-wrapper {
+  background: #fff;
+  border-color: #e5ded2;
+}
+.rh-prog-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12.5px;
+  line-height: 1.45;
+  white-space: nowrap;
+}
+.rh-prog-table th {
+  background: #2b1822; /* Dark red/plum header matching Ruleholder screenshot */
+  color: #e8d0d5;
+  font-weight: 700;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  padding: 10px 12px;
+  text-align: center;
+  border-bottom: 1px solid #3d2331;
+}
+.warm .rh-prog-table th {
+  background: #f7ebe8;
+  color: #7b293b;
+  border-bottom-color: #ebd3d7;
+}
+.rh-prog-table th:first-child, .rh-prog-table td:first-child {
+  text-align: center;
+  font-weight: 700;
+  position: sticky;
+  left: 0;
+  background: #141118;
+  z-index: 2;
+}
+.rh-prog-table th:first-child { background: #2b1822; }
+.warm .rh-prog-table th:first-child { background: #f7ebe8; }
+.warm .rh-prog-table td:first-child { background: #fff; }
+
+.rh-prog-table th.col-features, .rh-prog-table td.col-features {
+  text-align: left;
+  white-space: normal;
+  min-width: 180px;
+  max-width: 300px;
+}
+.rh-prog-table td {
+  padding: 8px 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  color: #dcd7e6;
+  text-align: center;
+}
+.warm .rh-prog-table td {
+  border-bottom-color: #f0eae1;
+  color: #2e261f;
+}
+.rh-prog-table tr:hover td {
+  background: rgba(255, 255, 255, 0.03);
+}
+.warm .rh-prog-table tr:hover td {
+  background: rgba(0, 0, 0, 0.02);
+}
+.rh-prog-table td.col-features a {
+  color: #64b5f6;
+  text-decoration: none;
+}
+.rh-prog-table td.col-features a:hover {
+  text-decoration: underline;
+}
+.rh-prog-table .subclass-feat-name {
+  color: #e0a868;
+  font-weight: 600;
+}
+.warm .rh-prog-table .subclass-feat-name {
+  color: #b86c12;
+}
+
+/* Sticky / Jump Navigation Box */
+.rh-class-nav-box {
+  background: #141118;
+  border: 1px solid #282233;
+  border-radius: 14px;
+  padding: 16px 20px;
+}
+.warm .rh-class-nav-box {
+  background: #fffdf9;
+  border-color: #ddd4c2;
+}
+.rh-class-nav-title {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: #9f9ba9;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 10px;
+}
+.warm .rh-class-nav-title { color: #6a5e53; }
+.rh-class-nav-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.rh-class-nav-link {
+  font-size: 13px;
+  padding: 4px 10px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  color: #dcd7e6;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.rh-class-nav-link:hover {
+  border-color: #e0a868;
+  color: #e0a868;
+  background: rgba(224, 168, 104, 0.08);
+}
+.warm .rh-class-nav-link {
+  background: #f4ede3;
+  border-color: #dcd2c4;
+  color: #3e352d;
+}
+.warm .rh-class-nav-link:hover {
+  border-color: #b86c12;
+  color: #b86c12;
+}
+.rh-class-nav-link.subclass-nav {
+  border-color: rgba(224, 168, 104, 0.35);
+  background: rgba(224, 168, 104, 0.08);
+  color: #f1cb9a;
+  font-weight: 600;
+}
+.warm .rh-class-nav-link.subclass-nav {
+  border-color: rgba(184, 108, 18, 0.4);
+  background: rgba(184, 108, 18, 0.08);
+  color: #8c3b08;
+}
+
+/* Features Suite ("Peculiarità") */
+.rh-class-features-section {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.rh-class-features-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 4px;
+}
+.rh-class-features-title {
+  font: 700 22px var(--sans);
+  color: #ffffff;
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+.warm .rh-class-features-title { color: #1a1410; }
+
+.rh-class-expand-all-btn {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #dcd7e6;
+  border-radius: 8px;
+  padding: 6px 14px;
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.rh-class-expand-all-btn:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+}
+.warm .rh-class-expand-all-btn {
+  background: #f4ede3;
+  border-color: #d2c6b4;
+  color: #231c15;
+}
+
+.rh-class-features-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.rh-feature-card {
+  background: #141118;
+  border: 1px solid #282233;
+  border-radius: 12px;
+  transition: border-color 0.15s ease;
+  overflow: hidden;
+}
+.rh-feature-card[open] {
+  border-color: #3e354f;
+}
+.warm .rh-feature-card {
+  background: #fffdf9;
+  border-color: #e5ded2;
+}
+.warm .rh-feature-card[open] {
+  border-color: #c9bea8;
+}
+.rh-feature-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 14px 18px;
+  cursor: pointer;
+  list-style: none;
+  user-select: none;
+}
+.rh-feature-summary::-webkit-details-marker { display: none; }
+.rh-feature-kicker {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #9f9ba9;
+}
+.rh-feature-kicker.subclass-kicker {
+  color: #e0a868;
+}
+.warm .rh-feature-kicker.subclass-kicker {
+  color: #b86c12;
+}
+
+.rh-feature-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.rh-feature-title-left {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.rh-feature-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #ffffff;
+}
+.warm .rh-feature-title { color: #1a1410; }
+.rh-feature-subname {
+  font-size: 14px;
+  color: #a49eb1;
+  font-weight: 500;
+}
+.warm .rh-feature-subname { color: #6a5e53; }
+
+.rh-feature-title-right {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+.rh-feature-link-icon {
+  font-size: 14px;
+  color: #7b7389;
+  cursor: pointer;
+  transition: color 0.15s;
+}
+.rh-feature-link-icon:hover {
+  color: #e0a868;
+}
+.rh-feature-chevron {
+  font-size: 14px;
+  color: #9f9ba9;
+  transition: transform 0.2s ease;
+}
+.rh-feature-card[open] .rh-feature-chevron {
+  transform: rotate(180deg);
+}
+
+.rh-feature-body {
+  padding: 0 18px 18px;
+  font-size: 14px;
+  line-height: 1.68;
+  color: #d8d3e2;
+  border-top: 1px solid rgba(255, 255, 255, 0.04);
+  margin-top: 4px;
+  padding-top: 14px;
+}
+.warm .rh-feature-body {
+  color: #2e261f;
+  border-top-color: #f0eae1;
+}
+
+/* Lateral Right Column: Character Art Cutout & Lore */
+.rh-class-side-column {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  position: sticky;
+  top: 16px;
+}
+.rh-class-art-frame {
+  background: radial-gradient(circle at center, rgba(60, 40, 70, 0.45) 0%, transparent 72%);
+  border-radius: 16px;
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 280px;
+}
+.rh-class-hero-img {
+  max-width: 100%;
+  max-height: 420px;
+  object-fit: contain;
+  border-radius: 12px;
+  filter: drop-shadow(0 12px 28px rgba(0, 0, 0, 0.65));
+}
+.rh-class-side-caption {
+  font-size: 13.5px;
+  font-style: italic;
+  color: #a49eb1;
+  text-align: center;
+  margin-top: -8px;
+  line-height: 1.45;
+}
+.warm .rh-class-side-caption { color: #6a5e53; }
+
+.rh-class-lore-card {
+  background: #141118;
+  border: 1px solid #282233;
+  border-radius: 16px;
+  padding: 22px 24px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+.warm .rh-class-lore-card {
+  background: #fffdf9;
+  border-color: #ddd4c2;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+}
+.rh-class-lore-title {
+  font: 700 18px var(--sans);
+  color: #ffffff;
+  margin: 0 0 14px;
+  letter-spacing: -0.01em;
+}
+.warm .rh-class-lore-title { color: #1a1410; }
+.rh-class-lore-body {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  font-size: 13.5px;
+  line-height: 1.7;
+  color: #b7b0c3;
+}
+.warm .rh-class-lore-body { color: #4b4138; }
+.rh-class-lore-p { margin: 0; }
+
+.rh-class-callout-card {
+  margin-top: 18px;
+  padding: 14px 18px;
+  border-left: 3px solid #e0a868;
+  background: rgba(224, 168, 104, 0.06);
+  border-radius: 0 12px 12px 0;
+}
+.warm .rh-class-callout-card {
+  border-left-color: #b86c12;
+  background: rgba(184, 108, 18, 0.07);
+}
+.rh-class-callout-title {
+  font: 700 15px var(--sans);
+  color: #f1cb9a;
+  margin: 0 0 8px;
+}
+.warm .rh-class-callout-title { color: #8c3b08; }
+.rh-class-callout-text {
+  font-size: 13px;
+  line-height: 1.62;
+  color: #dcd7e6;
+  white-space: pre-line;
+}
+.warm .rh-class-callout-text { color: #3e352d; }
+
+@keyframes rhPulseGlow {
+  0% { box-shadow: 0 0 0 0 rgba(224, 168, 104, 0.6); border-color: #e0a868; }
+  70% { box-shadow: 0 0 0 8px rgba(224, 168, 104, 0); border-color: #e0a868; }
+  100% { box-shadow: 0 0 0 0 rgba(224, 168, 104, 0); }
+}
+.highlight-flash {
+  animation: rhPulseGlow 1.2s ease-out;
+}
+
+/* =====================================================================
    INTERACTIVE ENTITY LINKS & PREVIEW POPOVER (Ruleholder Design)
    ===================================================================== */
 .rh-ref-link {
@@ -3560,6 +4152,7 @@ body:not(.dark-reader) .rh-popover-nav-btn:hover {
       <div class="class-grid" id="classGrid"></div>
     </section>
 
+    <!-- Ruleholder Class Detail View (Screenshots media_1794437538413_cfa5f126 to media_1794437538478_95af9888) -->
     <section id="classDetailView" class="hidden">
       <div class="nav-crumbs">
         <button type="button" class="nav-crumb-btn" onclick="goHomeDirectly(event)">📖 <span data-home-crumb>Elenco</span></button>
@@ -3568,56 +4161,92 @@ body:not(.dark-reader) .rh-popover-nav-btn:hover {
         <span class="nav-crumb-sep">/</span>
         <span class="nav-crumb-current" id="classCrumbName">Dettaglio</span>
       </div>
-      <button class="back detail-back" id="detailBack" aria-label="Torna alle classi">← Classi</button>
-      <div class="detail-hero" id="classArt">
-        <div class="detail-overlay">
-          <div class="eyebrow" id="classBread">Classi</div>
-          <span class="source-chip" id="classSource">PHB · 2024</span>
-          <h2 class="detail-title" id="className"></h2>
-          <div class="detail-original" id="classOriginal"></div>
-          <p class="detail-description" id="classDescription"></p>
-          <span class="translation-note">Traduzioni provvisorie · dati tecnici PHB 2024</span>
-          <span class="detail-meta" id="classMeta"></span>
-          <div id="subclassPanel" class="subclass-panel hidden"></div>
+
+      <div class="rh-class-detail-header">
+        <div class="rh-class-header-titles">
+          <h1 class="rh-class-detail-title" id="classDetailTitle">Bardo</h1>
+          <div class="rh-class-header-meta">
+            <span class="rh-class-alias" id="classDetailAlias">Bard</span>
+            <span class="rh-badge-phb" id="classDetailSource">✓ PHB</span>
+          </div>
         </div>
-        <div class="detail-hero-media">
-          <img id="detailHeroImg" class="detail-hero-img" src="" alt="" loading="lazy">
+        <p class="rh-class-quote" id="classDetailQuote">Un mago, musicista e ballerino dal talento focoso.</p>
+      </div>
+
+      <div class="rh-class-detail-layout">
+        <!-- Main Column (Left): Specs box, Progression Table with Subclass Switcher, Jump Navigation, Features Suite -->
+        <div class="rh-class-main-column">
+          <!-- 1. Core Specs Card -->
+          <div class="rh-class-spec-card">
+            <h2 class="rh-class-card-title" id="classSpecCardTitle">Caratteristiche principali di un bardo</h2>
+            <div class="rh-class-core-specs" id="classCoreSpecs">
+              <!-- Injected via renderClassDetail -->
+            </div>
+          </div>
+
+          <!-- 2. Progression Table Card with Subclass Dropdown & Class Spells Action -->
+          <div class="rh-class-progression-card">
+            <div class="rh-class-prog-header">
+              <h2 class="rh-class-card-title" id="classProgCardTitle">Caratteristiche del bardo</h2>
+              <div class="rh-class-prog-controls">
+                <div class="rh-subclass-dropdown-wrap">
+                  <span class="rh-subclass-icon">🎭</span>
+                  <select id="rhClassSubclassSelect" class="rh-subclass-select" aria-label="Seleziona sottoclasse" onchange="onClassSubclassChange(this.value)">
+                    <option value="">Senza sottoclasse</option>
+                  </select>
+                </div>
+                <button type="button" class="rh-class-spells-btn" id="rhClassSpellsBtn" onclick="openActiveClassSpells()">
+                  🪄 Incantesimi di classe
+                </button>
+              </div>
+            </div>
+            <div class="rh-prog-table-wrapper" id="classProgTableWrap">
+              <!-- Injected via renderClassDetail -->
+            </div>
+          </div>
+
+          <!-- 3. Navigation Jump Links (TOC) -->
+          <div class="rh-class-nav-box" id="classNavBox">
+            <div class="rh-class-nav-title">Navigazione</div>
+            <div class="rh-class-nav-links" id="classNavLinks">
+              <!-- Injected via renderClassDetail -->
+            </div>
+          </div>
+
+          <!-- 4. Features Suite ("Peculiarità") -->
+          <div class="rh-class-features-section">
+            <div class="rh-class-features-header">
+              <h2 class="rh-class-features-title">Peculiarità</h2>
+              <button type="button" class="rh-class-expand-all-btn" id="rhClassExpandAllBtn" onclick="toggleAllClassFeatures()">
+                » Espandi tutto
+              </button>
+            </div>
+            <div class="rh-class-features-list" id="classFeaturesList">
+              <!-- Injected via renderClassDetail -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Lateral Column (Right): Character Artwork + Rich Narrative Lore Description -->
+        <div class="rh-class-side-column">
+          <div class="rh-class-art-frame" id="classArtFrame">
+            <!-- Full body illustration injected via renderClassDetail -->
+          </div>
+          <div class="rh-class-side-caption" id="classSideCaption"></div>
+
+          <!-- Narrative Lore Card (User instruction: "con l'unica differenza che la descrizione la metterei nel laterlare come per la specie.") -->
+          <div class="rh-class-lore-card" id="classLoreCard">
+            <h3 class="rh-class-lore-title">Descrizione</h3>
+            <div class="rh-class-lore-body" id="classLoreBody">
+              <!-- Injected via renderClassDetail -->
+            </div>
+            <div class="rh-class-callout-card" id="classCalloutCard">
+              <h4 class="rh-class-callout-title" id="classCalloutTitle"></h4>
+              <div class="rh-class-callout-text" id="classCalloutText"></div>
+            </div>
+          </div>
         </div>
       </div>
-      <section class="progression-section">
-        <div class="progression-head">
-          <div>
-            <div class="eyebrow">Il cammino della classe</div>
-            <h3>Incrementi di classe</h3>
-          </div>
-          <label class="level-label">Livello <select id="levelPicker" aria-label="Seleziona livello"></select></label>
-        </div>
-        <div id="progressionTable"></div>
-      </section>
-      <section class="class-summary-section">
-        <h3>Privilegi e competenze</h3>
-        <div id="classSummary"></div>
-      </section>
-      <section class="feature-section">
-        <div class="feature-toolbar">
-          <div class="feature-tabs" id="featureTabs"></div>
-          <button class="text-button" id="expandFeatures">Espandi tutto</button>
-        </div>
-        <div id="featureList"></div>
-      </section>
-      <section class="slot-section">
-        <div class="eyebrow">Magia</div>
-        <h3>Slot incantesimo per livello</h3>
-        <div id="slotTable"></div>
-      </section>
-      <section class="create-panel">
-        <div>
-          <div class="eyebrow">Prossimo passo</div>
-          <h3>Inizia la tua avventura</h3>
-          <p>Crea una scheda di prova. In questa demo resta salvata solo su questo dispositivo.</p>
-        </div>
-        <button class="primary-button" id="createCharacter">Crea personaggio</button>
-      </section>
     </section>
 
     <section id="resultsView" class="hidden">
@@ -6459,11 +7088,63 @@ function translateTableLabel(x){
   })[x]||x;
 }
 
-function openClass(id){
+let activeClassSubclassId = '';
+
+function slugify(s) {
+  return String(s || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+}
+
+function onClassSubclassChange(subId) {
+  activeClassSubclassId = subId || '';
+  triggerHaptic('light');
+  renderClassDetail();
+}
+
+function openActiveClassSpells() {
+  if (!activeClass) return;
+  triggerHaptic('medium');
+  const queryName = activeClass.name || activeClass.originalName;
+  category('spells');
+  const catInput = $('#catalogSearchInput');
+  if (catInput) {
+    catInput.value = queryName;
+    catInput.dispatchEvent(new Event('input'));
+  }
+}
+
+function toggleAllClassFeatures() {
+  const cards = $$('#classFeaturesList details');
+  if (!cards.length) return;
+  const allOpen = cards.every(x => x.open);
+  cards.forEach(x => x.open = !allOpen);
+  const btn = $('#rhClassExpandAllBtn');
+  if (btn) btn.textContent = allOpen ? '» Espandi tutto' : '« Comprimi tutto';
+  triggerHaptic('light');
+}
+
+function jumpToClassFeature(featureId) {
+  const el = document.getElementById(featureId);
+  if (el) {
+    el.open = true;
+    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    el.classList.add('highlight-flash');
+    setTimeout(() => el.classList.remove('highlight-flash'), 1500);
+    triggerHaptic('selection');
+  }
+}
+
+function copyFeatureLink(featureId) {
+  if (typeof navigator !== 'undefined' && navigator.clipboard && navigator.clipboard.writeText) {
+    const url = window.location.href.split('#')[0] + '#' + featureId;
+    navigator.clipboard.writeText(url).catch(() => {});
+  }
+  triggerHaptic('light');
+}
+
+function openClass(id, subId = ''){
   activeClass=CLASSES.find(c=>c.id===id);
   if(!activeClass)return;
-  selectedLevel=1;
-  activeFeatureTab='privilegi';
+  activeClassSubclassId = subId || '';
   $('#classListView').classList.add('hidden');
   $('#classDetailView').classList.remove('hidden');
   renderClassDetail();
@@ -6473,11 +7154,11 @@ function openClass(id){
 
 function featureName(x){
   return ({
-    'Bardic Inspiration':'Ispirazione bardica','Spellcasting':'Incantesimi','Expertise':'Maestria',
-    'Jack of All Trades':'Tuttofare','Bard Subclass':'Collegio bardico','Bard College':'Collegio bardico',
-    'Ability Score Improvement':'Incremento dei punteggi di caratteristica','Font of Inspiration':'Fonte di ispirazione',
-    'Countercharm':'Contro-ispirazione','Magical Secrets':'Segreti magici','Superior Inspiration':'Ispirazione superiore',
-    'Song of Rest (d6)':'Canto di riposo (d6)'
+    'Bardic Inspiration':'Ispirazione bardica','Spellcasting':'Incantesimi','Expertise':'Competenza',
+    'Jack of All Trades':'Tuttofare','Bard Subclass':'Sottoclasse del Bardo','Bard College':'Sottoclasse del Bardo',
+    'Ability Score Improvement':'Caratteristiche migliorate','Font of Inspiration':'Fonte di ispirazione',
+    'Countercharm':'Controincantesimi','Magical Secrets':'Segreti magici','Superior Inspiration':'Ispirazione suprema',
+    'Words of Creation':'Parole della Creazione','Song of Rest (d6)':'Canto di riposo (d6)'
   })[x]||x;
 }
 
@@ -6496,6 +7177,7 @@ function valFmt(v){
 function subclassName(s){
   return ({
     'College of Lore':'Collegio del Sapere','College of Valor':'Collegio del Valore',
+    'College of Glamour':'Collegio del Fascino','College of Dance':'Collegio della Danza',
     'Battle Master':'Maestro di Battaglia','Champion':'Campione','Eldritch Knight':'Cavaliere Mistico',
     'Knowledge Domain':'Dominio della Conoscenza','Life Domain':'Dominio della Vita',
     'Light Domain':'Dominio della Luce','Nature Domain':'Dominio della Natura',
@@ -6505,63 +7187,200 @@ function subclassName(s){
 }
 
 function renderClassDetail(){
-  const c=activeClass;
-  $('#classBread').textContent=`Classi › ${c.name}`;
-  $('#classCrumbName').textContent=c.name;
-  $('#className').textContent=c.name;
-  $('#classOriginal').textContent=c.originalName;
-  $('#classDescription').textContent=classDescs[c.id]||'';
-  $('#classSource').textContent='PHB · 2024';
-  $('#classMeta').innerHTML=`
-    <span>Dado Vita <b>d${c.hitDie}</b></span>
-    <span>Caratteristiche: <b>${c.primaryAbility.join(', ')||'—'}</b></span>
-    <span class="subclass-link" role="button" tabindex="0" id="subclassLink">${c.subclasses.length} sottoclassi <b>⌄</b></span>
+  const c = activeClass;
+  if (!c) return;
+
+  const currentSub = (c.subclasses || []).find(s => s.id === activeClassSubclassId || s.shortName === activeClassSubclassId) || null;
+
+  // 1. Breadcrumbs & Header Titles (Ruleholder Design)
+  $('#classCrumbName').textContent = c.name;
+  $('#classDetailTitle').textContent = c.name;
+  $('#classDetailAlias').textContent = (c.name !== c.originalName) ? c.originalName : '';
+  $('#classDetailSource').textContent = '✓ PHB';
+  $('#classDetailQuote').textContent = c.quote || '';
+
+  // 2. Left Column: Core Specs Card (Matching Screenshot media_1794437538413_cfa5f126)
+  $('#classSpecCardTitle').textContent = `Caratteristiche principali di un ${c.name.toLowerCase()}`;
+  $('#classCoreSpecs').innerHTML = `
+    <div class="rh-class-spec-row"><b>Caratteristiche principali:</b> ${esc(c.primaryAbility.join(', ') || '—')}</div>
+    <div class="rh-class-spec-row"><b>Salute ossea (Dado Vita):</b> d${c.hitDie} per livello da ${c.name.toLowerCase()}</div>
+    <div class="rh-class-spec-row"><b>Competenze nei tiri salvezza:</b> ${esc(c.proficiencies.join(' e ') || '—')}</div>
+    <div class="rh-class-spec-row"><b>Competenze nelle abilità:</b> ${esc(c.skills || '—')}</div>
+    <div class="rh-class-spec-row"><b>Abilità con le armi:</b> ${esc(c.weapons || '—')}</div>
+    <div class="rh-class-spec-row"><b>Competenze nell'uso degli strumenti:</b> ${esc(c.tools || '—')}</div>
+    <div class="rh-class-spec-row"><b>Maneggiare le armature:</b> ${esc(c.armor || '—')}</div>
+    <div class="rh-class-spec-row"><b>Attrezzatura di avviamento:</b> ${linkKnownEntities(esc(c.startingEquipment || '—'))}</div>
+    <div class="rh-class-spec-row"><b>Multiclasse:</b> ${esc(c.multiclassing || '—')}</div>
   `;
-  $('#subclassLink').onclick=()=>$('#subclassPanel').classList.toggle('hidden');
-  $('#subclassPanel').innerHTML=`<div class="subclass-chips">${c.subclasses.map(s=>`<span>${esc(subclassName(s))}</span>`).join('')}</div>`;
-  
-  // Set explicit media image with face centered
-  const heroImg = $('#detailHeroImg');
-  if(heroImg){
-    heroImg.src = c.image || '';
-    heroImg.alt = c.name;
+
+  // 3. Subclass Dropdown Select in Header
+  $('#classProgCardTitle').textContent = `Caratteristiche del ${c.name.toLowerCase()}`;
+  const subOpts = [`<option value="">Senza sottoclasse</option>`];
+  (c.subclasses || []).forEach(s => {
+    const isSel = currentSub && (currentSub.id === s.id || currentSub.shortName === s.shortName);
+    subOpts.push(`<option value="${esc(s.id)}" ${isSel ? 'selected' : ''}>${esc(s.name)}${s.originalName && s.originalName !== s.name ? ` (${s.originalName})` : ''}</option>`);
+  });
+  const subSelect = $('#rhClassSubclassSelect');
+  if (subSelect) {
+    subSelect.innerHTML = subOpts.join('');
+    subSelect.value = currentSub ? currentSub.id : '';
   }
-  $('#classArt').style.setProperty('--class-art',c.image?`url('${c.image}')`:'radial-gradient(ellipse at 75% 30%,#36171a,#12100d 70%)');
 
-  $('#levelPicker').innerHTML=Array.from({length:20},(_,i)=>`<option value="${i+1}" ${i+1===selectedLevel?'selected':''}>Livello ${i+1}</option>`).join('');
-  $('#levelPicker').onchange=e=>{selectedLevel=+e.target.value;renderClassDetail()};
+  // 4. Progression Table (Livelli 1-20 with live Subclass feature merging)
+  const labels = c.tableLabelsIt || c.tableLabels || [];
+  let tableHtml = `
+    <table class="rh-prog-table">
+      <thead>
+        <tr>
+          <th>Lv.</th>
+          <th>BU</th>
+          <th class="col-features">Peculiarità</th>
+          ${labels.map(l => `<th>${esc(l)}</th>`).join('')}
+        </tr>
+      </thead>
+      <tbody>
+  `;
 
-  const labels=c.tableLabels||[];
-  let progTable=`<div class="table-scroll"><table class="progress-table"><thead><tr><th>Liv.</th><th>Bonus competenza</th>${labels.map(x=>`<th>${esc(translateTableLabel(x))}</th>`).join('')}<th>Privilegi</th></tr></thead><tbody>${c.progression.map(r=>`<tr class="${r.level===selectedLevel?'selected':''}" data-lv="${r.level}"><td>${r.level}</td><td>+${Math.ceil(r.level/4)+1}</td>${(r.values||[]).map(x=>`<td>${esc(valFmt(x))}</td>`).join('')}<td>${esc(c.features.filter(f=>f.level===r.level).map(f=>featureName(f.name)).join(', ')||'—')}</td></tr>`).join('')}</tbody></table></div>`;
-  $('#progressionTable').innerHTML=progTable;
-  $('#progressionTable').querySelectorAll('tr[data-lv]').forEach(tr=>tr.onclick=()=>{selectedLevel=+tr.dataset.lv;renderClassDetail()});
+  (c.progression || []).forEach(r => {
+    const baseFeats = (c.features || []).filter(f => f.level === r.level);
+    const subFeats = currentSub ? (currentSub.features || []).filter(sf => sf.level === r.level) : [];
 
-  $('#classSummary').innerHTML=`<div class="summary-grid">${(c.primaryAbility||[]).map(x=>`<div class="summary-item"><span>Caratteristica principale</span><b>${esc(x)}</b></div>`).join('')}<div class="summary-item"><span>Dado Vita</span><b>d${c.hitDie}</b></div><div class="summary-item"><span>Tiri salvezza</span><b>${esc(c.proficiencies.join(', ')||'—')}</b></div><div class="summary-item"><span>Sottoclassi nel set</span><b>${c.subclasses.length}</b></div></div>`;
+    let featLinks = [];
+    baseFeats.forEach(f => {
+      const slug = 'cf-' + slugify(f.name);
+      featLinks.push(`<a href="javascript:void(0)" onclick="jumpToClassFeature('${slug}')">${esc(f.nameIt || f.name)}</a>`);
+    });
+    subFeats.forEach(sf => {
+      const slug = 'scf-' + slugify(sf.name);
+      featLinks.push(`<a href="javascript:void(0)" class="subclass-feat-name" onclick="jumpToClassFeature('${slug}')">${esc(sf.nameIt || sf.name)}</a>`);
+    });
 
-  $('#featureTabs').innerHTML=`<button data-tab="privilegi" class="feature-tab ${activeFeatureTab==='privilegi'?'active':''}">Privilegi</button><button data-tab="descrizione" class="feature-tab ${activeFeatureTab==='descrizione'?'active':''}">Descrizione</button>`;
-  $$('.feature-tab').forEach(b=>b.onclick=()=>{activeFeatureTab=b.dataset.tab;renderClassDetail()});
+    const featCellContent = featLinks.length ? featLinks.join(', ') : '—';
+    const vals = r.values || [];
 
-  const feats=c.features.filter(f=>f.level<=selectedLevel);
-  $('#featureList').innerHTML=activeFeatureTab==='privilegi'?feats.map(f=>`
-    <details class="feature-accordion" ${f.level===selectedLevel?'open':''}>
-      <summary>
-        <span class="feature-level">${f.level}</span>
-        <span class="feature-name">${esc(featureName(f.name))}</span>
-        <span class="feature-chevron">＋</span>
-      </summary>
-      <div class="feature-text">${parseDiceInText(esc(f.text||'Descrizione non disponibile nel dataset.'))}</div>
-    </details>
-  `).join(''):'<p class="muted-copy">Traduzione italiana provvisoria: nomi e testi verificati secondo SRD e XPHB 2024.</p>';
+    tableHtml += `
+      <tr>
+        <td>${r.level}</td>
+        <td>${esc(r.pb)}</td>
+        <td class="col-features">${featCellContent}</td>
+        ${vals.map(v => `<td>${esc(v)}</td>`).join('')}
+      </tr>
+    `;
+  });
+  tableHtml += `</tbody></table>`;
+  $('#classProgTableWrap').innerHTML = tableHtml;
 
-  $('#expandFeatures').onclick=()=>{
-    const d=$$('#featureList details');
-    const allOpen=d.every(x=>x.open);
-    d.forEach(x=>x.open=!allOpen);
-    $('#expandFeatures').textContent=allOpen?'Espandi tutto':'Comprimi tutto';
-  };
-  $('#expandFeatures').textContent=feats.length&&feats.every((_,i)=>$('#featureList details')?.[i]?.open)?'Comprimi tutto':'Espandi tutto';
+  // 5. Navigation Jump Links (TOC Box)
+  let navItems = [];
+  (c.features || []).forEach(f => {
+    const slug = 'cf-' + slugify(f.name);
+    navItems.push(`<button type="button" class="rh-class-nav-link" onclick="jumpToClassFeature('${slug}')">${esc(f.nameIt || f.name)}</button>`);
+  });
+  if (currentSub && (currentSub.features || []).length) {
+    (currentSub.features || []).forEach(sf => {
+      const slug = 'scf-' + slugify(sf.name);
+      navItems.push(`<button type="button" class="rh-class-nav-link subclass-nav" onclick="jumpToClassFeature('${slug}')">★ ${esc(sf.nameIt || sf.name)}</button>`);
+    });
+  }
+  $('#classNavLinks').innerHTML = navItems.join('');
 
-  $('#slotTable').innerHTML=c.slots?.length?`<div class="table-scroll"><table class="slot-table"><thead><tr><th>Liv.</th>${c.slotLabels.map(x=>`<th>${esc(x)}</th>`).join('')}</tr></thead><tbody>${c.slots.map((r,i)=>`<tr class="${i+1===selectedLevel?'selected':''}"><td>${i+1}</td>${r.map(x=>`<td>${esc(valFmt(x))}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`:'<p class="muted-copy">Questa classe non usa slot incantesimo standard.</p>';
+  // 6. Features Suite ("Peculiarità")
+  let allFeatures = [];
+  (c.features || []).forEach(f => {
+    allFeatures.push({
+      isSubclass: false,
+      level: f.level,
+      name: f.name,
+      nameIt: f.nameIt || f.name,
+      slug: 'cf-' + slugify(f.name),
+      text: f.text
+    });
+  });
+  if (currentSub && (currentSub.features || []).length) {
+    (currentSub.features || []).forEach(sf => {
+      allFeatures.push({
+        isSubclass: true,
+        level: sf.level,
+        name: sf.name,
+        nameIt: sf.nameIt || sf.name,
+        slug: 'scf-' + slugify(sf.name),
+        text: sf.text,
+        subclassName: currentSub.name
+      });
+    });
+  }
+  allFeatures.sort((a, b) => a.level - b.level);
+
+  let featuresHtml = '';
+  allFeatures.forEach((f, idx) => {
+    const isSpellcasting = (f.name === 'Spellcasting' || f.nameIt === 'Incantesimi');
+    const isSubclassChoice = (f.name.includes('Subclass') || f.nameIt.includes('Sottoclasse'));
+
+    let kicker = f.isSubclass
+      ? `${f.level}° LIVELLO · SOTTOCLASSE · ${esc(f.subclassName.toUpperCase())}`
+      : `CLASSE DI LIVELLO ${f.level}`;
+
+    let extraControls = '';
+    if (isSpellcasting) {
+      extraControls = `<button type="button" class="rh-class-spells-btn" onclick="openActiveClassSpells()" style="padding:4px 10px;font-size:12px;">🪄 Incantesimi di classe</button>`;
+    } else if (isSubclassChoice) {
+      extraControls = `
+        <select class="rh-subclass-select" style="padding:4px 26px 4px 10px;font-size:12px;" onchange="onClassSubclassChange(this.value)">
+          ${subOpts.join('')}
+        </select>
+      `;
+    }
+
+    const linkedBody = linkKnownEntities(parseDiceInText(esc(f.text || '')));
+
+    featuresHtml += `
+      <details class="rh-feature-card" id="${f.slug}" ${idx === 0 ? 'open' : ''}>
+        <summary class="rh-feature-summary">
+          <div class="rh-feature-kicker ${f.isSubclass ? 'subclass-kicker' : ''}">${kicker}</div>
+          <div class="rh-feature-title-row">
+            <div class="rh-feature-title-left">
+              <span class="rh-feature-title">${esc(f.nameIt)}</span>
+              ${f.name && f.name !== f.nameIt ? `<span class="rh-feature-subname">${esc(f.name)}</span>` : ''}
+              ${f.isSubclass ? `<span class="rh-badge-phb">✓ PHB</span>` : ''}
+            </div>
+            <div class="rh-feature-title-right">
+              ${extraControls}
+              <span class="rh-feature-link-icon" title="Copia link" onclick="event.stopPropagation();copyFeatureLink('${f.slug}')">🔗</span>
+              <span class="rh-feature-chevron">⌄</span>
+            </div>
+          </div>
+        </summary>
+        <div class="rh-feature-body">
+          ${linkedBody}
+        </div>
+      </details>
+    `;
+  });
+  $('#classFeaturesList').innerHTML = featuresHtml;
+  $('#rhClassExpandAllBtn').textContent = '» Espandi tutto';
+
+  // 7. Lateral Column (Right): Official Artwork + Rich Narrative Lore (Matching Species View)
+  const artUrl = c.image || `https://5e.tools/img/classes/XPHB/${encodeURIComponent(c.originalName)}.webp`;
+  $('#classArtFrame').innerHTML = `
+    <img src="${artUrl}" alt="${esc(c.name)}" class="rh-class-hero-img" loading="lazy" onerror="this.style.display='none'">
+  `;
+  $('#classSideCaption').textContent = c.quote || '';
+
+  // Lore body
+  const fluffParas = (c.fluff && c.fluff.length)
+    ? c.fluff
+    : [c.quote || '', `I membri della classe ${c.name} affrontano le sfide del multiverso combinando abilità marziali, incantesimi ed astuzia descritti nel manuale XPHB 2024.`];
+
+  $('#classLoreBody').innerHTML = fluffParas.map(p => `<p class="rh-class-lore-p">${linkKnownEntities(esc(p))}</p>`).join('');
+
+  // Callout Card (e.g. "Il repertorio di Bard")
+  if (c.callout && (c.callout.title || c.callout.text)) {
+    $('#classCalloutCard').classList.remove('hidden');
+    $('#classCalloutTitle').textContent = c.callout.title || `Il ruolo del ${c.name}`;
+    $('#classCalloutText').innerHTML = linkKnownEntities(esc(c.callout.text || ''));
+  } else {
+    $('#classCalloutCard').classList.add('hidden');
+  }
 
   bindDicePills();
 }
@@ -7324,6 +8143,13 @@ function navigateToEntity(type, name) {
   if (entity.type === 'rule') {
     hideAllMainViews();
     openBookReader('XPHB', '10_rules_glossary');
+    return;
+  }
+
+  // 8. Classes
+  if (entity.type === 'class') {
+    hideAllMainViews();
+    openClass(entity.raw.id || (entity.raw.name && entity.raw.name.toLowerCase()));
     return;
   }
 }
