@@ -3152,6 +3152,331 @@ h5.rh-book-h { font-size: 14.5px; }
   margin-bottom: 0;
 }
 
+/* =====================================================================
+   INTERACTIVE ENTITY LINKS & PREVIEW POPOVER (Ruleholder Design)
+   ===================================================================== */
+.rh-ref-link {
+  color: #64b5f6;
+  text-decoration: underline;
+  text-decoration-color: rgba(100, 181, 246, 0.45);
+  text-underline-offset: 3px;
+  cursor: pointer;
+  transition: color 0.15s, text-decoration-color 0.15s;
+  display: inline;
+  font-weight: 500;
+}
+.rh-ref-link:hover {
+  color: #ffffff;
+  text-decoration-color: #f59e0b;
+}
+
+/* Entity color tints in dark mode */
+.rh-ref-link[data-type="spell"],
+.rh-ref-link.ref-spell {
+  color: #90caf9;
+  text-decoration-color: rgba(144, 202, 249, 0.45);
+}
+.rh-ref-link[data-type="spell"]:hover,
+.rh-ref-link.ref-spell:hover {
+  color: #bbdefb;
+  text-decoration-color: #90caf9;
+}
+.rh-ref-link[data-type="condition"],
+.rh-ref-link.ref-condition {
+  color: #e5b358;
+  text-decoration-color: rgba(229, 179, 88, 0.45);
+}
+.rh-ref-link[data-type="condition"]:hover,
+.rh-ref-link.ref-condition:hover {
+  color: #fde047;
+  text-decoration-color: #e5b358;
+}
+.rh-ref-link[data-type="feat"],
+.rh-ref-link.ref-feat {
+  color: #ce93d8;
+  text-decoration-color: rgba(206, 147, 216, 0.45);
+}
+.rh-ref-link[data-type="feat"]:hover,
+.rh-ref-link.ref-feat:hover {
+  color: #f3e5f5;
+  text-decoration-color: #ce93d8;
+}
+.rh-ref-link[data-type="item"],
+.rh-ref-link[data-type="equipment"],
+.rh-ref-link[data-type="magic"],
+.rh-ref-link.ref-item {
+  color: #81c784;
+  text-decoration-color: rgba(129, 199, 132, 0.45);
+}
+.rh-ref-link[data-type="creature"],
+.rh-ref-link[data-type="monster"],
+.rh-ref-link.ref-monster {
+  color: #ff8a65;
+  text-decoration-color: rgba(255, 138, 101, 0.45);
+}
+.rh-ref-link[data-type="rule"],
+.rh-ref-link.ref-rule {
+  color: #4dd0e1;
+  text-decoration-color: rgba(77, 208, 225, 0.45);
+}
+
+/* Light / Parchment mode link styling */
+.warm .rh-ref-link,
+body:not(.dark-reader) .rh-ref-link {
+  color: #7a2021;
+  text-decoration-color: rgba(122, 32, 33, 0.4);
+}
+.warm .rh-ref-link:hover,
+body:not(.dark-reader) .rh-ref-link:hover {
+  color: #9a2b2c;
+  text-decoration-color: #9a2b2c;
+}
+.warm .rh-ref-link[data-type="spell"],
+body:not(.dark-reader) .rh-ref-link[data-type="spell"] {
+  color: #1565c0;
+  text-decoration-color: rgba(21, 101, 192, 0.4);
+}
+.warm .rh-ref-link[data-type="condition"],
+body:not(.dark-reader) .rh-ref-link[data-type="condition"] {
+  color: #b45309;
+  text-decoration-color: rgba(180, 83, 9, 0.4);
+}
+
+/* Floating Popover Card */
+.rh-entity-popover {
+  position: fixed;
+  z-index: 99999;
+  width: min(390px, calc(100vw - 24px));
+  max-height: 480px;
+  background: #141118;
+  border: 1px solid #282233;
+  border-radius: 12px;
+  box-shadow: 0 16px 42px rgba(0, 0, 0, 0.78), 0 0 0 1px rgba(255, 255, 255, 0.05);
+  color: #e2d9e8;
+  font-family: var(--sans);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.15s ease, transform 0.15s ease;
+  pointer-events: auto;
+}
+.rh-entity-popover.hidden {
+  display: none !important;
+  opacity: 0;
+  transform: translateY(4px);
+  pointer-events: none;
+}
+.warm .rh-entity-popover,
+body:not(.dark-reader) .rh-entity-popover {
+  background: #ffffff;
+  border: 1px solid #e0d7c7;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.18), 0 2px 8px rgba(0, 0, 0, 0.08);
+  color: #2c2523;
+}
+
+.rh-popover-header {
+  padding: 14px 16px 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.03) 0%, transparent 100%);
+}
+.warm .rh-popover-header,
+body:not(.dark-reader) .rh-popover-header {
+  border-bottom: 1px solid #ece4d7;
+  background: #faf7f2;
+}
+
+.rh-popover-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.rh-popover-title-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  color: inherit;
+  font-family: var(--serif, inherit);
+  font-size: 1.12rem;
+  font-weight: 700;
+  text-align: left;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: color 0.15s;
+}
+.rh-popover-title-btn:hover {
+  color: #f59e0b;
+}
+.warm .rh-popover-title-btn:hover,
+body:not(.dark-reader) .rh-popover-title-btn:hover {
+  color: #7a2021;
+}
+.rh-popover-open-icon {
+  font-size: 0.9rem;
+  opacity: 0.7;
+}
+
+.rh-popover-badge-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+.rh-popover-src-badge {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 7px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.08);
+  color: #b7b0c3;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+.warm .rh-popover-src-badge,
+body:not(.dark-reader) .rh-popover-src-badge {
+  background: #eee8de;
+  color: #5a524b;
+  border-color: #dfd7cb;
+}
+
+.rh-popover-sub-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 6px;
+  font-size: 12px;
+}
+.rh-popover-type-tag {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: rgba(245, 158, 11, 0.15);
+  color: #f59e0b;
+  border: 1px solid rgba(245, 158, 11, 0.35);
+}
+.rh-popover-subtext {
+  color: #9d94a8;
+  font-size: 12px;
+}
+.warm .rh-popover-subtext,
+body:not(.dark-reader) .rh-popover-subtext {
+  color: #6d645e;
+}
+
+/* Quick specs grid */
+.rh-popover-meta-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(85px, 1fr));
+  gap: 8px;
+  padding: 10px 16px;
+  background: rgba(0, 0, 0, 0.22);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+.warm .rh-popover-meta-grid,
+body:not(.dark-reader) .rh-popover-meta-grid {
+  background: #f7f4ee;
+  border-bottom: 1px solid #ece4d7;
+}
+.rh-popover-meta-col {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.rh-popover-meta-lbl {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: #8c8299;
+}
+.warm .rh-popover-meta-lbl,
+body:not(.dark-reader) .rh-popover-meta-lbl {
+  color: #7d736a;
+}
+.rh-popover-meta-val {
+  font-size: 12px;
+  font-weight: 600;
+  color: #f1ecf5;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.warm .rh-popover-meta-val,
+body:not(.dark-reader) .rh-popover-meta-val {
+  color: #2c2523;
+}
+
+/* Body snippet */
+.rh-popover-body {
+  padding: 12px 16px;
+  overflow-y: auto;
+  max-height: 200px;
+  font-size: 13px;
+  line-height: 1.55;
+  color: #ccc4d6;
+}
+.warm .rh-popover-body,
+body:not(.dark-reader) .rh-popover-body {
+  color: #3b3330;
+}
+.rh-popover-body p {
+  margin: 0 0 8px;
+}
+.rh-popover-body p:last-child {
+  margin-bottom: 0;
+}
+
+/* Footer with direct action button */
+.rh-popover-footer {
+  padding: 8px 16px 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  display: flex;
+  justify-content: flex-end;
+  background: rgba(0, 0, 0, 0.15);
+}
+.warm .rh-popover-footer,
+body:not(.dark-reader) .rh-popover-footer {
+  border-top: 1px solid #ece4d7;
+  background: #faf7f2;
+}
+.rh-popover-nav-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(245, 158, 11, 0.15);
+  border: 1px solid rgba(245, 158, 11, 0.35);
+  color: #f59e0b;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.rh-popover-nav-btn:hover {
+  background: #f59e0b;
+  color: #141118;
+}
+.warm .rh-popover-nav-btn,
+body:not(.dark-reader) .rh-popover-nav-btn {
+  background: #7a2021;
+  color: #ffffff;
+  border-color: #7a2021;
+}
+.warm .rh-popover-nav-btn:hover,
+body:not(.dark-reader) .rh-popover-nav-btn:hover {
+  background: #9a2b2c;
+  color: #ffffff;
+}
+
 </style>
 </head>
 <body>
@@ -3743,6 +4068,9 @@ h5.rh-book-h { font-size: 14.5px; }
   </div>
 </dialog>
 
+<!-- Floating Entity Popover (Ruleholder Style for Condition, Spell, Feat, Item, Monster tooltips) -->
+<div id="rhEntityPopover" class="rh-entity-popover hidden" role="tooltip" aria-hidden="true"></div>
+
 <script src="data_inject.js"></script>
 <script src="class_data.js"></script>
 <script src="bg_data.js"></script>
@@ -4219,7 +4547,7 @@ function renderSpellDetail(){
     $('#spellConcentrationTag').innerHTML = '';
   }
 
-  $('#spellDetailBody').innerHTML = parseDiceInText(esc(sp.txt || 'Nessuna descrizione disponibile.'));
+  $('#spellDetailBody').innerHTML = linkKnownEntities(parseDiceInText(esc(sp.txt || 'Nessuna descrizione disponibile.')));
 
   const classEligibility = getSpellClasses(sp);
   $('#spellClassesList').innerHTML = classEligibility.map(cls => `
@@ -4364,11 +4692,11 @@ function getMonsterActionsHtml(mo){
   let html = '';
   if(mo.trait && Array.isArray(mo.trait) && mo.trait.length > 0){
     html += '<div class="statblock-actions-header" style="margin-top:8px;margin-bottom:6px;">TRATTI</div>';
-    html += mo.trait.map(t => `<p style="margin:4px 0 8px;"><b>${esc(t.name)}.</b> ${t.entries.map(e => parseDiceInText(esc(e))).join(' ')}</p>`).join('');
+    html += mo.trait.map(t => `<p style="margin:4px 0 8px;"><b>${esc(t.name)}.</b> ${t.entries.map(e => linkKnownEntities(parseDiceInText(esc(e)))).join(' ')}</p>`).join('');
   }
   if(mo.action && Array.isArray(mo.action) && mo.action.length > 0){
     html += '<div class="statblock-actions-header" style="margin-top:8px;margin-bottom:6px;">AZIONI</div>';
-    html += mo.action.map(a => `<p style="margin:4px 0 8px;"><b>${esc(a.name)}.</b> ${a.entries.map(e => parseDiceInText(esc(e))).join(' ')}</p>`).join('');
+    html += mo.action.map(a => `<p style="margin:4px 0 8px;"><b>${esc(a.name)}.</b> ${a.entries.map(e => linkKnownEntities(parseDiceInText(esc(e)))).join(' ')}</p>`).join('');
   } else {
     const n = String(mo.n || '').toLowerCase();
     if(n.includes('badger') || n.includes('tasso')){
@@ -4379,15 +4707,15 @@ function getMonsterActionsHtml(mo){
   }
   if(mo.bonus && Array.isArray(mo.bonus) && mo.bonus.length > 0){
     html += '<div class="statblock-actions-header" style="margin-top:8px;margin-bottom:6px;">AZIONI BONUS</div>';
-    html += mo.bonus.map(b => `<p style="margin:4px 0 8px;"><b>${esc(b.name)}.</b> ${b.entries.map(e => parseDiceInText(esc(e))).join(' ')}</p>`).join('');
+    html += mo.bonus.map(b => `<p style="margin:4px 0 8px;"><b>${esc(b.name)}.</b> ${b.entries.map(e => linkKnownEntities(parseDiceInText(esc(e)))).join(' ')}</p>`).join('');
   }
   if(mo.reaction && Array.isArray(mo.reaction) && mo.reaction.length > 0){
     html += '<div class="statblock-actions-header" style="margin-top:8px;margin-bottom:6px;">REAZIONI</div>';
-    html += mo.reaction.map(r => `<p style="margin:4px 0 8px;"><b>${esc(r.name)}.</b> ${r.entries.map(e => parseDiceInText(esc(e))).join(' ')}</p>`).join('');
+    html += mo.reaction.map(r => `<p style="margin:4px 0 8px;"><b>${esc(r.name)}.</b> ${r.entries.map(e => linkKnownEntities(parseDiceInText(esc(e)))).join(' ')}</p>`).join('');
   }
   if(mo.legendary && Array.isArray(mo.legendary) && mo.legendary.length > 0){
     html += '<div class="statblock-actions-header" style="margin-top:8px;margin-bottom:6px;">AZIONI LEGGENDARIE</div>';
-    html += mo.legendary.map(l => `<p style="margin:4px 0 8px;"><b>${esc(l.name)}.</b> ${l.entries.map(e => parseDiceInText(esc(e))).join(' ')}</p>`).join('');
+    html += mo.legendary.map(l => `<p style="margin:4px 0 8px;"><b>${esc(l.name)}.</b> ${l.entries.map(e => linkKnownEntities(parseDiceInText(esc(e)))).join(' ')}</p>`).join('');
   }
   return html;
 }
@@ -6396,6 +6724,550 @@ function parseDiceInText(text){
   });
 }
 
+/* =====================================================================
+   ENTITY LOOKUP, PREVIEW POPOVER & NAVIGATION ENGINE (Ruleholder)
+   ===================================================================== */
+
+const CORE_RULES_REGISTRY = {
+  'long rest': {
+    title: 'Long Rest',
+    sub: "Rules Glossary · Player's Handbook 2024",
+    source: 'PHB 2024',
+    badge: 'Regola',
+    text: 'A Long Rest is a period of extended downtime—at least 8 hours long—available to any creature. During a Long Rest, you sleep or perform light activity. At the end of the rest, you regain all lost Hit Points and spent Hit Point Dice up to half your total.',
+    sectionId: 'long-rest'
+  },
+  'riposo lungo': {
+    title: 'Riposo Lungo',
+    sub: "Rules Glossary · Player's Handbook 2024",
+    source: 'PHB 2024',
+    badge: 'Regola',
+    text: 'Un Riposo Lungo è un periodo di riposo prolungato (almeno 8 ore). Al termine, la creatura recupera tutti i punti ferita persi e metà dei Dadi Vita massimi.',
+    sectionId: 'long-rest'
+  },
+  'short rest': {
+    title: 'Short Rest',
+    sub: "Rules Glossary · Player's Handbook 2024",
+    source: 'PHB 2024',
+    badge: 'Regola',
+    text: 'A Short Rest is a 1-hour period of downtime during which a creature does nothing more strenuous than eating, drinking, reading, and tending to wounds. A creature can spend one or more Hit Point Dice at the end of a Short Rest.',
+    sectionId: 'short-rest'
+  },
+  'riposo breve': {
+    title: 'Riposo Breve',
+    sub: "Rules Glossary · Player's Handbook 2024",
+    source: 'PHB 2024',
+    badge: 'Regola',
+    text: 'Un Riposo Breve dura almeno 1 ora. La creatura può spendere uno o più Dadi Vita per recuperare punti ferita.',
+    sectionId: 'short-rest'
+  },
+  'darkvision': {
+    title: 'Darkvision',
+    sub: "Rules Glossary · Player's Handbook 2024",
+    source: 'PHB 2024',
+    badge: 'Senso',
+    text: 'A creature with Darkvision can see in Dim Light within the specified range as if it were Bright Light, and in Darkness as if it were Dim Light. The creature cannot discern color in Darkness, only shades of gray.',
+    sectionId: 'darkvision'
+  },
+  'scurovista': {
+    title: 'Scurovista',
+    sub: "Rules Glossary · Player's Handbook 2024",
+    source: 'PHB 2024',
+    badge: 'Senso',
+    text: "Una creatura con Scurovista può vedere nella Luce Fioca come se fosse Luce Intensa, e nell'Oscurità come se fosse Luce Fioca. Non discerne i colori nell'oscurità, solo sfumature di grigio.",
+    sectionId: 'darkvision'
+  },
+  'concentration': {
+    title: 'Concentration',
+    sub: "Rules Glossary · Player's Handbook 2024",
+    source: 'PHB 2024',
+    badge: 'Regola',
+    text: 'Some spells and other effects require Concentration to keep their magic active. If you lose Concentration, such an effect ends. Taking damage, casting another concentration spell, or being Incapacitated breaks Concentration.',
+    sectionId: 'concentration'
+  },
+  'concentrazione': {
+    title: 'Concentrazione',
+    sub: "Rules Glossary · Player's Handbook 2024",
+    source: 'PHB 2024',
+    badge: 'Regola',
+    text: 'Alcuni incantesimi richiedono Concentrazione per restare attivi. Subire danni, lanciare un altro incantesimo a concentrazione o essere Incapace interrompe la concentrazione.',
+    sectionId: 'concentration'
+  },
+  'attunement': {
+    title: 'Attunement',
+    sub: "Rules Glossary · Player's Handbook 2024",
+    source: 'PHB 2024',
+    badge: 'Regola',
+    text: 'Certain magic items require a creature to form a bond with them before their magical properties can be used. This bond is called Attunement. A creature can be attuned to no more than three magic items at a time.',
+    sectionId: 'attunement'
+  },
+  'sintonizzazione': {
+    title: 'Sintonizzazione',
+    sub: "Rules Glossary · Player's Handbook 2024",
+    source: 'PHB 2024',
+    badge: 'Regola',
+    text: 'Alcuni oggetti magici richiedono una connessione speciale detta Sintonizzazione prima di poterne sfruttare i poteri. Un personaggio può essere sintonizzato a un massimo di 3 oggetti.',
+    sectionId: 'attunement'
+  }
+};
+
+function resolveEntity(name, typeHint) {
+  if (!name) return null;
+  const q = String(name).toLowerCase().trim();
+
+  // Helper matching
+  const matchName = (item, prop = 'name') => {
+    const val = item[prop] || item.n;
+    return val && val.toLowerCase() === q;
+  };
+  const matchIt = (item) => {
+    return (item.it && item.it.toLowerCase() === q) || (item.name && item.name.toLowerCase() === q);
+  };
+
+  // 1. Spells (DATA.spells / XP_SPELLS)
+  const spellList = (typeof DATA !== 'undefined' && DATA.spells ? DATA.spells : (typeof XP_SPELLS !== 'undefined' ? XP_SPELLS : []));
+  if (!typeHint || typeHint === 'spell') {
+    const spell = spellList.find(s => matchName(s, 'n') || matchName(s, 'name') || matchIt(s));
+    if (spell) {
+      const sName = spell.n || spell.name;
+      const sLevel = spell.lv != null ? spell.lv : (spell.l != null ? spell.l : spell.level);
+      const sSchool = (typeof schools !== 'undefined' && schools[spell.sc || spell.s]) || spell.sc || spell.s || spell.school || '';
+      const sTime = (spell.tmn ? `${spell.tmn} ${spell.tmi || 'action'}` : (spell.t || spell.time || '1 azione'));
+      const sRange = (typeof rngmap !== 'undefined' && rngmap[spell.rng]) || spell.rng || spell.r || spell.range || 'Contatto';
+      const sDur = spell.dur || spell.d || spell.duration || 'Istantanea';
+      const sText = spell.txt || spell.text || (spell.entries ? spell.entries.join('\n') : '');
+      return {
+        type: 'spell',
+        title: sName,
+        sub: `${sLevel === 0 ? 'Trucchetto' : `Livello ${sLevel}`} · ${sSchool}`,
+        source: spell.src || spell.source || 'PHB 2024',
+        badge: 'Incantesimo',
+        meta: [
+          { label: 'TEMPO', value: sTime },
+          { label: 'GITTATA', value: sRange },
+          { label: 'DURATA', value: sDur }
+        ],
+        text: sText,
+        raw: spell
+      };
+    }
+  }
+
+  // 2. Conditions / Glossary (GLOSSARY)
+  if (!typeHint || typeHint === 'condition' || typeHint === 'glossary') {
+    const condList = typeof GLOSSARY !== 'undefined' ? GLOSSARY : [];
+    const cond = condList.find(c => matchName(c) || matchIt(c));
+    if (cond) {
+      return {
+        type: 'condition',
+        title: cond.it || cond.name,
+        sub: cond.category || 'Condizione',
+        source: 'PHB 2024',
+        badge: 'Condizione',
+        text: cond.text || '',
+        raw: cond
+      };
+    }
+  }
+
+  // 3. Core Rule definitions
+  if (!typeHint || typeHint === 'rule') {
+    const rule = CORE_RULES_REGISTRY[q];
+    if (rule) {
+      return {
+        type: 'rule',
+        title: rule.title,
+        sub: rule.sub,
+        source: rule.source,
+        badge: rule.badge,
+        text: rule.text,
+        raw: rule
+      };
+    }
+  }
+
+  // 4. Feats (FEATS)
+  if (!typeHint || typeHint === 'feat') {
+    const featList = typeof FEATS !== 'undefined' ? FEATS : [];
+    const feat = featList.find(f => matchName(f) || matchIt(f));
+    if (feat) {
+      return {
+        type: 'feat',
+        title: feat.it || feat.name,
+        sub: feat.category || 'Talento',
+        source: 'PHB 2024',
+        badge: 'Talento',
+        meta: [
+          { label: 'CATEGORIA', value: feat.category || 'Generale' },
+          { label: 'PREREQUISITO', value: (feat.prereq || []).join(', ') || 'Nessuno' }
+        ],
+        text: feat.text || '',
+        raw: feat
+      };
+    }
+  }
+
+  // 5. Equipment & Magic Items
+  if (!typeHint || typeHint === 'item' || typeHint === 'magic' || typeHint === 'equipment') {
+    const magicList = typeof MAGIC !== 'undefined' ? MAGIC : [];
+    const magic = magicList.find(m => matchName(m) || matchIt(m));
+    if (magic) {
+      return {
+        type: 'magic',
+        title: magic.it || magic.name,
+        sub: `${magic.type || 'Oggetto Magico'} (${magic.rarity || 'Comune'})`,
+        source: 'DMG 2024',
+        badge: 'Oggetto Magico',
+        text: magic.text || '',
+        raw: magic
+      };
+    }
+
+    const equipList = typeof EQUIPMENT !== 'undefined' ? EQUIPMENT : [];
+    const equip = equipList.find(e => matchName(e) || matchIt(e));
+    if (equip) {
+      let costStr = equip.value != null ? (equip.value >= 100 ? `${Math.round(equip.value / 100)} po` : `${equip.value} mr`) : '—';
+      let weightStr = equip.weight ? `${equip.weight} lib.` : '—';
+      return {
+        type: 'equipment',
+        title: equip.it || equip.name,
+        sub: equip.type || 'Equipaggiamento',
+        source: 'PHB 2024',
+        badge: 'Oggetto',
+        meta: [
+          { label: 'COSTO', value: costStr },
+          { label: 'PESO', value: weightStr }
+        ],
+        text: equip.text || '',
+        raw: equip
+      };
+    }
+  }
+
+  // 6. Monsters / Creatures
+  if (!typeHint || typeHint === 'creature' || typeHint === 'monster') {
+    const monList = (typeof DATA !== 'undefined' && DATA.monsters ? DATA.monsters : (typeof XP_MONSTERS !== 'undefined' ? XP_MONSTERS : []));
+    const mon = monList.find(m => {
+      const n = m.n || m.name || '';
+      return n.toLowerCase() === q || (m.it && m.it.toLowerCase() === q);
+    });
+    if (mon) {
+      return {
+        type: 'monster',
+        title: mon.n || mon.name,
+        sub: `GS ${mon.cr} · ${mon.ty || 'Creatura'}`,
+        source: mon.src || 'MM 2024',
+        badge: 'Mostro',
+        meta: [
+          { label: 'CA', value: String(mon.ac) },
+          { label: 'PF', value: String(mon.hp) },
+          { label: 'VELOCITÀ', value: String(mon.speed || '30 ft') }
+        ],
+        text: mon.txt || mon.text || (mon.action && mon.action[0] && mon.action[0].entries ? mon.action[0].entries.join(' ') : ''),
+        raw: mon
+      };
+    }
+  }
+
+  return null;
+}
+
+function linkKnownEntities(html) {
+  if (!html || typeof html !== 'string') return html;
+
+  const conditions = [
+    'Blinded', 'Charmed', 'Deafened', 'Exhaustion', 'Frightened', 
+    'Grappled', 'Incapacitated', 'Invisible', 'Paralyzed', 'Petrified', 
+    'Poisoned', 'Prone', 'Restrained', 'Stunned', 'Unconscious',
+    'Accecato', 'Affascinato', 'Assordato', 'Sfinimento', 'Spaventato',
+    'Afferrato', 'Incapace', 'Invisibile', 'Paralizzato', 'Pietrificato',
+    'Avvelenato', 'Prono', 'Trattenuto', 'Stordito', 'Privo di Sensi'
+  ];
+
+  const commonSpells = [
+    'Pass without Trace', 'Speak with Animals', 'Dancing Lights', 'Minor Illusion',
+    'Faerie Fire', 'Hellish Rebuke', 'Ray of Sickness', 'Ray of Frost', 'Acid Splash',
+    'Fire Bolt', 'Poison Spray', 'Shocking Grasp', 'Chill Touch', 'Sacred Flame',
+    'Spare the Dying', 'Vicious Mockery', 'Blade Ward', 'True Strike', 'Mage Hand',
+    'Prestidigitation', 'Druidcraft', 'Produce Flame', 'Shillelagh', 'Thaumaturgy',
+    'Guidance', 'Resistance', 'Mending', 'Darkness', 'Light', 'Invisibility',
+    'Fireball', 'Command', 'Shield', 'Misty Step', 'Bless', 'Cure Wounds', 'Healing Word'
+  ];
+
+  const rulesTerms = [
+    'Long Rest', 'Short Rest', 'Darkvision', 'Scurovista', 'Riposo Lungo', 'Riposo Breve',
+    'Concentration', 'Concentrazione', 'Ritual', 'Rituale', 'Attunement', 'Sintonizzazione'
+  ];
+
+  // Descending length so multi-word phrases match before substrings
+  const allTerms = [
+    ...conditions.map(c => ({ term: c, type: 'condition' })),
+    ...commonSpells.map(s => ({ term: s, type: 'spell' })),
+    ...rulesTerms.map(r => ({ term: r, type: 'rule' }))
+  ].sort((a, b) => b.term.length - a.term.length);
+
+  const termMap = new Map();
+  const patternParts = [];
+  allTerms.forEach(item => {
+    const lower = item.term.toLowerCase();
+    if (!termMap.has(lower)) {
+      termMap.set(lower, item);
+      patternParts.push(item.term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
+    }
+  });
+
+  const fullRegex = new RegExp(`\\b(${patternParts.join('|')})\\b`, 'gi');
+
+  const tokens = html.split(/(<[^>]+>)/g);
+  let insideLink = 0;
+
+  return tokens.map(token => {
+    if (token.startsWith('<')) {
+      if (/^<a\b/i.test(token) || /class=["'][^"']*rh-ref-link/i.test(token)) {
+        insideLink++;
+      } else if (/^<\/a>/i.test(token) || (insideLink > 0 && /^<\/span>/i.test(token))) {
+        insideLink = Math.max(0, insideLink - 1);
+      }
+      return token;
+    }
+
+    if (insideLink > 0) return token;
+
+    return token.replace(fullRegex, (matched) => {
+      const info = termMap.get(matched.toLowerCase());
+      const type = info ? info.type : 'rule';
+      return `<a class="rh-ref-link ref-${type}" data-type="${type}" data-name="${matched}">${matched}</a>`;
+    });
+  }).join('');
+}
+
+let popoverHideTimer = null;
+
+function showEntityPopover(el) {
+  if (!el) return;
+  const type = el.dataset.type;
+  const name = el.dataset.name || el.textContent.trim();
+  const entity = resolveEntity(name, type);
+  if (!entity) return;
+
+  const popover = $('#rhEntityPopover');
+  if (!popover) return;
+
+  const escapeAttr = (s) => (s == null ? '' : String(s).replace(/"/g, '&quot;').replace(/'/g, '&#39;'));
+
+  // Header
+  let headerHtml = `
+    <div class="rh-popover-header">
+      <div class="rh-popover-title-row">
+        <button type="button" class="rh-popover-title-btn" onclick="navigateToEntity('${entity.type}', '${escapeAttr(entity.title)}')">
+          <span>${esc(entity.title)}</span>
+          <span class="rh-popover-open-icon">↗</span>
+        </button>
+        <div class="rh-popover-badge-group">
+          <span class="rh-popover-type-tag">${esc(entity.badge || 'Regola')}</span>
+          <span class="rh-popover-src-badge">✓ ${esc((entity.source || 'PHB').replace(' 2024',''))}</span>
+        </div>
+      </div>
+      <div class="rh-popover-sub-row">
+        <span class="rh-popover-subtext">${esc(entity.sub || '')}</span>
+      </div>
+    </div>
+  `;
+
+  // Meta Grid
+  let metaHtml = '';
+  if (entity.meta && entity.meta.length > 0) {
+    metaHtml = `
+      <div class="rh-popover-meta-grid">
+        ${entity.meta.map(m => `
+          <div class="rh-popover-meta-col">
+            <span class="rh-popover-meta-lbl">${esc(m.label)}</span>
+            <span class="rh-popover-meta-val" title="${escapeAttr(m.value)}">${esc(m.value)}</span>
+          </div>
+        `).join('')}
+      </div>
+    `;
+  }
+
+  // Body Snippet
+  let bodyText = entity.text || '';
+  if (bodyText.length > 360) {
+    bodyText = bodyText.slice(0, 360) + '...';
+  }
+  let bodyHtml = `
+    <div class="rh-popover-body">
+      <p>${parseDiceInText(esc(bodyText))}</p>
+    </div>
+  `;
+
+  // Footer Button
+  let footerHtml = `
+    <div class="rh-popover-footer">
+      <button type="button" class="rh-popover-nav-btn" onclick="navigateToEntity('${entity.type}', '${escapeAttr(entity.title)}')">
+        <span>Apri pagina</span>
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+      </button>
+    </div>
+  `;
+
+  popover.innerHTML = headerHtml + metaHtml + bodyHtml + footerHtml;
+  popover.classList.remove('hidden');
+
+  // Compute position relative to viewport
+  const rect = el.getBoundingClientRect();
+  const popoverWidth = Math.min(390, window.innerWidth - 24);
+  let left = rect.left;
+  if (left + popoverWidth > window.innerWidth - 12) {
+    left = window.innerWidth - popoverWidth - 12;
+  }
+  if (left < 12) left = 12;
+
+  const popoverHeight = popover.offsetHeight || 260;
+  let top = rect.bottom + 8;
+  if (top + popoverHeight > window.innerHeight - 12) {
+    top = Math.max(12, rect.top - 8 - popoverHeight);
+  }
+
+  popover.style.left = `${Math.round(left)}px`;
+  popover.style.top = `${Math.round(top)}px`;
+  popover.setAttribute('aria-hidden', 'false');
+  bindDicePills();
+}
+
+function hideEntityPopover() {
+  const popover = $('#rhEntityPopover');
+  if (popover) {
+    popover.classList.add('hidden');
+    popover.setAttribute('aria-hidden', 'true');
+  }
+}
+
+function hideAllMainViews() {
+  $('#homeView .hero')?.classList.add('hidden');
+  $('.search-wrap')?.classList.add('hidden');
+  $('#directory')?.classList.add('hidden');
+  $('#searchResults')?.classList.add('hidden');
+  $('#resultsView')?.classList.add('hidden');
+  $('#classListView')?.classList.add('hidden');
+  $('#classDetailView')?.classList.add('hidden');
+  $('#bgListView')?.classList.add('hidden');
+  $('#bgDetailView')?.classList.add('hidden');
+  $('#specListView')?.classList.add('hidden');
+  $('#specDetailView')?.classList.add('hidden');
+  $('#itemListView')?.classList.add('hidden');
+  $('#itemDetailView')?.classList.add('hidden');
+  $('#bookReaderView')?.classList.add('hidden');
+  $('#monsterDetailView')?.classList.add('hidden');
+  $('#spellDetailView')?.classList.add('hidden');
+}
+
+function navigateToEntity(type, name) {
+  hideEntityPopover();
+  if (!name) return;
+  const entity = resolveEntity(name, type);
+  if (!entity) return;
+
+  triggerHaptic('medium');
+
+  // 1. Spells
+  if (entity.type === 'spell') {
+    openSpellDetail(entity.raw);
+    return;
+  }
+
+  // 2. Conditions & Glossary
+  if (entity.type === 'condition' || entity.type === 'glossary') {
+    const list = typeof GLOSSARY !== 'undefined' ? GLOSSARY : [];
+    const idx = list.findIndex(c => (c.name && c.name.toLowerCase() === entity.title.toLowerCase()) || (c.it && c.it.toLowerCase() === entity.title.toLowerCase()));
+    if (idx !== -1) {
+      hideAllMainViews();
+      activeGroup = ITEMKINDS.glossary;
+      view = 'itemdetail';
+      openItem(idx);
+      return;
+    }
+  }
+
+  // 3. Feats
+  if (entity.type === 'feat') {
+    const list = typeof FEATS !== 'undefined' ? FEATS : [];
+    const idx = list.findIndex(f => (f.name && f.name.toLowerCase() === entity.title.toLowerCase()) || (f.it && f.it.toLowerCase() === entity.title.toLowerCase()));
+    if (idx !== -1) {
+      hideAllMainViews();
+      activeGroup = ITEMKINDS.feats;
+      view = 'itemdetail';
+      openItem(idx);
+      return;
+    }
+  }
+
+  // 4. Equipment
+  if (entity.type === 'equipment') {
+    const list = typeof EQUIPMENT !== 'undefined' ? EQUIPMENT : [];
+    const idx = list.findIndex(e => (e.name && e.name.toLowerCase() === entity.title.toLowerCase()) || (e.it && e.it.toLowerCase() === entity.title.toLowerCase()));
+    if (idx !== -1) {
+      hideAllMainViews();
+      activeGroup = ITEMKINDS.equipment;
+      view = 'itemdetail';
+      openItem(idx);
+      return;
+    }
+  }
+
+  // 5. Magic items
+  if (entity.type === 'magic') {
+    const list = typeof MAGIC !== 'undefined' ? MAGIC : [];
+    const idx = list.findIndex(m => (m.name && m.name.toLowerCase() === entity.title.toLowerCase()) || (m.it && m.it.toLowerCase() === entity.title.toLowerCase()));
+    if (idx !== -1) {
+      hideAllMainViews();
+      activeGroup = ITEMKINDS.magic;
+      view = 'itemdetail';
+      openItem(idx);
+      return;
+    }
+  }
+
+  // 6. Monsters
+  if (entity.type === 'monster') {
+    openMonsterDetail(entity.raw);
+    return;
+  }
+
+  // 7. Rules in Player's Handbook
+  if (entity.type === 'rule') {
+    hideAllMainViews();
+    openBookReader('XPHB', '10_rules_glossary');
+    return;
+  }
+}
+window.navigateToEntity = navigateToEntity;
+
+function bindEntityLinks(container = document) {
+  const links = container.querySelectorAll('.rh-ref-link');
+  links.forEach(link => {
+    if (link._rhBound) return;
+    link._rhBound = true;
+
+    // Desktop hover
+    link.addEventListener('mouseenter', () => {
+      if (popoverHideTimer) clearTimeout(popoverHideTimer);
+      showEntityPopover(link);
+    });
+    link.addEventListener('mouseleave', () => {
+      popoverHideTimer = setTimeout(hideEntityPopover, 250);
+    });
+
+    // Tap / Click navigation
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      const type = link.dataset.type;
+      const name = link.dataset.name || link.textContent.trim();
+      navigateToEntity(type, name);
+    });
+  });
+}
+
 function bindDicePills(){
   $$('.rh-dice-pill').forEach(pill => {
     pill.onclick = (e) => {
@@ -6404,6 +7276,7 @@ function bindDicePills(){
       parseAndRollFormula(formula);
     };
   });
+  bindEntityLinks();
 }
 
 function parseAndRollFormula(str){
@@ -6859,7 +7732,7 @@ function renderSpecDetail(){
   $('#specIntroLine').textContent = `${s.it || s.name} possiede le seguenti caratteristiche di specie:`;
   
   // Traits list (Uncollapsed readable paragraphs, with bold-italic headers and dice-pills)
-  $('#specDetailTraits').innerHTML = (s.traits || []).map(t => formatSpeciesTrait(t)).join('');
+  $('#specDetailTraits').innerHTML = (s.traits || []).map(t => linkKnownEntities(formatSpeciesTrait(t))).join('');
   
   // Right Column: Character Art Cutout + Rich Narrative Lore (Screenshot 10)
   const artUrl = s.portrait || `https://5e.tools/img/races/XPHB/${encodeURIComponent(s.name)}.webp`;
@@ -7315,7 +8188,7 @@ function openItem(i){
             </div>
           </div>
           <div class="rh-spec-desc-text">
-            <p>${parseDiceInText(esc(activeItem.text || 'No description available.'))}</p>
+            <p>${linkKnownEntities(parseDiceInText(esc(activeItem.text || 'No description available.')))}</p>
           </div>
         </div>
       `;
@@ -7333,7 +8206,7 @@ function openItem(i){
             </div>
           </div>
           <div class="rh-spec-desc-text">
-            <p>${parseDiceInText(esc(activeItem.text || 'No description available.'))}</p>
+            <p>${linkKnownEntities(parseDiceInText(esc(activeItem.text || 'No description available.')))}</p>
           </div>
         </div>
       `;
@@ -7352,7 +8225,7 @@ function openItem(i){
             </div>
           </div>
           <div class="rh-spec-desc-text">
-            <p>${parseDiceInText(esc(activeItem.text || 'No description available.'))}</p>
+            <p>${linkKnownEntities(parseDiceInText(esc(activeItem.text || 'No description available.')))}</p>
           </div>
         </div>
       `;
@@ -7371,17 +8244,17 @@ function openItem(i){
             </div>
           </div>
           <div class="rh-spec-desc-text">
-            <p>${parseDiceInText(esc(activeItem.text || 'No description available.'))}</p>
+            <p>${linkKnownEntities(parseDiceInText(esc(activeItem.text || 'No description available.')))}</p>
           </div>
         </div>
       `;
       $('#itemDetailText').innerHTML = '';
     } else {
       specBox.innerHTML = '';
-      $('#itemDetailText').innerHTML='<p>'+parseDiceInText(esc(activeItem.text||'No description available.'))+'</p>';
+      $('#itemDetailText').innerHTML='<p>'+linkKnownEntities(parseDiceInText(esc(activeItem.text||'No description available.')))+'</p>';
     }
   } else {
-    $('#itemDetailText').innerHTML='<p>'+parseDiceInText(esc(activeItem.text||'No description available.'))+'</p>';
+    $('#itemDetailText').innerHTML='<p>'+linkKnownEntities(parseDiceInText(esc(activeItem.text||'No description available.')))+'</p>';
   }
 
   bindDicePills();
@@ -7778,7 +8651,7 @@ function renderReaderSection(secId){
           <div class="rh-cover-caption">Player's Handbook 2024 (D&amp;D 5.5e Core Rulebook). Art by Tyler Jacobson.</div>
         ` : ''}
         <div class="rh-book-body" style="margin-top:18px;">
-          ${found.html || '<p class="rh-book-p">Content loaded from 2024 Player\'s Handbook.</p>'}
+          ${linkKnownEntities(found.html || '<p class="rh-book-p">Content loaded from 2024 Player\'s Handbook.</p>')}
         </div>
       `;
       bindDicePills();
@@ -8271,6 +9144,34 @@ if(window.Telegram?.WebApp){
   Telegram.WebApp.ready();
   Telegram.WebApp.expand();
   updateTelegramBackButton();
+}
+
+// Global popover event bindings (hover protection, dismiss on outside click and scroll)
+const rhPopoverEl = $('#rhEntityPopover');
+if (rhPopoverEl && rhPopoverEl.addEventListener) {
+  rhPopoverEl.addEventListener('mouseenter', () => {
+    if (popoverHideTimer) clearTimeout(popoverHideTimer);
+  });
+  rhPopoverEl.addEventListener('mouseleave', () => {
+    popoverHideTimer = setTimeout(hideEntityPopover, 200);
+  });
+}
+if (typeof window !== 'undefined' && window.addEventListener) {
+  window.addEventListener('scroll', () => {
+    hideEntityPopover();
+  }, { passive: true });
+}
+if (typeof document !== 'undefined' && document.addEventListener) {
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('#rhEntityPopover') && !e.target.closest('.rh-ref-link')) {
+      hideEntityPopover();
+    }
+  });
+}
+
+// Initial binding of entity links on load
+if (typeof bindEntityLinks === 'function') {
+  bindEntityLinks();
 }
 </script>
 </body>

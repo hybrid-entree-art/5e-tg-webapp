@@ -90,6 +90,22 @@ Il motore di contenuti formatta il testo del Player's Handbook generando element
 
 ## 4. Registro Modifiche & Novità (Changelog)
 
+### [2026-11-11] - Collegamenti Interattivi, Anteprime Popover (Ruleholder) & Navigazione Diretta
+* **Autore:** Agente Contenuti & UI
+* **Novità:**
+  * **Motore di Risoluzione Entità (`resolveEntity`):** Ricerca e risolve istantaneamente incantesimi (`DATA.spells`), condizioni (`GLOSSARY`), talenti (`FEATS`), oggetti ed equipaggiamento (`EQUIPMENT`, `MAGIC`), mostri (`DATA.monsters`) e definizioni essenziali delle regole 2024 (`CORE_RULES_REGISTRY`).
+  * **Autolinker Intelligente (`linkKnownEntities`):** Scansiona in modo sicuro i testi di tratti di specie, azioni dei mostri, descrizioni di oggetti e capitoli del Player's Handbook, convertendo condizioni (es. *Prone*, *Blinded*, *Invisible*), incantesimi frequenti (*Light*, *Command*, *Fireball*) e regole (*Darkvision*, *Long Rest*) in link interattivi `.rh-ref-link`, evitando rigidamente annidamenti di tag `<a>` già presenti.
+  * **Card Popover Flottante (`#rhEntityPopover` - Stile Ruleholder):** Al passaggio del mouse (hover) o al tap su mobile, appare una card fluttuante arrotondata con:
+    * Intestazione con titolo, icona `↗`, badge sorgente (`✓ PHB`, `✓ DMG`, `✓ MM`) e pillola categoria.
+    * Griglia compatta delle specifiche (es. *Tempo di lancio*, *Gittata*, *Durata* per incantesimi; *CA*, *PF*, *Velocità* per mostri; *Costo*, *Peso* per equipaggiamento).
+    * Estratto descrittivo con dadi interattivi cliccabili.
+    * Pulsante d'azione *"Apri pagina ↗"*.
+    * Gestione timer di hover (250ms) per permettere all'utente di spostare il cursore all'interno della popover.
+    * Chiusura automatica al click esterno o allo scorrimento della pagina.
+  * **Navigazione Diretta (`navigateToEntity`):** Cliccando sul link nel testo o nel popover, l'app passa istantaneamente alla pagina completa dell'entità corrispondente (`openSpellDetail`, `openMonsterDetail`, `openItem` per glossario/talenti/oggetti, `openBookReader` per regole del manuale), nascondendo in modo pulito tutte le altre viste aperte.
+  * **Stilizzazione Semantica:** Classi dedicate `.rh-ref-link`, `.ref-spell`, `.ref-condition`, `.ref-feat`, `.ref-item`, `.ref-monster`, `.ref-rule` e card `.rh-entity-popover` ottimizzata sia per il tema scuro profondo sia per il tema pergamena chiaro.
+  * Aggiunto test suite automatica `tests/test_entity_lookup.js`.
+
 ### [2026-11-11] - Ingestione Player's Handbook Completo & Architettura Modulare
 * **Autore:** Agente Contenuti
 * **Novità:**
@@ -117,5 +133,6 @@ Il motore di contenuti formatta il testo del Player's Handbook generando element
    node tests/test_bilingual_search.js
    node tests/test_species_theme_ui.js
    node tests/test_phb_content.js
+   node tests/test_entity_lookup.js
    ```
 4. Aggiornare la sezione *Registro Modifiche* di questo file dopo ogni implementazione significativa.

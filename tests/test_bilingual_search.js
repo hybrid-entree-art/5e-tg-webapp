@@ -14,7 +14,8 @@ global.localStorage = {
 global.window = { Telegram: null, addEventListener(){} };
 global.document = {
   querySelector: () => ({ classList: { add(){}, remove(){} }, style: {}, textContent: '', innerHTML: '', addEventListener(){} }),
-  querySelectorAll: () => []
+  querySelectorAll: () => [],
+  addEventListener: () => {}
 };
 
 // Load data files
