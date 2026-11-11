@@ -124,6 +124,19 @@ Il motore di contenuti formatta il testo del Player's Handbook generando element
   * **Navigazione Diretta (`navigateToEntity`):** Cliccando sul link nel testo o nel popover, l'app passa istantaneamente alla pagina completa dell'entità corrispondente (`openSpellDetail`, `openMonsterDetail`, `openItem` per glossario/talenti/oggetti, `openBookReader` per regole del manuale), nascondendo in modo pulito tutte le altre viste aperte.
   * **Stilizzazione Semantica:** Classi dedicate `.rh-ref-link`, `.ref-spell`, `.ref-condition`, `.ref-feat`, `.ref-item`, `.ref-monster`, `.ref-rule` e card `.rh-entity-popover` ottimizzata sia per il tema scuro profondo sia per il tema pergamena chiaro.
   * Aggiunto test suite automatica `tests/test_entity_lookup.js`.
+### [2026-11-11] - Home: redesign visivo (Agente Grafica & UI)
+* **Autore:** Agente Grafica & UI
+* **File toccati:** `index.html`, `prototype.html` (sincronizzati). Nessuna modifica a JS, API dati o classi semantiche.
+* **Novità:**
+  * **Hero → placca funzionale:** la ricerca diventa l'azione primaria e vive dentro la placca; il selettore ITA/ENG è compatto sulla stessa riga (su mobile non occupa più una riga dedicata).
+  * **Direttorio in 3 gruppi semantici** (Manuali / Creazione del personaggio / Al tavolo) con etichette e filetto: eliminate le 4 ripetizioni del kicker "CREAZIONE" e il rumore dei microtesti ripetuti.
+  * **Iconografia unificata:** le 11 card usano icone SVG lineari coerenti (prima glifi tipografici misti: ♬ per i Retaggi, ♜ per i Mostri, ♙ per i Bastioni) dentro tile ambra 36–38px.
+  * **Card:** fondo a tinta per categoria più sobrio, hover con bordo/glow e micro-sollevamento, chevron circolare come affordance, conteggi leggibili senza apici.
+  * **Masthead:** rimosse due azioni finte/duplicate (icona "Telegram" e dado dell'header: il dado resta nel FAB), target touch a 40px, icone senza bordo a riposo.
+  * **Accessibilità verificata:** contrasti misurati (h1 17.5:1, testi secondari 10.2:1, etichette di gruppo 6.5:1), `focus-visible` sulle card, nessun overflow né testo tagliato a 320 / 390 / 768 / 1280px.
+  * **FAB:** icona d20 corretta (era un cubo), 48px con blur di sfondo.
+  * **Tema chiaro "pergamena":** superfici, bordi e tinte delle card riallineate.
+  * **Nota sugli hook conservati:** `.cat-kicker`, `.cat-title`, `.cat-sub` e `data-view` restano nel DOM con gli stessi nomi, quindi la traduzione automatica e i selettori JS continuano a funzionare (il kicker è nascosto via CSS, non rimosso).
 
 ### [2026-11-11] - Ingestione Player's Handbook Completo & Architettura Modulare
 * **Autore:** Agente Contenuti
