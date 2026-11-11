@@ -68,6 +68,18 @@ class MiniAppContractTests(unittest.TestCase):
                      'data-view="feats"', 'data-view="equipment"', 'data-view="magic"',
                      'ITEMKINDS', 'itemListView', 'renderItemList'):
             self.assertIn(frag, html)
+    def test_spells_aligned_to_2024(self):
+        sp = load_arr('spells_data.js', 'XP_SPELLS')
+        self.assertEqual(len(sp), 391)
+        acid = next(x for x in sp if x['n'] == 'Acid Splash')
+        self.assertEqual(acid['lv'], 0)
+        self.assertEqual(acid['src'], 'PHB 2024')
+        self.assertTrue(acid['txt'])
+        self.assertTrue(all(s['n'] and s['txt'] for s in sp))
+        html = (ROOT/'prototype.html').read_text()
+        self.assertIn('spells_data.js', html)
+        self.assertIn('DATA.spells=XP_SPELLS', html)
+        self.assertIn('PHB · 2024', html)
     def test_bastions_and_glossary_data_is_real_2024(self):
         bas = load_arr('bastions_data.js', 'BASTIONS')
         self.assertEqual(len(bas), 35)
