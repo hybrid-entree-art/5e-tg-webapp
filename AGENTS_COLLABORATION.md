@@ -146,6 +146,17 @@ Il motore di contenuti formatta il testo del Player's Handbook generando element
     * **Modalità Mobile Ergonomica (`@media(max-width: 860px)`):** Barra di commutazione capitoli rapida (`.rh-reader-mobile-bar`) che apre e chiude la sidebar senza occupare spazio visivo sul foglio di lettura.
   * **Test Suite Dedicata (`tests/test_reader_ui_ruleholder.js`):** Valida al 100% l'integrità del DOM HTML (30 elementi), delle regole CSS (30 selettori), delle funzioni JavaScript (16 API) e della fedeltà al Capitolo 2 autentico in inglese.
 
+### [2026-11-12] - Artwork su Specie e Classi, atmosfera della home, rimozione slop
+* **Autore:** Agente Grafica & UI
+* **Asset:** `assets/species/*.webp` — 10 cutout con trasparenza da `media.ruleholder.com/images/species/`. Attribuzione in `assets/species/README.md`.
+* **Novità:**
+  * **Lista Specie:** artwork locale al posto dell'immagine remota di 5e.tools, con lo stesso comportamento della home — il soggetto esce dai bordi in hover/focus/pressione (scale 1.18, 6% verso l'alto e a sinistra), alone ambra e velo orizzontale per il testo. Nessuna modifica al renderer: tutto via CSS su `[data-spec]`.
+  * **Lista Classi:** artwork rettangolare (niente cutout) → **zoom** dell'immagine (1.09) dentro il riquadro, con glow ambra e bordo acceso.
+  * **Sfondo home:** luce ambientale a quattro radiali (ambra in alto, brace a destra, viola freddo a sinistra, ambra dal basso) + grana finissima a 3.5% in overlay fisso. Il tema chiaro ha la sua variante calda.
+  * **Rimozione slop:** eliminati `eyebrow` della home, i kicker di categoria, le frecce `↗` e i sottotitoli `· PHB 2024` ripetuti; il conteggio è ora un badge numerico monocromatico (`.cat-count`). Rimossa anche la riga "D&D 5.5e (2024) · fonti selezionate" accanto al titolo di sezione.
+* **Nota:** i `eyebrow` delle viste di dettaglio sono rimasti: lì sono etichette informative, non decorazione.
+* **Verifica:** 10/10 cutout specie caricati (340×340), hover misurato via CDP (`overflow:visible`, scala 1.18, `drop-shadow` ambra), zoom classi 1.09 con riquadro che resta tagliato, nessun overflow né titolo troncato a 320/390/768/1280, test suite verde.
+
 ### [2026-11-12] - Home: artwork di categoria con soggetto che esce dai bordi + glow
 * **Autore:** Agente Grafica & UI
 * **Asset:** `assets/menu/*.webp` — 11 cutout con trasparenza dal menu di `ruleholder.com` (`media.ruleholder.com/images/menu/`), scaricati il 2026-11-12 su autorizzazione dell'utente. Attribuzione e mappatura categorie in `assets/menu/README.md`.
