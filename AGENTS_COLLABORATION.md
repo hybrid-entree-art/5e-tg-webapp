@@ -90,6 +90,19 @@ Il motore di contenuti formatta il testo del Player's Handbook generando element
 
 ## 4. Registro Modifiche & Novità (Changelog)
 
+### [2026-11-12] - Restyling Totale Badge (Eliminazione Stili "AI Slop" & Allineamento Ruleholder)
+* **Autore:** Agente Grafica & UI
+* **Problema Risolto:** I badge delle fonti (`.rh-badge-phb`, `.rh-badge-dmg`, `.rh-badge-amber-outline`) utilizzavano colori accesi e poco realistici (verde neon `#4ade80` con bordo `#22542a` o arancione brillante con effetto finto-chip), tipici dei template generati da AI ("AI slop") e incompatibili con l'estetica autentica di Ruleholder.
+* **Novità & Regole di Design Ufficiale:**
+  * **Neutral Slate Minimalista (`.rh-badge-phb`, `.rh-badge-dmg`, `.rh-badge-mm`, `.rh-badge-source`):**
+    * Background scuro uniforme e piatto: `rgba(255, 255, 255, 0.05)` (dark) / `#eee7db` (light/warm).
+    * Bordo sottile ed elegante: `1px solid rgba(255, 255, 255, 0.1)` (dark) / `1px solid #dcd2c1` (light/warm).
+    * Testo color ardesia/crema ad alta leggibilità: `#c4bdcc` (dark) / `#4a433a` (light/warm).
+    * Tipografia: `var(--sans)`, `11px`, `font-weight: 600`, padding compatto `2px 7px`, border-radius `4px` netto e non a capsula deformata.
+    * Checkmark tipografico naturale `✓` dello stesso colore sobrio del testo.
+  * **Tag di Proprietà Discreti (`.rh-badge-amber-outline`, `.rh-badge-tag`, `.bg-skill-pill`, `.spell-mini-badge`):**
+    * Rimossa ogni fluorescenza ambra o verde: ora hanno un aspetto integrato, morbido ed equilibrato, esattamente identico agli screenshot di Ruleholder.
+
 ### [2026-11-12] - Nuova UX & UI Dettaglio Bastioni & Schede Oggetti (Ruleholder Spec Card)
 * **Autore:** Agente Contenuti & Agente Grafica & UI
 * **Riferimento UX:** Screenshot di Ruleholder `media_1794442074664_8f44693e.jpg` (Dettaglio Bastione *Semipiano / Demiplane*).
