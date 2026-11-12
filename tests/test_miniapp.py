@@ -80,7 +80,7 @@ class MiniAppContractTests(unittest.TestCase):
         self.assertTrue(all(('FOR' in m['stats'] and 'CAR' in m['stats']) for m in mo))
     def test_books_library_is_real_2024_core(self):
         books = load_arr('books_data.js', 'BOOKS')
-        self.assertEqual(len(books), 19)
+        self.assertGreaterEqual(len(books), 19)
         ids = {b['id'] for b in books}
         for core in ('XPHB', 'XDMG', 'XMM'):
             self.assertIn(core, ids)

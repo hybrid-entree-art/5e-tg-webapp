@@ -1607,68 +1607,499 @@ dialog input:focus,dialog select:focus{border-color:var(--rh-border-focus);outli
 }
 
 /* =====================================================================
-   INTERACTIVE BOOK READER (Screenshots 1, 4, 6, 7, 8, 9, 10)
+   RULEHOLDER MANUAL READER UX & UI (Screenshot media_1794441659988_e723283c.jpg)
    ===================================================================== */
 #bookReaderView {
-  margin-top: 8px;
+  margin-top: 6px;
+  width: 100%;
 }
-.reader-toolbar {
+.rh-reader-container {
+  display: grid;
+  grid-template-columns: 280px minmax(0, 1fr);
+  gap: 24px;
+  align-items: start;
+  margin-top: 12px;
+  width: 100%;
+}
+
+/* Left Sidebar - Sticky Chapter Accordion */
+.rh-reader-sidebar {
+  background: #fbf8f2;
+  border: 1px solid #e5ded2;
+  border-radius: 8px;
+  padding: 0;
+  position: sticky;
+  top: 16px;
+  max-height: calc(100vh - 36px);
+  overflow-y: auto;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  transition: all 0.2s ease;
+}
+.warm .rh-reader-sidebar {
+  background: #fbf8f2;
+  border-color: #e5ded2;
+}
+.dark .rh-reader-sidebar, .dark-reader .rh-reader-sidebar {
+  background: #17141a;
+  border-color: #2b2433;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+}
+
+/* Stepper Header inside Sidebar: < CAP. PREC. | 📖 | CAP. SUCC. > */
+.rh-reader-stepper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 10px;
+  border-bottom: 1px solid #e5ded2;
+  background: rgba(0, 0, 0, 0.02);
+  gap: 4px;
+}
+.dark .rh-reader-stepper, .dark-reader .rh-reader-stepper {
+  border-bottom-color: #2b2433;
+  background: rgba(255, 255, 255, 0.02);
+}
+.rh-stepper-nav-btn {
+  background: transparent;
+  border: none;
+  color: var(--rh-text-muted);
+  font-family: var(--sans);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  padding: 6px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+.rh-stepper-nav-btn:hover:not(:disabled) {
+  color: #8b1820;
+  background: rgba(139, 24, 32, 0.06);
+}
+.dark .rh-stepper-nav-btn:hover:not(:disabled), .dark-reader .rh-stepper-nav-btn:hover:not(:disabled) {
+  color: #f59e0b;
+  background: rgba(245, 158, 11, 0.1);
+}
+.rh-stepper-nav-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+.rh-stepper-toc-btn {
+  background: #ece3d3;
+  border: 1px solid #d9ccb8;
+  color: #4a3e30;
+  width: 32px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 15px;
+  transition: all 0.15s ease;
+  flex-shrink: 0;
+}
+.rh-stepper-toc-btn:hover {
+  background: #e0d4c0;
+  border-color: #8b1820;
+  color: #8b1820;
+}
+.dark .rh-stepper-toc-btn, .dark-reader .rh-stepper-toc-btn {
+  background: #251f2b;
+  border-color: #3b3145;
+  color: #d1c8db;
+}
+.dark .rh-stepper-toc-btn:hover, .dark-reader .rh-stepper-toc-btn:hover {
+  border-color: #f59e0b;
+  color: #f59e0b;
+}
+
+/* Accordion Chapters */
+.rh-reader-accordion {
+  display: flex;
+  flex-direction: column;
+}
+.rh-accordion-item {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+}
+.dark .rh-accordion-item, .dark-reader .rh-accordion-item {
+  border-bottom-color: rgba(255, 255, 255, 0.04);
+}
+.rh-chap-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  flex-wrap: wrap;
-  gap: 12px;
-  padding: 10px 0 16px;
-  border-bottom: 1px solid var(--rh-border-subtle);
-  margin-bottom: 16px;
+  padding: 10px 14px 10px 12px;
+  cursor: pointer;
+  font-family: var(--sans);
+  font-size: 13.5px;
+  font-weight: 500;
+  color: #2c2825;
+  border-left: 3px solid transparent;
+  transition: all 0.14s ease;
+  user-select: none;
 }
-.reader-toolbar-left {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  flex-wrap: wrap;
+.dark .rh-chap-header, .dark-reader .rh-chap-header {
+  color: #ded8ce;
 }
-.reader-book-heading {
-  font: 700 20px var(--sans);
-  color: #fff;
-  margin: 0;
+.rh-chap-header:hover {
+  background: rgba(0, 0, 0, 0.025);
+  color: #8b1820;
 }
-.reader-toolbar-actions {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex-wrap: wrap;
+.dark .rh-chap-header:hover, .dark-reader .rh-chap-header:hover {
+  background: rgba(255, 255, 255, 0.03);
+  color: #f59e0b;
 }
-.rh-mobile-toc-btn {
-  display: none;
+.rh-accordion-item.active .rh-chap-header {
+  border-left-color: #8b1820;
+  background: rgba(139, 24, 32, 0.07);
+  color: #1a1715;
+  font-weight: 700;
+}
+.dark .rh-accordion-item.active .rh-chap-header, .dark-reader .rh-accordion-item.active .rh-chap-header {
+  border-left-color: #ef4444;
+  background: rgba(239, 68, 68, 0.12);
+  color: #ffffff;
+}
+.rh-chap-chevron {
+  font-size: 13px;
+  color: var(--rh-text-muted);
+  transition: transform 0.15s ease;
 }
 
-/* Mode 1: 3-Column Parchment TOC Overview (Screenshot 1) */
+/* Chapter Sub-sections */
+.rh-chap-sections {
+  padding: 4px 0 8px;
+  background: rgba(0, 0, 0, 0.015);
+  display: flex;
+  flex-direction: column;
+}
+.dark .rh-chap-sections, .dark-reader .rh-chap-sections {
+  background: rgba(0, 0, 0, 0.2);
+}
+.rh-chap-sec-link {
+  display: block;
+  padding: 6px 14px 6px 26px;
+  font-family: var(--sans);
+  font-size: 13px;
+  color: #554e47;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.12s ease;
+}
+.dark .rh-chap-sec-link, .dark-reader .rh-chap-sec-link {
+  color: #9e9486;
+}
+.rh-chap-sec-link:hover {
+  color: #8b1820;
+  background: rgba(139, 24, 32, 0.04);
+  padding-left: 28px;
+}
+.dark .rh-chap-sec-link:hover, .dark-reader .rh-chap-sec-link:hover {
+  color: #f59e0b;
+  background: rgba(245, 158, 11, 0.06);
+}
+.rh-chap-sec-link.active {
+  color: #8b1820;
+  font-weight: 700;
+}
+.dark .rh-chap-sec-link.active, .dark-reader .rh-chap-sec-link.active {
+  color: #f59e0b;
+  font-weight: 700;
+}
+
+/* Right Main Reading Pane */
+.rh-reader-main {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.rh-reader-sheet {
+  background: #fdfaf3;
+  color: #23201d;
+  border: 1px solid #e5ded2;
+  border-radius: 8px;
+  padding: 36px 44px 56px;
+  box-shadow: 0 3px 18px rgba(0, 0, 0, 0.05);
+  min-height: 650px;
+  line-height: 1.68;
+}
+.warm .rh-reader-sheet {
+  background: #fdfaf3;
+  color: #23201d;
+  border-color: #e5ded2;
+}
+.dark .rh-reader-sheet, .dark-reader .rh-reader-sheet {
+  background: #141117;
+  color: #ded8ce;
+  border-color: #2b2433;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+/* Typography in Reading Sheet */
+.rh-reader-sheet h1, .rh-read-h1 {
+  font-family: var(--sans);
+  font-size: 26px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: #7a161d;
+  margin: 0 0 16px;
+  border-bottom: 2px solid #ecdcc8;
+  padding-bottom: 8px;
+}
+.dark .rh-reader-sheet h1, .dark-reader .rh-reader-sheet h1, .dark .rh-read-h1, .dark-reader .rh-read-h1 {
+  color: #f59e0b;
+  border-bottom-color: #2c251e;
+}
+.rh-read-kicker {
+  font-size: 11.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #8c2a2c;
+  margin-bottom: 4px;
+}
+.dark .rh-read-kicker, .dark-reader .rh-read-kicker {
+  color: var(--rh-text-muted);
+}
+.rh-reader-sheet .rh-book-h, .rh-read-h2, .rh-read-h3 {
+  color: #7a161d;
+  font-family: var(--sans);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  margin: 28px 0 10px;
+  border-bottom: none;
+}
+.rh-reader-sheet h3.rh-book-h {
+  font-size: 20px;
+  letter-spacing: 0.04em;
+  margin: 32px 0 12px;
+}
+.rh-reader-sheet h4.rh-book-h {
+  font-size: 16px;
+  margin: 24px 0 8px;
+}
+.rh-reader-sheet h5.rh-book-h {
+  font-size: 14px;
+  color: #4a1216;
+  text-transform: uppercase;
+  margin: 18px 0 6px;
+}
+.dark .rh-reader-sheet .rh-book-h, .dark-reader .rh-reader-sheet .rh-book-h {
+  color: #f59e0b;
+}
+.dark .rh-reader-sheet h5.rh-book-h, .dark-reader .rh-reader-sheet h5.rh-book-h {
+  color: #fbbf24;
+}
+.rh-book-p, .rh-read-p {
+  font-family: var(--sans);
+  font-size: 14.5px;
+  line-height: 1.68;
+  color: #2c2825;
+  margin: 0 0 14px;
+}
+.dark .rh-book-p, .dark-reader .rh-book-p, .dark .rh-read-p, .dark-reader .rh-read-p {
+  color: #ddd5c7;
+}
+
+/* Blue Entity Reference Links (Matching Ruleholder Screenshot) */
+.rh-ref-link, a.rh-ref-link {
+  color: #1976d2 !important;
+  text-decoration: none !important;
+  font-weight: 500;
+  cursor: pointer;
+  transition: color 0.15s, text-decoration 0.15s;
+}
+.rh-ref-link:hover, a.rh-ref-link:hover {
+  color: #0d47a1 !important;
+  text-decoration: underline !important;
+}
+.dark .rh-ref-link, .dark-reader .rh-ref-link, .dark a.rh-ref-link, .dark-reader a.rh-ref-link {
+  color: #64b5f6 !important;
+}
+.dark .rh-ref-link:hover, .dark-reader .rh-ref-link:hover, .dark a.rh-ref-link:hover, .dark-reader a.rh-ref-link:hover {
+  color: #90caf9 !important;
+}
+
+/* Inset / Note Box with Attached Banner Tab (Matching Screenshot) */
+.rh-book-inset, aside.rh-book-inset {
+  background: #f4ecdf;
+  border: 1px solid #d4c8b5;
+  border-radius: 0 4px 4px 4px;
+  padding: 16px 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  margin: 26px 0;
+  position: relative;
+}
+.rh-book-inset .rh-inset-title, aside.rh-book-inset .rh-inset-title {
+  display: inline-block;
+  background: #362f2d;
+  color: #ffffff;
+  padding: 4px 14px;
+  font-family: var(--sans);
+  font-size: 11.5px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border-radius: 4px 4px 0 0;
+  margin: -16px -20px 14px -20px;
+  border: none;
+}
+.dark .rh-book-inset, .dark-reader .rh-book-inset, .dark aside.rh-book-inset, .dark-reader aside.rh-book-inset {
+  background: #1c1815;
+  border-color: #3d342a;
+}
+.dark .rh-book-inset .rh-inset-title, .dark-reader .rh-book-inset .rh-inset-title, .dark aside.rh-book-inset .rh-inset-title, .dark-reader aside.rh-book-inset .rh-inset-title {
+  background: #2b221d;
+  color: #f59e0b;
+}
+
+/* Chapter Tables */
+.rh-book-table-wrap {
+  width: 100%;
+  overflow-x: auto;
+  margin: 18px 0 24px;
+  border: 1px solid #d4c8b5;
+  border-radius: 6px;
+}
+.rh-book-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13.5px;
+  text-align: left;
+}
+.rh-book-table caption {
+  font-weight: 700;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 8px 12px;
+  text-align: left;
+  background: #eae2d3;
+  color: #3a3229;
+}
+.dark .rh-book-table caption {
+  background: #25202c;
+  color: #e2dbec;
+}
+.rh-book-table th {
+  background: #7a161d;
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 12.5px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 8px 12px;
+}
+.dark .rh-book-table th {
+  background: #2a151b;
+  color: #f59e0b;
+}
+.rh-book-table td {
+  padding: 7px 12px;
+  border-top: 1px solid #e5ded2;
+}
+.rh-book-table tr:nth-child(even) td {
+  background: rgba(0, 0, 0, 0.02);
+}
+.dark .rh-book-table tr:nth-child(even) td {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+/* Chapter Footer Stepper */
+.rh-reader-chapter-footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid var(--rh-border-subtle);
+}
+.rh-footer-step-btn {
+  background: var(--rh-bg-surface);
+  border: 1px solid var(--rh-border-subtle);
+  border-radius: 8px;
+  padding: 12px 18px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  max-width: 48%;
+  text-align: left;
+}
+.rh-footer-step-btn:hover:not(:disabled) {
+  border-color: var(--rh-accent-primary);
+  background: rgba(245, 158, 11, 0.06);
+  transform: translateY(-2px);
+}
+.rh-footer-step-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+.rh-footer-step-btn .step-arr {
+  font-size: 22px;
+  color: var(--rh-accent-primary);
+  line-height: 1;
+}
+.rh-footer-step-btn .step-label {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--rh-text-muted);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+.rh-footer-step-btn .step-title {
+  display: block;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--rh-text-primary);
+  margin-top: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* 3-Column Parchment TOC Overview Modal/Drawer */
 .reader-toc-overview {
   margin-bottom: 24px;
 }
 .reader-toc-banner {
   background: #171f2b;
   color: #fff;
-  font: 700 16px var(--sans);
+  font: 700 15px var(--sans);
   text-transform: uppercase;
   letter-spacing: 0.05em;
   padding: 12px 18px;
   display: flex;
   align-items: center;
-  gap: 10px;
+  justify-content: space-between;
   border-radius: 8px 8px 0 0;
   border: 1px solid #2a3545;
   border-bottom: none;
+}
+.rh-toc-close-btn {
+  background: transparent;
+  border: none;
+  color: #c9d2de;
+  font-size: 16px;
+  cursor: pointer;
+  padding: 2px 6px;
 }
 .reader-parchment-sheet {
   background: #fbf7ee;
   color: #22201d;
   border: 1px solid #dcd3c4;
   box-shadow: 0 4px 18px rgba(0,0,0,0.15);
-  transition: background 0.2s, color 0.2s;
 }
-.dark-reader .reader-parchment-sheet {
+.dark-reader .reader-parchment-sheet, .dark .reader-parchment-sheet {
   background: #12100d;
   color: #f5f0e8;
   border-color: #2c251e;
@@ -1702,19 +2133,8 @@ dialog input:focus,dialog select:focus{border-color:var(--rh-border-focus);outli
   color: #a82e30;
   text-decoration: underline;
 }
-.dark-reader .toc-heading-red {
+.dark .toc-heading-red, .dark-reader .toc-heading-red {
   color: #f59e0b;
-}
-.dark-reader .toc-heading-red:hover {
-  color: #fbbf24;
-}
-.toc-subheading {
-  font: 700 13px var(--sans);
-  color: #555047;
-  margin: 8px 0 4px;
-}
-.dark-reader .toc-subheading {
-  color: #a89e90;
 }
 .toc-list {
   list-style: none;
@@ -1734,516 +2154,54 @@ dialog input:focus,dialog select:focus{border-color:var(--rh-border-focus);outli
   text-decoration: underline;
   transform: translateX(2px);
 }
-.dark-reader .toc-list li {
+.dark .toc-list li, .dark-reader .toc-list li {
   color: #c9c0b3;
 }
-.dark-reader .toc-list li:hover {
-  color: #f59e0b;
-}
-.toc-list li.sub-item {
-  padding-left: 14px;
-  font-size: 12px;
-  color: #5c564e;
-}
-.dark-reader .toc-list li.sub-item {
-  color: #9e9486;
-}
-
-/* Mode 2: Interactive Chapter Reader Layout (Screenshots 6-10) */
-.reader-split-view {
-  display: grid;
-  grid-template-columns: 280px minmax(0, 1fr);
-  gap: 16px;
-  align-items: start;
-}
-.reader-sidebar {
-  background: var(--rh-bg-surface);
-  border: 1px solid var(--rh-border-subtle);
-  border-radius: 8px;
-  padding: 10px 0;
-  position: sticky;
-  top: 76px;
-  max-height: calc(100vh - 90px);
-  overflow-y: auto;
-}
-.reader-stepper-header {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 4px;
-  padding: 4px 10px 10px;
-  border-bottom: 1px solid var(--rh-border-subtle);
-  margin-bottom: 8px;
-}
-.rh-stepper-btn {
-  background: #1a1612;
-  border: 1px solid #332b22;
-  color: #c9c0b3;
-  font-size: 10.5px;
-  font-weight: 700;
-  font-family: var(--condensed);
-  letter-spacing: 0.04em;
-  padding: 6px 4px;
-  border-radius: 4px;
-  cursor: pointer;
-  text-align: center;
-  transition: all 0.14s;
-}
-.rh-stepper-btn:hover:not(:disabled) {
-  border-color: var(--rh-accent-primary);
-  color: #fff;
-  background: #26201a;
-}
-.rh-stepper-btn:disabled {
-  opacity: 0.35;
-  cursor: not-allowed;
-}
-.reader-nav-tree {
-  padding: 0 4px;
-}
-.nav-group-title {
-  font: 700 12px var(--sans);
-  color: var(--rh-text-muted);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  padding: 8px 12px 4px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  cursor: pointer;
-}
-.nav-item-btn {
-  width: 100%;
-  text-align: left;
-  background: transparent;
-  border: none;
-  border-left: 3px solid transparent;
-  padding: 6px 12px 6px 14px;
-  font-size: 12.5px;
-  color: var(--rh-text-secondary);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  cursor: pointer;
-  transition: all 0.12s;
-  border-radius: 0 4px 4px 0;
-}
-.nav-item-btn:hover {
-  background: rgba(255, 255, 255, 0.03);
-  color: #fff;
-}
-.nav-item-btn.active {
-  background: rgba(122, 32, 33, 0.15);
-  border-left-color: #7a2021;
-  color: #fff;
-  font-weight: 700;
-}
-.dark-reader .nav-item-btn.active {
-  background: rgba(245, 158, 11, 0.15);
-  border-left-color: #f59e0b;
-}
-
-/* Article Reading Pane */
-.reader-article-pane {
-  border-radius: 8px;
-  padding: 32px 36px 48px;
-  min-height: 600px;
-}
-.rh-read-h1 {
-  font: 700 26px var(--sans);
-  color: #7a2021;
-  text-transform: uppercase;
-  letter-spacing: 0.02em;
-  margin: 0 0 16px;
-  border-bottom: 2px solid #ecdcc8;
-  padding-bottom: 8px;
-}
-.dark-reader .rh-read-h1 {
-  color: #f59e0b;
-  border-bottom-color: #2c251e;
-}
-.rh-read-h2 {
-  font: 700 20px var(--sans);
-  color: #7a2021;
-  text-transform: uppercase;
-  margin: 22px 0 10px;
-}
-.dark-reader .rh-read-h2 {
-  color: #f59e0b;
-}
-.rh-read-h3 {
-  font: 700 16px var(--sans);
-  color: #58180d;
-  margin: 16px 0 6px;
-}
-.dark-reader .rh-read-h3 {
-  color: #fbbf24;
-}
-.rh-read-kicker {
-  font-size: 12px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: #8c2a2c;
-  margin-bottom: 4px;
-}
-.dark-reader .rh-read-kicker {
-  color: var(--rh-text-muted);
-}
-.rh-read-p {
-  font-size: 14px;
-  line-height: 1.68;
-  margin: 0 0 14px;
-  color: inherit;
-}
-
-/* Callout Box "GUARDA E IMPARA" (Screenshot 7) */
-.rh-callout-learn {
-  background: #ede4d1;
-  border: 2px solid #29241f;
-  border-radius: 4px;
-  margin: 24px 0;
-  position: relative;
-  box-shadow: 0 3px 10px rgba(0,0,0,0.06);
-}
-.dark-reader .rh-callout-learn {
-  background: #1e1914;
-  border-color: #4a3c2e;
-}
-.rh-callout-ribbon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #24201b;
-  color: #fff;
-  padding: 4px 12px;
-  gap: 12px;
-  font: 700 12px var(--sans);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-.rh-callout-body {
-  padding: 16px 20px;
-  font-size: 13.5px;
-  line-height: 1.65;
-  color: #2b2621;
-}
-.dark-reader .rh-callout-body {
-  color: #dcd3c4;
-}
-
-/* Subclass Layout with Arched Portrait (Screenshot 8) */
-.rh-subclass-hero {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 220px;
-  gap: 24px;
-  align-items: start;
-  margin: 14px 0 20px;
-}
-.rh-quote-bar {
-  border-left: 3px solid #d97706;
-  padding: 4px 12px;
-  font-style: italic;
-  color: #635b50;
-  font-size: 13.5px;
-  margin: 8px 0 14px;
-}
-.dark-reader .rh-quote-bar {
-  color: #b3a795;
-}
-.rh-portrait-card {
-  position: relative;
-  display: flex;
-  justify-content: center;
-}
-.rh-portrait-frame {
-  width: 190px;
-  height: 270px;
-  border-radius: 60px 60px 10px 10px;
-  border: 3px solid #d4a359;
-  overflow: hidden;
-  box-shadow: 0 8px 24px rgba(212, 163, 89, 0.28), 0 4px 12px rgba(0,0,0,0.3);
-  background: #181410;
-}
-.rh-portrait-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center 10%;
-  display: block;
-}
-
-/* Feature Progression Table */
-.rh-subclass-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin: 16px 0 24px;
-  font-size: 13px;
-  border: 1px solid #dcd1be;
-}
-.dark-reader .rh-subclass-table {
-  border-color: #383025;
-}
-.rh-subclass-table th {
-  background: #2a3545;
-  color: #fff;
-  padding: 8px 12px;
-  text-align: left;
-  font-family: var(--sans);
-  font-size: 12.5px;
-}
-.dark-reader .rh-subclass-table th {
-  background: #1b2430;
-}
-.rh-subclass-table td {
-  padding: 8px 12px;
-  border-bottom: 1px solid #e5dccb;
-  color: inherit;
-}
-.dark-reader .rh-subclass-table td {
-  border-bottom-color: #2b241c;
-}
-.rh-subclass-table tr:nth-child(even) td {
-  background: rgba(0,0,0,0.02);
-}
-.dark-reader .rh-subclass-table tr:nth-child(even) td {
-  background: rgba(255,255,255,0.02);
-}
-
-/* 3-Column Creature List (Screenshot 10) */
-.rh-creatures-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 12px 18px;
-  margin-top: 18px;
-}
-.rh-creature-link {
-  background: transparent;
-  border: none;
-  text-align: left;
-  padding: 4px 6px;
-  font: 700 13px var(--sans);
-  text-transform: uppercase;
-  color: #3b3630;
-  cursor: pointer;
-  letter-spacing: 0.02em;
-  transition: color 0.12s;
-  border-radius: 4px;
-}
-.rh-creature-link:hover {
-  color: #7a2021;
-  background: rgba(122, 32, 33, 0.08);
-}
-.dark-reader .rh-creature-link {
-  color: #d8cebf;
-}
-.dark-reader .rh-creature-link:hover {
-  color: #f59e0b;
-  background: rgba(245, 158, 11, 0.12);
-}
-
-/* Cover Image Hero Frame */
-.rh-hero-cover-frame {
-  margin: 16px 0 20px;
-  border-radius: 8px;
-  overflow: hidden;
-  border: 1px solid #dcd1be;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.12);
-}
-.dark-reader .rh-hero-cover-frame {
-  border-color: #332b22;
-}
-.rh-hero-cover-frame svg {
-  display: block;
-  width: 100%;
-  height: auto;
-}
-.rh-cover-caption {
-  font-size: 11.5px;
-  color: #736b5f;
-  text-align: center;
-  margin-top: 8px;
-  font-style: italic;
-}
-.dark-reader .rh-cover-caption {
-  color: #9c9182;
-}
-
-/* Player's Handbook Content Elements */
-.rh-book-body {
-  font-size: 15px;
-  line-height: 1.74;
-}
-.rh-book-p {
-  margin: 0 0 14px;
-}
-.rh-book-h {
-  font-family: var(--display);
-  font-weight: 700;
-  color: #7a2021;
-  margin: 28px 0 12px;
-}
-.dark-reader .rh-book-h {
-  color: #e28789;
-}
-h2.rh-book-h { font-size: 22px; border-bottom: 1px solid rgba(122, 32, 33, 0.2); padding-bottom: 6px; }
-h3.rh-book-h { font-size: 18px; }
-h4.rh-book-h { font-size: 16px; }
-h5.rh-book-h { font-size: 14.5px; }
-
-.rh-book-quote {
-  border-left: 3px solid #7a2021;
-  background: rgba(122, 32, 33, 0.05);
-  padding: 12px 18px;
-  margin: 18px 0;
-  border-radius: 0 8px 8px 0;
-  font-style: italic;
-}
-.dark-reader .rh-book-quote {
-  border-left-color: #e28789;
-  background: rgba(226, 135, 137, 0.08);
-}
-.rh-book-quote cite {
-  display: block;
-  font-size: 12.5px;
-  color: var(--rh-text-muted);
-  margin-top: 6px;
-  font-style: normal;
-  text-align: right;
-}
-
-.rh-book-inset {
-  border: 1px solid #d4a359;
-  background: #fbf5e6;
-  border-radius: 10px;
-  padding: 18px;
-  margin: 22px 0;
-}
-.dark-reader .rh-book-inset {
-  border-color: #785a2c;
-  background: #191612;
-}
-.rh-inset-title {
-  font: 700 15px var(--sans);
-  color: #7a2021;
-  margin: 0 0 10px;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-}
-.dark-reader .rh-inset-title {
+.dark .toc-list li:hover, .dark-reader .toc-list li:hover {
   color: #f59e0b;
 }
 
-.rh-book-list {
-  padding-left: 22px;
-  margin: 12px 0 16px;
+/* Mobile Bar & Drawer */
+.rh-reader-mobile-bar {
+  display: none;
+  margin-bottom: 12px;
 }
-.rh-book-list li {
-  margin-bottom: 6px;
-  line-height: 1.6;
-}
-
-.rh-book-table-wrap {
-  overflow-x: auto;
-  margin: 20px 0;
-  border-radius: 8px;
-  border: 1px solid var(--rh-border-subtle);
-}
-.rh-book-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 13.5px;
-}
-.rh-book-table th {
-  background: #7a2021;
-  color: #fff;
-  padding: 9px 12px;
-  text-align: left;
-  font-weight: 700;
-}
-.dark-reader .rh-book-table th {
-  background: #36171a;
-  color: #f5e8e8;
-}
-.rh-book-table td {
-  padding: 8px 12px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
-}
-.dark-reader .rh-book-table td {
-  border-bottom-color: rgba(255, 255, 255, 0.06);
-}
-.rh-book-table tr:nth-child(even) td {
-  background: rgba(0, 0, 0, 0.02);
-}
-.dark-reader .rh-book-table tr:nth-child(even) td {
-  background: rgba(255, 255, 255, 0.02);
-}
-
-.rh-dice-pill {
-  display: inline-block;
-  padding: 1px 7px;
-  border-radius: 6px;
-  background: rgba(245, 158, 11, 0.15);
-  color: #b45309;
-  font-weight: 700;
-  cursor: pointer;
-  border: 1px solid rgba(245, 158, 11, 0.3);
-  font-family: var(--sans);
-}
-.dark-reader .rh-dice-pill {
-  color: #f59e0b;
-  background: rgba(245, 158, 11, 0.2);
-}
-.rh-ref-link {
-  color: #7a2021;
-  text-decoration: underline;
-  text-underline-offset: 2px;
-  cursor: pointer;
-}
-.dark-reader .rh-ref-link {
-  color: #e28789;
-}
-
-@media(max-width:768px){
-  .reader-split-view {
-    grid-template-columns: 1fr;
+@media (max-width: 860px) {
+  .rh-reader-mobile-bar {
+    display: block;
   }
-  .reader-sidebar {
+  .rh-reader-container {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  .rh-reader-sidebar {
     display: none;
     position: static;
     max-height: none;
     margin-bottom: 16px;
   }
-  .reader-sidebar.mobile-open {
+  .rh-reader-sidebar.mobile-open {
     display: block;
-  }
-  .rh-mobile-toc-btn {
-    display: inline-flex;
   }
   .reader-toc-grid {
     grid-template-columns: 1fr;
   }
-  .rh-creatures-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-  .rh-subclass-hero {
-    grid-template-columns: 1fr;
-  }
-  .rh-portrait-frame {
-    width: 160px;
-    height: 220px;
-  }
-  .reader-article-pane {
-    padding: 20px 16px 32px;
-  }
 }
-@media(max-width:480px){
-  .rh-creatures-grid {
-    grid-template-columns: 1fr;
-  }
-  .bg-card-top {
-    flex-direction: column;
-  }
+.rh-reader-mobile-toggle {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--rh-bg-surface);
+  border: 1px solid var(--rh-border-subtle);
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-family: var(--sans);
+  font-size: 13.5px;
+  color: var(--rh-text-primary);
+  cursor: pointer;
 }
+
 
 /* =====================================================================
    SEARCH & BILINGUAL SUITE (Ruleholder Dark Fantasy Style)
@@ -5240,8 +5198,9 @@ body:not(.dark-reader) .rh-popover-nav-btn:hover {
       <div id="itemDetailText" class="bg-text"></div>
     </section>
 
-    <!-- Ruleholder Interactive Book Reader (Screenshots 1, 6, 7, 8, 9, 10) -->
+    <!-- Ruleholder Interactive Book Reader (Screenshot media_1794441659988_e723283c.jpg) -->
     <section id="bookReaderView" class="hidden">
+      <!-- Breadcrumbs -->
       <div class="nav-crumbs">
         <button type="button" class="nav-crumb-btn" onclick="goHomeDirectly(event)">📖 <span data-home-crumb>Elenco</span></button>
         <span class="nav-crumb-sep">/</span>
@@ -5250,45 +5209,88 @@ body:not(.dark-reader) .rh-popover-nav-btn:hover {
         <span class="nav-crumb-current" id="readerBookCrumb">Libro del giocatore</span>
       </div>
 
-      <div class="reader-toolbar">
+      <div class="reader-toolbar" style="margin-bottom:12px;padding-bottom:10px;">
         <div class="reader-toolbar-left">
           <button class="back detail-back" id="readerBackBtn" onclick="backToItemList()">← Biblioteca</button>
           <span class="rh-badge-phb" id="readerSourceBadge">✓ PHB</span>
           <h2 class="reader-book-heading" id="readerBookHeading">Libro del giocatore</h2>
         </div>
         <div class="reader-toolbar-actions">
-          <button type="button" class="filter active" id="readerModeTOC" onclick="switchReaderMode('toc')">📋 Indice generale</button>
-          <button type="button" class="filter" id="readerModeReader" onclick="switchReaderMode('reader')">📖 Lettore</button>
+          <button type="button" class="filter" id="readerModeTOC" onclick="toggleReaderTOCView()">📋 Indice generale</button>
           <button type="button" class="filter rh-mobile-toc-btn" id="readerMobileTocBtn" onclick="toggleReaderMobileTOC()">☰ Capitoli</button>
         </div>
       </div>
 
-      <!-- Mode 1: 3-Column Parchment TOC Overview (Screenshot 1) -->
-      <div id="readerTocOverview" class="reader-toc-overview">
+      <!-- Mode 1: 3-Column Parchment TOC Overview (When user clicks 📋 Indice o icona libro) -->
+      <div id="readerTocOverview" class="reader-toc-overview hidden">
         <div class="reader-toc-banner">
-          <span>📖</span>
-          <span>CONTENUTO</span>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <span>📖</span>
+            <span>INDICE GENERALE DEL MANUALE</span>
+          </div>
+          <button type="button" class="rh-toc-close-btn" onclick="toggleReaderTOCView()" title="Chiudi indice">✕</button>
         </div>
         <div class="reader-parchment-sheet reader-toc-grid" id="readerTocGrid">
           <!-- Populated by JS -->
         </div>
       </div>
 
-      <!-- Mode 2: Interactive Chapter Reader Layout (Screenshots 6-10) -->
-      <div id="readerSplitView" class="reader-split-view hidden">
-        <aside class="reader-sidebar" id="readerSidebar">
-          <div class="reader-stepper-header">
-            <button type="button" class="rh-stepper-btn" id="prevChapterBtn" onclick="readerPrevSection()">‹ CAPITOLO PRECEDENTE</button>
-            <button type="button" class="rh-stepper-btn" id="nextChapterBtn" onclick="readerNextSection()">CAPITOLO SUCCESSIVO ›</button>
+      <!-- Ruleholder Reader Layout (Screenshot media_1794441659988_e723283c.jpg) -->
+      <div class="rh-reader-container" id="readerSplitView">
+        <!-- Left Column: Chapter Accordion Sidebar -->
+        <aside class="rh-reader-sidebar" id="readerSidebar">
+          <!-- Stepper Header: < CAP. PREC. | 📖 | CAP. SUCC. > -->
+          <div class="rh-reader-stepper">
+            <button type="button" class="rh-stepper-nav-btn" id="prevChapterBtn" onclick="readerPrevChapter()" title="Capitolo precedente">
+              <span>‹</span> <span>CAP. PREC.</span>
+            </button>
+            <button type="button" class="rh-stepper-toc-btn" id="readerTocBtn" onclick="toggleReaderTOCView()" title="Mostra indice generale">
+              📖
+            </button>
+            <button type="button" class="rh-stepper-nav-btn" id="nextChapterBtn" onclick="readerNextChapter()" title="Capitolo successivo">
+              <span>CAP. SUCC.</span> <span>›</span>
+            </button>
           </div>
-          <nav class="reader-nav-tree" id="readerNavTree">
-            <!-- Nav tree items populated by JS -->
+
+          <!-- Accordion Tree of Chapters -->
+          <nav class="rh-reader-accordion" id="readerNavTree">
+            <!-- Populated dynamically by JS -->
           </nav>
         </aside>
 
-        <article class="reader-article-pane reader-parchment-sheet" id="readerArticlePane">
-          <!-- Reading Section Content populated by JS -->
-        </article>
+        <!-- Right Column: Immersive Reading Pane -->
+        <main class="rh-reader-main">
+          <!-- Mobile Toggle Bar for Small Screens -->
+          <div class="rh-reader-mobile-bar">
+            <button type="button" class="rh-reader-mobile-toggle" onclick="toggleReaderMobileTOC()">
+              <span>☰ Capitoli: <b id="readerMobileActiveChapter">Capitolo 2</b></span>
+              <span class="rh-mobile-arrow">▾</span>
+            </button>
+          </div>
+
+          <!-- Book Reading Sheet -->
+          <article class="rh-reader-sheet" id="readerArticlePane">
+            <!-- Full chapter content rendered here -->
+          </article>
+
+          <!-- Bottom Chapter Stepper Footer -->
+          <div class="rh-reader-chapter-footer" id="readerChapterFooter">
+            <button type="button" class="rh-footer-step-btn" id="footerPrevBtn" onclick="readerPrevChapter()">
+              <span class="step-arr">‹</span>
+              <div class="step-text">
+                <span class="step-label">CAPITOLO PRECEDENTE</span>
+                <span class="step-title" id="footerPrevTitle">Cap. 1. Modalità di gioco</span>
+              </div>
+            </button>
+            <button type="button" class="rh-footer-step-btn next" id="footerNextBtn" onclick="readerNextChapter()" style="margin-left:auto;">
+              <div class="step-text" style="text-align:right;">
+                <span class="step-label">PROSSIMO CAPITOLO</span>
+                <span class="step-title" id="footerNextTitle">Cap. 3. Classi</span>
+              </div>
+              <span class="step-arr">›</span>
+            </button>
+          </div>
+        </main>
       </div>
     </section>
   </main>
@@ -10078,43 +10080,422 @@ function backToItemList(){
 }
 
 /* =====================================================================
-   INTERACTIVE BOOK READER SUITE (Screenshots 1, 6, 7, 8, 9, 10)
+   INTERACTIVE BOOK READER SUITE (Screenshot media_1794441659988_e723283c.jpg)
    ===================================================================== */
 let activeBookReader = 'XPHB';
-let activeReaderSection = 'intro';
+let activeReaderChapter = '02_creating_a_character';
+let activeReaderSection = 'get-ready';
 let readerTheme = 'parchment';
-let readerMode = 'toc';
+let readerMode = 'reader';
 
-const XPHB_SECTIONS = [
-  { id: 'intro', num: '', title: "L'avventura ti chiama!", group: "Introduzione" },
-  { id: 'intro-what-need', num: '', title: "Cosa ti servirà", group: "Introduzione" },
-  { id: 'intro-how-use', num: '', title: "Come usare questo libro", group: "Introduzione" },
-  { id: 'intro-worlds', num: '', title: "Mondi d'avventura", group: "Introduzione" },
-  { id: 'cap1', num: '1', title: "Capitolo 1. Modalità di gioco", group: "Regole di gioco" },
-  { id: 'cap1-dm', num: '1.1', title: "Giocatore o padrone?", group: "Regole di gioco" },
-  { id: 'cap1-rhythm', num: '1.2', title: "Ritmo del gioco", group: "Regole di gioco" },
-  { id: 'cap1-dice', num: '1.3', title: "Dadi da gioco", group: "Regole di gioco" },
-  { id: 'cap1-abilities', num: '1.4', title: "Sei caratteristiche", group: "Regole di gioco" },
-  { id: 'cap1-d20', num: '1.5', title: "Test D20", group: "Regole di gioco" },
-  { id: 'cap1-actions', num: '1.6', title: "Azioni in Combattimento", group: "Regole di gioco" },
-  { id: 'cap1-study', num: '1.7', title: "Studio: Visione, Luce e Oggetti", group: "Regole di gioco" },
-  { id: 'cap2', num: '2', title: "Capitolo 2. Creazione del personaggio", group: "Personaggi" },
-  { id: 'cap3', num: '3', title: "Capitolo 3. Le classi", group: "Classi" },
-  { id: 'cap3-wizard-evoc', num: '3.1', title: "Mago: Maestro dell'Evocazione", group: "Classi" },
-  { id: 'cap3-fighter-bm', num: '3.2', title: "Guerriero: Maestro di Battaglia", group: "Classi" },
-  { id: 'cap3-barbarian', num: '3.3', title: "Barbaro: Via del Berserker", group: "Classi" },
-  { id: 'cap3-cleric', num: '3.4', title: "Sacerdote: Dominio della Vita", group: "Classi" },
-  { id: 'cap4', num: '4', title: "Capitolo 4. Origini", group: "Origini" },
-  { id: 'cap4-artista', num: '4.1', title: "Retaggio: Artista", group: "Origini" },
-  { id: 'cap4-nobile', num: '4.2', title: "Retaggio: Nobile", group: "Origini" },
-  { id: 'cap4-specie', num: '4.3', title: "Descrizione delle Specie", group: "Origini" },
-  { id: 'cap5', num: '5', title: "Capitolo 5. Caratteristiche (Talenti)", group: "Equip & Magia" },
-  { id: 'cap6', num: '6', title: "Capitolo 6. Attrezzatura e Armi", group: "Equip & Magia" },
-  { id: 'cap7', num: '7', title: "Capitolo 7. Incantesimi", group: "Equip & Magia" },
-  { id: 'app-a', num: 'A', title: "Appendice A. Multiverso", group: "Appendici" },
-  { id: 'app-b-creatures', num: 'B', title: "Appendice B. Parametri della creatura", group: "Appendici" },
-  { id: 'app-c-glossary', num: 'C', title: "Appendice C. Glossario delle regole", group: "Appendici" }
-];
+function getItalianChapterName(chId){
+  const names = {
+    '00_intro': "L'avventura ti chiama!",
+    '01_playing_the_game': "Cap. 1. Modalità di gioco",
+    '02_creating_a_character': "Cap. 2. Creazione del personaggio",
+    '03_character_classes': "Cap. 3. Classi dei personaggi",
+    '04_character_origins': "Cap. 4. Origini dei personaggi",
+    '05_feats': "Cap. 5. Talenti",
+    '06_equipment': "Cap. 6. Equipaggiamento",
+    '07_spells': "Cap. 7. Incantesimi",
+    '08_appendix_a_multiverse': "App. A. Il Multiverso",
+    '09_appendix_b_creatures': "App. B. Parametri delle creature",
+    '10_rules_glossary': "App. C. Glossario delle regole",
+    '11_credits': "Crediti e ringraziamenti"
+  };
+  return names[chId] || '';
+}
+
+function getItalianSectionName(secId){
+  const secNames = {
+    'get-ready': "Preparazione (Get Ready)",
+    'talk-with-your-dm': "Parla con il DM",
+    'choose-a-character-sheet': "Scegli una scheda",
+    'create-your-character': "Crea il tuo personaggio",
+    'step-1-choose-a-class': "Passo 1: Scegli una classe",
+    'step-2-determine-origin': "Passo 2: Determina l'origine",
+    'step-3-determine-ability-scores': "Passo 3: Punteggi di caratteristica",
+    'step-4-choose-an-alignment': "Passo 4: Scegli l'allineamento",
+    'step-5-fill-in-details': "Passo 5: Completa i dettagli",
+    'level-advancement': "Avanzamento di livello",
+    'starting-at-higher-levels': "Iniziare a livelli superiori",
+    'multiclassing': "Multiclasse",
+    'trinkets': "Bazzecole (Trinkets)",
+    'what-you-need': "Cosa ti servirà",
+    'using-this-book': "Come usare questo libro",
+    'worlds-of-adventure': "Mondi d'avventura",
+    'rules-glossary': "Glossario delle regole",
+    'player-or-dm': "Giocatore o DM?",
+    'rhythm-of-play': "Ritmo del gioco",
+    'an-ongoing-game': "Il gioco in corso",
+    'dice': "Dadi da gioco",
+    'd20-test': "Test del D20",
+    'actions': "Azioni in combattimento"
+  };
+  return secNames[secId] || '';
+}
+
+function openBookReader(bookId, sectionOrChapId){
+  triggerHaptic('light');
+  activeBookReader = bookId || 'XPHB';
+  const b = (typeof BOOKS !== 'undefined' && Array.isArray(BOOKS) && BOOKS.find(x => x.id === activeBookReader)) || (typeof BOOKS !== 'undefined' && BOOKS.find(x => x.id === 'XPHB')) || (typeof BOOKS !== 'undefined' && BOOKS[0]);
+  view = 'bookreader';
+
+  $('#homeView .hero').classList.add('hidden');
+  $('.search-wrap').classList.add('hidden');
+  $('#directory').classList.add('hidden');
+  $('#searchResults').classList.add('hidden');
+  $('#resultsView').classList.add('hidden');
+  $('#classListView').classList.add('hidden');
+  $('#classDetailView').classList.add('hidden');
+  $('#bgListView').classList.add('hidden');
+  $('#bgDetailView').classList.add('hidden');
+  $('#specListView').classList.add('hidden');
+  $('#specDetailView').classList.add('hidden');
+  $('#itemListView').classList.add('hidden');
+  $('#itemDetailView').classList.add('hidden');
+  $('#bookReaderView').classList.remove('hidden');
+
+  const displayBookTitle = (b && (b.itName || b.it || b.name)) || 'Libro del giocatore';
+  $('#readerBookHeading').textContent = displayBookTitle;
+  $('#readerBookCrumb').textContent = displayBookTitle;
+  $('#readerSourceBadge').textContent = '✓ ' + ((b && b.source) || 'PHB');
+
+  // Render 3-column TOC for quick access
+  if (b) renderReaderTOC(b);
+
+  if (sectionOrChapId) {
+    if (window.PHB_CONTENT && PHB_CONTENT.getChapter(sectionOrChapId)) {
+      activeReaderChapter = sectionOrChapId;
+      activeReaderSection = '';
+    } else {
+      activeReaderSection = sectionOrChapId;
+      if (window.PHB_CONTENT) {
+        const found = PHB_CONTENT.getSection(sectionOrChapId);
+        if (found && found.chapter) activeReaderChapter = found.chapter.id;
+      }
+    }
+  } else {
+    // Default to Chapter 2 (Creating a Character) matching Ruleholder reference screenshot!
+    activeReaderChapter = '02_creating_a_character';
+    activeReaderSection = 'get-ready';
+  }
+
+  // Ensure TOC overview is closed by default so user reads immediately
+  const tocOverview = $('#readerTocOverview');
+  if(tocOverview) tocOverview.classList.add('hidden');
+
+  renderReaderNavTree(b);
+  renderReaderCurrentChapter();
+
+  updateTelegramBackButton();
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+function renderReaderNavTree(book){
+  const tree = $('#readerNavTree');
+  if(!tree) return;
+
+  if (window.PHB_CONTENT && (!book || book.id === 'XPHB' || !book.id || (book.name && book.name.includes("Player's Handbook")))) {
+    tree.innerHTML = PHB_CONTENT.chapters.map(ch => {
+      const isChapActive = ch.id === activeReaderChapter;
+      const itTitle = getItalianChapterName(ch.id) || ch.title;
+      return `
+        <div class="rh-accordion-item ${isChapActive ? 'active open' : ''}" data-chap="${ch.id}">
+          <div class="rh-chap-header" onclick="readerSelectChapter('${ch.id}')" role="button" tabindex="0">
+            <span class="rh-chap-name">${esc(itTitle)}</span>
+            <span class="rh-chap-chevron">${isChapActive ? '▾' : '›'}</span>
+          </div>
+          ${isChapActive ? `
+            <div class="rh-chap-sections">
+              ${(ch.sections || []).map(sec => {
+                const isSecActive = sec.id === activeReaderSection;
+                const itSecTitle = getItalianSectionName(sec.id) || sec.title;
+                return `
+                  <a class="rh-chap-sec-link ${isSecActive ? 'active' : ''}" data-sec="${sec.id}" onclick="readerJumpSection('${ch.id}', '${sec.id}', event)">
+                    ${esc(itSecTitle)}
+                  </a>
+                `;
+              }).join('')}
+            </div>
+          ` : ''}
+        </div>
+      `;
+    }).join('');
+    return;
+  }
+
+  // Non-PHB books
+  if(book && book.toc && Array.isArray(book.toc)){
+    const chapters = book.toc;
+    let currIdx = typeof activeReaderChapter === 'number' ? activeReaderChapter : 0;
+    tree.innerHTML = chapters.map((chTitle, idx) => {
+      const isChapActive = idx === currIdx;
+      return `
+        <div class="rh-accordion-item ${isChapActive ? 'active open' : ''}" data-chap="${idx}">
+          <div class="rh-chap-header" onclick="readerSelectChapter(${idx})" role="button" tabindex="0">
+            <span class="rh-chap-name">${esc(chTitle)}</span>
+            <span class="rh-chap-chevron">${isChapActive ? '▾' : '›'}</span>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+}
+
+function renderReaderCurrentChapter(){
+  const pane = $('#readerArticlePane');
+  if(!pane) return;
+
+  const b = (typeof BOOKS !== 'undefined' && Array.isArray(BOOKS) && BOOKS.find(x => x.id === activeBookReader)) || (typeof BOOKS !== 'undefined' && BOOKS[0]);
+
+  if(window.PHB_CONTENT && (activeBookReader === 'XPHB' || !activeBookReader || (b && b.name && b.name.includes("Player's Handbook")))){
+    const chMeta = PHB_CONTENT.chapters.find(c => c.id === activeReaderChapter) || PHB_CONTENT.chapters[2];
+    const chData = window[chMeta.varName];
+    const chIdx = PHB_CONTENT.chapters.indexOf(chMeta);
+
+    // Update steppers
+    updateReaderSteppers(chIdx, PHB_CONTENT.chapters);
+
+    // Update mobile active chapter name
+    const mobileChapName = $('#readerMobileActiveChapter');
+    if(mobileChapName) mobileChapName.textContent = getItalianChapterName(chMeta.id) || chMeta.title;
+
+    if(chData && chData.sections && chData.sections.length > 0){
+      pane.innerHTML = `
+        <div class="rh-read-kicker">Player's Handbook (2024) · ${esc(chMeta.title)}</div>
+        <h1 class="rh-read-h1">${esc(getItalianChapterName(chMeta.id) || chMeta.title)}</h1>
+        ${chMeta.id === '00_intro' ? `
+          <div class="rh-hero-cover-frame">${getPhbCoverSvg()}</div>
+          <div class="rh-cover-caption">Player's Handbook 2024 (D&amp;D 5.5e Core Rulebook). Art by Tyler Jacobson.</div>
+        ` : ''}
+        <div class="rh-book-body">
+          ${chData.sections.map(sec => `
+            <section class="rh-book-section" id="${sec.id}">
+              ${linkKnownEntities(sec.html)}
+            </section>
+          `).join('\n')}
+        </div>
+      `;
+    } else {
+      pane.innerHTML = `<div class="rh-read-kicker">Player's Handbook (2024)</div><h1 class="rh-read-h1">${esc(chMeta.title)}</h1><p>Contenuto del capitolo in caricamento...</p>`;
+    }
+
+    bindDicePills();
+
+    // If activeReaderSection is set, smooth scroll to it
+    if(activeReaderSection){
+      setTimeout(() => {
+        const el = document.getElementById(activeReaderSection);
+        if(el) el.scrollIntoView({behavior: 'smooth', block: 'start'});
+      }, 80);
+    }
+    return;
+  }
+
+  // Fallback for non-PHB books
+  if(b){
+    const chapList = b.toc || ["Capitolo 1", "Capitolo 2"];
+    let currIdx = 0;
+    if(typeof activeReaderChapter === 'number') currIdx = activeReaderChapter;
+    const chapTitle = chapList[currIdx] || chapList[0];
+
+    updateReaderSteppers(currIdx, chapList.map((t, i) => ({ id: i, title: t })));
+
+    pane.innerHTML = `
+      <div class="rh-read-kicker">${esc(b.itName || b.name)} · Capitolo ${currIdx + 1}</div>
+      <h1 class="rh-read-h1">${esc(chapTitle)}</h1>
+      <p class="rh-book-p">Stai leggendo <strong>${esc(b.itName || b.name)}</strong> (${esc(b.name)}), edizione ufficiale ${b.year || 2024} di ${esc(b.author || 'Wizards RPG Team')}.</p>
+      <aside class="rh-book-inset">
+        <h4 class="rh-inset-title">Nota Editoriale</h4>
+        <p class="rh-book-p">Contenuto completo del capitolo indicizzato e disponibile nel compendio.</p>
+      </aside>
+    `;
+  }
+}
+
+function updateReaderSteppers(currIdx, chapList){
+  const prevBtn = $('#prevChapterBtn');
+  const nextBtn = $('#nextChapterBtn');
+  const footerPrevBtn = $('#footerPrevBtn');
+  const footerNextBtn = $('#footerNextBtn');
+  const footerPrevTitle = $('#footerPrevTitle');
+  const footerNextTitle = $('#footerNextTitle');
+
+  const hasPrev = currIdx > 0;
+  const hasNext = currIdx < chapList.length - 1;
+
+  if(prevBtn) prevBtn.disabled = !hasPrev;
+  if(nextBtn) nextBtn.disabled = !hasNext;
+
+  if(footerPrevBtn){
+    footerPrevBtn.disabled = !hasPrev;
+    if(hasPrev && footerPrevTitle) {
+      const prevCh = chapList[currIdx - 1];
+      footerPrevTitle.textContent = getItalianChapterName(prevCh.id) || prevCh.title;
+    }
+  }
+
+  if(footerNextBtn){
+    footerNextBtn.disabled = !hasNext;
+    if(hasNext && footerNextTitle) {
+      const nextCh = chapList[currIdx + 1];
+      footerNextTitle.textContent = getItalianChapterName(nextCh.id) || nextCh.title;
+    }
+  }
+}
+
+function readerSelectChapter(chId){
+  triggerHaptic('light');
+  activeReaderChapter = chId;
+  activeReaderSection = '';
+
+  const b = (typeof BOOKS !== 'undefined' && Array.isArray(BOOKS) && BOOKS.find(x => x.id === activeBookReader)) || (typeof BOOKS !== 'undefined' && BOOKS[0]);
+  renderReaderNavTree(b);
+  renderReaderCurrentChapter();
+
+  // Close mobile sidebar if open
+  $('#readerSidebar')?.classList.remove('mobile-open');
+
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+function readerJumpSection(chapterId, sectionId, event){
+  if(event) event.preventDefault();
+  triggerHaptic('light');
+
+  activeReaderSection = sectionId;
+
+  if(activeReaderChapter !== chapterId){
+    activeReaderChapter = chapterId;
+    const b = (typeof BOOKS !== 'undefined' && Array.isArray(BOOKS) && BOOKS.find(x => x.id === activeBookReader)) || (typeof BOOKS !== 'undefined' && BOOKS[0]);
+    renderReaderNavTree(b);
+    renderReaderCurrentChapter();
+  } else {
+    // Update active style on sub-links
+    $$('.rh-chap-sec-link').forEach(link => {
+      link.classList.toggle('active', link.dataset.sec === sectionId);
+    });
+    const el = document.getElementById(sectionId);
+    if(el) el.scrollIntoView({behavior: 'smooth', block: 'start'});
+  }
+
+  $('#readerSidebar')?.classList.remove('mobile-open');
+}
+
+function readerPrevChapter(){
+  triggerHaptic('light');
+  if(window.PHB_CONTENT && activeBookReader === 'XPHB'){
+    const currIdx = PHB_CONTENT.chapters.findIndex(c => c.id === activeReaderChapter);
+    if(currIdx > 0){
+      readerSelectChapter(PHB_CONTENT.chapters[currIdx - 1].id);
+    }
+    return;
+  }
+  const b = (typeof BOOKS !== 'undefined' && Array.isArray(BOOKS) && BOOKS.find(x => x.id === activeBookReader));
+  if(b && b.toc){
+    let currIdx = typeof activeReaderChapter === 'number' ? activeReaderChapter : 0;
+    if(currIdx > 0){
+      readerSelectChapter(currIdx - 1);
+    }
+  }
+}
+
+function readerNextChapter(){
+  triggerHaptic('light');
+  if(window.PHB_CONTENT && activeBookReader === 'XPHB'){
+    const currIdx = PHB_CONTENT.chapters.findIndex(c => c.id === activeReaderChapter);
+    if(currIdx < PHB_CONTENT.chapters.length - 1){
+      readerSelectChapter(PHB_CONTENT.chapters[currIdx + 1].id);
+    }
+    return;
+  }
+  const b = (typeof BOOKS !== 'undefined' && Array.isArray(BOOKS) && BOOKS.find(x => x.id === activeBookReader));
+  if(b && b.toc){
+    let currIdx = typeof activeReaderChapter === 'number' ? activeReaderChapter : 0;
+    if(currIdx < b.toc.length - 1){
+      readerSelectChapter(currIdx + 1);
+    }
+  }
+}
+
+function toggleReaderTOCView(){
+  triggerHaptic('light');
+  const tocOverview = $('#readerTocOverview');
+  if(tocOverview) tocOverview.classList.toggle('hidden');
+}
+
+function toggleReaderMobileTOC(){
+  triggerHaptic('light');
+  $('#readerSidebar')?.classList.toggle('mobile-open');
+}
+
+function readerJump(secOrChapId){
+  triggerHaptic('light');
+  $('#readerTocOverview')?.classList.add('hidden');
+  if (window.PHB_CONTENT) {
+    if (PHB_CONTENT.getChapter(secOrChapId)) {
+      readerSelectChapter(secOrChapId);
+      return;
+    }
+    const found = PHB_CONTENT.getSection(secOrChapId);
+    if (found && found.chapter) {
+      readerJumpSection(found.chapter.id, found.id);
+      return;
+    }
+  }
+  readerSelectChapter(secOrChapId);
+}
+
+function renderReaderTOC(book){
+  if (window.PHB_CONTENT && (!book || book.id === 'XPHB' || !book.id || (book.name && book.name.includes("Player's Handbook")))) {
+    const chapters = PHB_CONTENT.chapters;
+    const cols = [[], [], []];
+    chapters.forEach((ch, idx) => {
+      const colIdx = Math.min(Math.floor(idx / 4), 2);
+      cols[colIdx].push(ch);
+    });
+
+    $('#readerTocGrid').innerHTML = cols.map(colChapters => `
+      <div class="toc-col">
+        ${colChapters.map(ch => {
+          const itTitle = getItalianChapterName(ch.id) || ch.title;
+          return `
+            <h3 class="toc-heading-red" onclick="readerJump('${ch.id}')">${esc(itTitle)}</h3>
+            <ul class="toc-list">
+              ${(ch.sections || []).slice(0, 10).map(sec => `
+                <li onclick="readerJump('${sec.id}')">${esc(getItalianSectionName(sec.id) || sec.title)}</li>
+              `).join('')}
+              ${(ch.sections || []).length > 10 ? `<li class="sub-item" onclick="readerJump('${ch.id}')">+ ${(ch.sections || []).length - 10} more topics...</li>` : ''}
+            </ul>
+          `;
+        }).join('')}
+      </div>
+    `).join('');
+    return;
+  }
+
+  if(book && book.toc && Array.isArray(book.toc) && book.toc.length > 0){
+    const chapters = book.toc;
+    const itemsPerCol = Math.max(1, Math.ceil(chapters.length / 3));
+    const cols = [
+      chapters.slice(0, itemsPerCol),
+      chapters.slice(itemsPerCol, itemsPerCol * 2),
+      chapters.slice(itemsPerCol * 2)
+    ];
+    $('#readerTocGrid').innerHTML = cols.map((colChapters, colI) => `
+      <div class="toc-col">
+        <h3 class="toc-heading-red">${esc(book.itName || book.name).toUpperCase()} - PARTE ${colI + 1}</h3>
+        <ul class="toc-list">
+          ${colChapters.map(ch => `
+            <li onclick="alert('${esc(ch)}')">${esc(ch)}</li>
+          `).join('')}
+        </ul>
+      </div>
+    `).join('');
+    return;
+  }
+}
 
 function getPhbCoverSvg(){
   return `<svg viewBox="0 0 900 520" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" style="width:100%;height:auto;display:block;">
@@ -10177,565 +10558,6 @@ function getPhbCoverSvg(){
 </svg>`;
 }
 
-function openBookReader(bookId, sectionId){
-  triggerHaptic('light');
-  activeBookReader = bookId || 'XPHB';
-  const b = BOOKS.find(x => x.id === activeBookReader) || BOOKS.find(x => x.id === 'XPHB') || BOOKS[0];
-  view = 'bookreader';
-
-  $('#homeView .hero').classList.add('hidden');
-  $('.search-wrap').classList.add('hidden');
-  $('#directory').classList.add('hidden');
-  $('#searchResults').classList.add('hidden');
-  $('#resultsView').classList.add('hidden');
-  $('#classListView').classList.add('hidden');
-  $('#classDetailView').classList.add('hidden');
-  $('#bgListView').classList.add('hidden');
-  $('#bgDetailView').classList.add('hidden');
-  $('#specListView').classList.add('hidden');
-  $('#specDetailView').classList.add('hidden');
-  $('#itemListView').classList.add('hidden');
-  $('#itemDetailView').classList.add('hidden');
-  $('#bookReaderView').classList.remove('hidden');
-
-  $('#readerBookHeading').textContent = b.name === "Player's Handbook" ? "Libro del giocatore (PHB 2024)" : b.name;
-  $('#readerBookCrumb').textContent = b.name;
-  $('#readerSourceBadge').textContent = '✓ ' + (b.source || 'PHB');
-
-  renderReaderTOC(b);
-  renderReaderNavTree(b);
-
-  if(sectionId){
-    switchReaderMode('reader');
-    renderReaderSection(sectionId);
-  } else {
-    switchReaderMode('toc');
-  }
-  updateTelegramBackButton();
-  window.scrollTo({top:0,behavior:'smooth'});
-}
-
-function switchReaderMode(mode){
-  readerMode = mode;
-  triggerHaptic('light');
-  if(mode === 'toc'){
-    $('#readerModeTOC').classList.add('active');
-    $('#readerModeReader').classList.remove('active');
-    $('#readerTocOverview').classList.remove('hidden');
-    $('#readerSplitView').classList.add('hidden');
-  } else {
-    $('#readerModeTOC').classList.remove('active');
-    $('#readerModeReader').classList.add('active');
-    $('#readerTocOverview').classList.add('hidden');
-    $('#readerSplitView').classList.remove('hidden');
-    renderReaderSection(activeReaderSection || 'intro');
-  }
-  window.scrollTo({top:0,behavior:'smooth'});
-}
-
-function toggleReaderTheme(){
-  $('#themeBtn')?.click();
-}
-
-function toggleReaderMobileTOC(){
-  triggerHaptic('light');
-  $('#readerSidebar').classList.toggle('mobile-open');
-}
-
-function readerJump(secId){
-  triggerHaptic('light');
-  activeReaderSection = secId;
-  switchReaderMode('reader');
-  $('#readerSidebar').classList.remove('mobile-open');
-  window.scrollTo({top:0,behavior:'smooth'});
-}
-
-function renderReaderTOC(book){
-  if (window.PHB_CONTENT && (book.id === 'XPHB' || !book.id || (book.name && book.name.includes("Player's Handbook")))) {
-    const chapters = PHB_CONTENT.chapters;
-    const cols = [[], [], []];
-    chapters.forEach((ch, idx) => {
-      const colIdx = Math.min(Math.floor(idx / 4), 2);
-      cols[colIdx].push(ch);
-    });
-
-    $('#readerTocGrid').innerHTML = cols.map(colChapters => `
-      <div class="toc-col">
-        ${colChapters.map(ch => `
-          <h3 class="toc-heading-red" onclick="readerJump('${ch.id}')">${esc(ch.title)}</h3>
-          <ul class="toc-list">
-            ${(ch.sections || []).slice(0, 10).map(sec => `
-              <li onclick="readerJump('${sec.id}')">${esc(sec.title)}</li>
-            `).join('')}
-            ${(ch.sections || []).length > 10 ? `<li class="sub-item" onclick="readerJump('${ch.id}')">+ ${(ch.sections || []).length - 10} more topics...</li>` : ''}
-          </ul>
-        `).join('')}
-      </div>
-    `).join('');
-    return;
-  }
-  if(book.toc && Array.isArray(book.toc) && book.toc.length > 0){
-    const chapters = book.toc;
-    const itemsPerCol = Math.max(1, Math.ceil(chapters.length / 3));
-    const cols = [
-      chapters.slice(0, itemsPerCol),
-      chapters.slice(itemsPerCol, itemsPerCol * 2),
-      chapters.slice(itemsPerCol * 2)
-    ];
-    $('#readerTocGrid').innerHTML = cols.map((colChapters, colI) => `
-      <div class="toc-col">
-        <h3 class="toc-heading-red">${esc(book.itName || book.name).toUpperCase()} - PARTE ${colI + 1}</h3>
-        <ul class="toc-list">
-          ${colChapters.map(ch => `
-            <li onclick="alert('${esc(ch)}')">${esc(ch)}</li>
-          `).join('')}
-        </ul>
-      </div>
-    `).join('');
-    return;
-  }
-  // 3-Column Parchment TOC matching Screenshot 1
-  $('#readerTocGrid').innerHTML = `
-    <div class="toc-col">
-      <h3 class="toc-heading-red" onclick="readerJump('intro')">L'AVVENTURA TI CHIAMA!</h3>
-      <ul class="toc-list">
-        <li onclick="readerJump('intro-what-need')">Cosa ti servirà</li>
-        <li onclick="readerJump('intro-how-use')">Come usare questo libro</li>
-        <li onclick="readerJump('intro-worlds')">Mondi d'avventura</li>
-      </ul>
-
-      <h3 class="toc-heading-red" onclick="readerJump('cap1')">CAPITOLO 1. MODALITÀ DI GIOCO</h3>
-      <ul class="toc-list">
-        <li onclick="readerJump('cap1-dm')">Giocatore o padrone?</li>
-        <li onclick="readerJump('cap1-rhythm')">Ritmo del gioco</li>
-        <li onclick="readerJump('cap1-ongoing')">Il gioco in corso</li>
-        <li onclick="readerJump('cap1-dice')">Dadi da gioco</li>
-        <li onclick="readerJump('cap1-abilities')">Sei caratteristiche</li>
-        <li onclick="readerJump('cap1-d20')"><b>Test D20</b></li>
-        <li class="sub-item" onclick="readerJump('cap1-d20')">Controlli delle caratteristiche</li>
-        <li class="sub-item" onclick="readerJump('cap1-d20')">Prove e tiri salvezza</li>
-        <li class="sub-item" onclick="readerJump('cap1-d20')">Tiri d'attacco</li>
-        <li class="sub-item" onclick="readerJump('cap1-d20')">Vantaggi e svantaggi</li>
-        <li class="sub-item" onclick="readerJump('cap1-d20')">Abilità</li>
-        <li onclick="readerJump('cap1-actions')"><b>Azioni</b></li>
-        <li class="sub-item" onclick="readerJump('cap1-actions')">Azioni bonus</li>
-        <li class="sub-item" onclick="readerJump('cap1-actions')">Risposta (Reazioni)</li>
-        <li onclick="readerJump('cap1-study')">Comunicazione</li>
-        <li onclick="readerJump('cap1-study')">Studio (Visione, Segretezza, Oggetti)</li>
-      </ul>
-    </div>
-
-    <div class="toc-col">
-      <h3 class="toc-heading-red" onclick="readerJump('cap3')">CAPITOLO 3. LE CLASSI</h3>
-      <ul class="toc-list">
-        <li onclick="readerJump('cap3-barbarian')"><b>Barbaro</b></li>
-        <li class="sub-item">La Via del Berserker</li>
-        <li class="sub-item">La via del cuore selvaggio</li>
-        <li class="sub-item">Il sentiero dell'albero del mondo</li>
-        <li class="sub-item">Il sentiero del fanatico</li>
-
-        <li onclick="readerJump('cap3-fighter-bm')"><b>Guerriero</b></li>
-        <li class="sub-item" onclick="readerJump('cap3-fighter-bm')">Maestro di battaglia (Opzioni di manovra)</li>
-        <li class="sub-item">Cavaliere ultraterreno</li>
-        <li class="sub-item">Guerriero psionico</li>
-        <li class="sub-item">Campione</li>
-
-        <li onclick="readerJump('cap3-wizard-evoc')"><b>Procedura guidata (Mago)</b></li>
-        <li class="sub-item">Illusionista</li>
-        <li class="sub-item">Maestro dell'abiurazione</li>
-        <li class="sub-item" onclick="readerJump('cap3-wizard-evoc')"><b>Maestro dell'Evocazione</b> ✦</li>
-        <li class="sub-item">L'indovino</li>
-
-        <li onclick="readerJump('cap3')"><b>Druido</b></li>
-        <li class="sub-item">Cerchio di stelle</li>
-        <li class="sub-item">Il cerchio della Terra</li>
-        <li class="sub-item">Il cerchio della luna</li>
-        <li class="sub-item">Cerchio del Mare</li>
-
-        <li onclick="readerJump('cap3-cleric')"><b>Sacerdote (Chierico)</b></li>
-        <li class="sub-item">Dominio della guerra</li>
-        <li class="sub-item">Dominio della vita</li>
-        <li class="sub-item">Dominio dell'inganno</li>
-        <li class="sub-item">Dominio della Luce</li>
-      </ul>
-    </div>
-
-    <div class="toc-col">
-      <h3 class="toc-heading-red" onclick="readerJump('cap4')">CAPITOLO 4. ORIGINI</h3>
-      <h4 class="toc-subheading">Descrizioni del retroscena</h4>
-      <ul class="toc-list">
-        <li onclick="readerJump('cap4-artista')"><b>Artista</b> (Intrattenitore) ✦</li>
-        <li onclick="readerJump('cap4-nobile')">Nobile</li>
-        <li onclick="readerJump('cap4')">Vagabondo (Viandante)</li>
-        <li onclick="readerJump('cap4')">Marinaio</li>
-        <li onclick="readerJump('cap4')">Saggio</li>
-        <li onclick="readerJump('cap4')">Eremita</li>
-        <li onclick="readerJump('cap4')">Impiegato (Scrivano)</li>
-        <li onclick="readerJump('cap4')">Novizio (Accolito)</li>
-        <li onclick="readerJump('cap4')">Penale (Criminale)</li>
-        <li onclick="readerJump('cap4')">Conduttore (Guida)</li>
-        <li onclick="readerJump('cap4')">Artigiano</li>
-        <li onclick="readerJump('cap4')">Soldato</li>
-        <li onclick="readerJump('cap4')">Guardia</li>
-        <li onclick="readerJump('cap4')">Rivenditore (Mercante)</li>
-        <li onclick="readerJump('cap4')">Contadino</li>
-        <li onclick="readerJump('cap4')">Ciarlatano</li>
-      </ul>
-
-      <h4 class="toc-subheading" style="margin-top:14px;">Descrizione delle specie</h4>
-      <ul class="toc-list">
-        <li onclick="readerJump('cap4-specie')">Aasimar</li>
-        <li onclick="readerJump('cap4-specie')">Nano</li>
-        <li onclick="readerJump('cap4-specie')">Dragonborn</li>
-        <li onclick="readerJump('cap4-specie')">Golia</li>
-        <li onclick="readerJump('cap4-specie')">Orco</li>
-        <li onclick="readerJump('cap4-specie')">Mezzuomo</li>
-        <li onclick="readerJump('cap4-specie')">Tiefling</li>
-      </ul>
-
-      <h4 class="toc-subheading" style="margin-top:14px;">Appendici del manuale</h4>
-      <ul class="toc-list">
-        <li onclick="readerJump('app-a')">Appendice A. Multiverso</li>
-        <li onclick="readerJump('app-b-creatures')"><b>Appendice B. Parametri della creatura</b> ✦</li>
-        <li onclick="readerJump('app-c-glossary')">Appendice C. Glossario delle regole</li>
-      </ul>
-    </div>
-  `;
-}
-
-function renderReaderNavTree(book){
-  if (window.PHB_CONTENT && (book.id === 'XPHB' || !book.id || (book.name && book.name.includes("Player's Handbook")))) {
-    $('#readerNavTree').innerHTML = PHB_CONTENT.chapters.map(ch => `
-      <div class="nav-group">
-        <div class="nav-group-title" onclick="readerJump('${ch.id}')">${esc(ch.title)} <span>▾</span></div>
-        <div class="nav-group-items">
-          ${(ch.sections || []).map(sec => `
-            <button type="button" class="nav-item-btn ${sec.id === activeReaderSection ? 'active' : ''}" data-sec="${sec.id}" onclick="renderReaderSection('${sec.id}')">
-              <span>${esc(sec.title)}</span>
-              <span class="nav-arrow">›</span>
-            </button>
-          `).join('')}
-        </div>
-      </div>
-    `).join('');
-    return;
-  }
-  const groups = {};
-  XPHB_SECTIONS.forEach(s => {
-    if(!groups[s.group]) groups[s.group] = [];
-    groups[s.group].push(s);
-  });
-
-  $('#readerNavTree').innerHTML = Object.entries(groups).map(([grp, items]) => `
-    <div class="nav-group">
-      <div class="nav-group-title">${esc(grp)} <span>▾</span></div>
-      <div class="nav-group-items">
-        ${items.map(it => `
-          <button type="button" class="nav-item-btn ${it.id === activeReaderSection ? 'active' : ''}" data-sec="${it.id}" onclick="renderReaderSection('${it.id}')">
-            <span>${esc(it.title)}</span>
-            <span class="nav-arrow">›</span>
-          </button>
-        `).join('')}
-      </div>
-    </div>
-  `).join('');
-}
-
-function renderReaderSection(secId){
-  activeReaderSection = secId || '00_intro';
-  triggerHaptic('light');
-
-  // Update active item in sidebar tree
-  $$('.nav-item-btn').forEach(b => {
-    b.classList.toggle('active', b.dataset.sec === activeReaderSection);
-  });
-
-  // If PHB_CONTENT is available, render authentic English content!
-  if (window.PHB_CONTENT) {
-    let found = PHB_CONTENT.getSection(activeReaderSection);
-    let chapterMeta = null;
-    if (found) {
-      chapterMeta = found.chapter;
-    } else {
-      const ch = PHB_CONTENT.getChapter(activeReaderSection);
-      if (ch) {
-        found = {
-          id: ch.id,
-          title: ch.title,
-          html: ch.html,
-          chapter: ch
-        };
-        chapterMeta = ch;
-      }
-    }
-
-    if (found) {
-      const pane = $('#readerArticlePane');
-      pane.innerHTML = `
-        <div class="rh-read-kicker">${esc(chapterMeta ? chapterMeta.title : "Player's Handbook (2024)")}</div>
-        <h1 class="rh-read-h1">${esc(found.title)}</h1>
-        ${found.id === '00_intro' || found.id === 'what-you-need' ? `
-          <div class="rh-hero-cover-frame">
-            ${getPhbCoverSvg()}
-          </div>
-          <div class="rh-cover-caption">Player's Handbook 2024 (D&amp;D 5.5e Core Rulebook). Art by Tyler Jacobson.</div>
-        ` : ''}
-        <div class="rh-book-body" style="margin-top:18px;">
-          ${linkKnownEntities(found.html || '<p class="rh-book-p">Content loaded from 2024 Player\'s Handbook.</p>')}
-        </div>
-      `;
-      bindDicePills();
-      window.scrollTo({top:0,behavior:'smooth'});
-      return;
-    }
-  }
-
-  // Update Stepper buttons
-  const idx = XPHB_SECTIONS.findIndex(s => s.id === activeReaderSection);
-  $('#prevChapterBtn').disabled = (idx <= 0);
-  $('#nextChapterBtn').disabled = (idx >= XPHB_SECTIONS.length - 1);
-
-  const pane = $('#readerArticlePane');
-
-  if(activeReaderSection === 'intro'){
-    pane.innerHTML = `
-      <div class="rh-read-kicker">Manuale del Giocatore 2024 · Introduzione</div>
-      <h1 class="rh-read-h1">L'AVVENTURA TI CHIAMA!</h1>
-      <div class="rh-hero-cover-frame">
-        ${getPhbCoverSvg()}
-      </div>
-      <div class="rh-cover-caption">Copertina del Manuale del Giocatore 2024. Tyler Jacobson.</div>
-      <p class="rh-read-p" style="margin-top:18px;">
-        Benvenuto nella nuova era di <b>Dungeons &amp; Dragons (Edizione 2024)</b>. Questo libro è il tuo portale per esplorare mondi fantastici, stringere patti leggendari e forgiare eroi indimenticabili. 
-        Che tu sia un guerriero determinato a proteggere i tuoi compagni, un astuto ladro che scivola tra le ombre o un sapiente mago che piega il tessuto dell'universo, le regole in questo tomo ti accompagneranno in ogni passo.
-      </p>
-      <h2 class="rh-read-h2">I Mondi di D&amp;D</h2>
-      <p class="rh-read-p">
-        Dai reami dimenticati di Faerûn ai cieli attraversati da vascelli elementali di Eberron, passando per le brume misteriose di Ravenloft, ogni campagna prende vita attraverso le scelte collettive del gruppo di gioco.
-      </p>
-    `;
-  } else if(activeReaderSection === 'intro-what-need'){
-    pane.innerHTML = `
-      <div class="rh-read-kicker">Manuale del Giocatore 2024 · Introduzione</div>
-      <h1 class="rh-read-h1">COSA TI SERVIRÀ</h1>
-      <p class="rh-read-p">
-        <b>Dungeon Master.</b> Un giocatore diventa il Dungeon Master (o DM), ovvero il narratore e arbitro principale del gioco. Il DM crea avventure per i personaggi dei giocatori, che devono superare sfide e decidere dove andare. Descrive inoltre ciò che vede e sente e interpreta i personaggi, amici e nemici, che incontra lungo il cammino. Pur creando sfide per gli avventurieri, il DM si impegna sempre affinché il gruppo si diverta.
-      </p>
-      <p class="rh-read-p">
-        <b>Giocatori.</b> Ogni giocatore crea un avventuriero che si unisce ai personaggi degli altri giocatori. Insieme, il gruppo può esplorare un oscuro dungeon, le rovine di una città, un castello incantato, un tempio abbandonato, caverne laviche sotto una montagna o qualsiasi altro luogo descritto dal Dungeon Master. Gli avventurieri possono risolvere enigmi, comunicare con altri personaggi, combattere mostri fantastici, scoprire meravigliosi oggetti magici e altri tesori, e godersi il brivido di giocare con gli amici.
-      </p>
-      <p class="rh-read-p">Avrai inoltre bisogno delle seguenti risorse, in formato digitale o fisico:</p>
-      <p class="rh-read-p">
-        • <b>Manuale del Giocatore.</b> Questo libro è il tuo riferimento essenziale per le regole di gioco, e ti aiuterà a creare il tuo avventuriero.<br>
-        • <b>La Guida del Dungeon Master e l'Enciclopedia dei Mostri.</b> Il primo libro viene utilizzato dal Dungeon Master per creare e condurre avventure, mentre il secondo presenta centinaia di mostri che incontrerete in tali avventure.
-      </p>
-
-      <!-- Exact Callout Box matching Screenshot 7 -->
-      <div class="rh-callout-learn">
-        <div class="rh-callout-ribbon">
-          <span>◄</span>
-          <span>GUARDA E IMPARA</span>
-          <span>►</span>
-        </div>
-        <div class="rh-callout-body">
-          Un ottimo modo per imparare le basi di D&amp;D è guardare gli altri giocare. Online si trovano innumerevoli video di partite che dimostrano l'ampia gamma di possibilità offerte da D&amp;D. Mentre guardate, prestate attenzione alle azioni dei giocatori che rendono il gioco più coinvolgente per tutti. Ma ricordate, l'unico pubblico che dovete intrattenere quando giocate a D&amp;D siete voi e il vostro gruppo.
-        </div>
-      </div>
-
-      <p class="rh-read-p">
-        <b>Dadi.</b> Avrai bisogno di un set di dadi poliedrici: <b>d4, d6, d8, d10, d12, d20 e d100</b>. Puoi usare il nostro vassoio dei dadi integrato in basso a destra per lanciare subito qualsiasi combinazione con vantaggi o modificatori!
-      </p>
-      <div style="margin: 12px 0 18px;">
-        <button class="primary-button" type="button" onclick="openDiceRoller(20, 1, 0, 'normal')">🎲 Apri Vassoio dei Dadi</button>
-      </div>
-      <p class="rh-read-p">
-        <b>Scheda del personaggio.</b> La scheda registra statistiche, classe, abilità e punti ferita del tuo eroe. Puoi crearne una di prova salvata localmente nel compendio.
-      </p>
-      <div style="margin: 12px 0 18px;">
-        <button class="primary-button" type="button" onclick="showCharacterModal()">✦ Crea Scheda di Prova</button>
-      </div>
-    `;
-  } else if(activeReaderSection === 'cap3-wizard-evoc'){
-    pane.innerHTML = `
-      <div class="rh-read-kicker">Capitolo 3. Le Classi · Mago (Procedura guidata)</div>
-      <div style="color:#7a2021;font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:0.04em;">14° LIVELLO: RESISTENZA AGLI INCANTESIMI</div>
-      <h1 class="rh-read-h1" style="margin-top:4px;">MAESTRO DELL'EVOCAZIONE</h1>
-
-      <div class="rh-subclass-hero">
-        <div>
-          <div class="rh-quote-bar">
-            <em>Genera esplosioni elementali.</em>
-          </div>
-          <p class="rh-read-p">
-            Ti sei concentrato sullo studio della magia che crea potenti effetti elementali, come gelo, fiamme, tuoni, fulmini crepitanti e acido corrosivo. Molti <b>Maestri dell'Evocazione</b> servono nell'esercito e diventano artiglieria vivente, scatenando incantesimi sui nemici da lontano. Alcuni usano il loro potere per difendersi, mentre altri perseguono i propri scopi.
-          </p>
-
-          <table class="rh-subclass-table">
-            <thead>
-              <tr>
-                <th style="width:110px;">Livello del mago</th>
-                <th>Peculiarità</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td><b>3</b></td>
-                <td>Forte concentrazione, Esperto nella Scuola di Evocazione</td>
-              </tr>
-              <tr>
-                <td><b>6</b></td>
-                <td>Scolpire incantesimi</td>
-              </tr>
-              <tr>
-                <td><b>10</b></td>
-                <td>Rafforzare le evocazioni</td>
-              </tr>
-              <tr>
-                <td><b>14</b></td>
-                <td>Traboccante di energia</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-
-        <div class="rh-portrait-card">
-          <div class="rh-portrait-frame">
-            <img src="assets/classes/wizard.webp" alt="Maestro dell'Evocazione" class="rh-portrait-img">
-          </div>
-        </div>
-      </div>
-
-      <h2 class="rh-read-h2">LIVELLO 3: MAESTRO DELL'EVOCAZIONE</h2>
-      <p class="rh-read-p">
-        Scegli due incantesimi da mago di 2° livello o superiore dalla <span style="color:#2563eb;font-weight:600;">Scuola di Evocazione</span> e aggiungili gratuitamente al tuo libro degli incantesimi.
-      </p>
-      <p class="rh-read-p">
-        Ogni volta che ottieni accesso a un nuovo slot incantesimo in questa classe, puoi aggiungere gratuitamente al tuo libro degli incantesimi un incantesimo di Evocazione addizionale.
-      </p>
-
-      <h2 class="rh-read-h2">LIVELLO 6: SCOLPIRE INCANTESIMI</h2>
-      <p class="rh-read-p">
-        Puoi creare sacche di relativa sicurezza all'interno degli effetti dei tuoi incantesimi di Evocazione. Quando lanci un incantesimo di Evocazione che colpisce altre creature che puoi vedere, puoi scegliere un numero di esse pari a 1 + il livello dell'incantesimo. Le creature scelte superano automaticamente i loro tiri salvezza contro l'incantesimo e non subiscono danni se normalmente subirebbero metà danni in caso di successo.
-      </p>
-    `;
-  } else if(activeReaderSection === 'cap4-artista'){
-    pane.innerHTML = `
-      <div class="rh-read-kicker">Capitolo 4. Origini · Descrizioni del retroscena</div>
-      <h1 class="rh-read-h1">ARTISTA</h1>
-
-      <div class="rh-bg-landscape-banner" style="margin-bottom:18px;">
-        ${getBgLandscapeSvg('bg-xphb-4')}
-      </div>
-
-      <div class="rh-spec-box">
-        <div class="rh-spec-line"><span class="rh-spec-label">Caratteristiche:</span> Forza, Destrezza, Carisma.</div>
-        <div class="rh-spec-line"><span class="rh-spec-label">Caratteristica (Talento):</span> <button type="button" class="rh-feat-poplink" onclick="openFeatModal('Musician')">Musicista ↗</button></div>
-        <div class="rh-spec-line"><span class="rh-spec-label">Competenze nelle abilità:</span> Acrobatica e Spettacolo.</div>
-        <div class="rh-spec-line"><span class="rh-spec-label">Abilità strumentali:</span> Seleziona un tipo di strumento musicale a tua scelta.</div>
-        <div class="rh-spec-line"><span class="rh-spec-label">Equipaggiamento:</span> Scegli A o B: (A) Strumento musicale (scelto sopra), 2 costumi di scena, specchio, profumo, abiti da viaggiatore, 11 GP; (B) 50 GP.</div>
-        <div class="rh-bg-lore-text">
-          Hai trascorso gran parte della tua giovinezza in fiere e luna park itineranti, esibendoti in vari ruoli come musicista e acrobata, e in cambio ricevendo lezioni del tuo mestiere. Forse hai imparato l'arte del funambolismo, acquisito uno stile unico nel suonare il liuto o imparato a recitare poesie con una dizione impeccabile. Ancora oggi, ti piace ricevere applausi e desideri ardentemente salire sul palco.
-        </div>
-      </div>
-    `;
-  } else if(activeReaderSection === 'app-b-creatures'){
-    const creatureNames = [
-      'Tasso', 'Demone', 'Zombie', 'Cavallo da guerra', 'Orso Bruno', 'Cammello',
-      'Corvo', 'Ratto', 'Donnola gigante', 'Gufo', 'Serpente velenoso gigante',
-      'Lucertola', 'Tasso gigante', 'Capra gigante', 'Capra', 'Granchio gigante',
-      'Cavalluccio marino gigante', 'Polpo', 'Ragno gigante', 'Scorpion',
-      'Cinghiale', 'Quasit', 'Gatto', 'Granchio', 'Falco', 'Lupo', 'Goblin',
-      'Scheletro', 'Koboldo', 'Orco', 'Troll', 'Drago Rosso Giovane'
-    ];
-    pane.innerHTML = `
-      <div class="rh-read-kicker">Appendice B · Manuale del Giocatore 2024</div>
-      <h1 class="rh-read-h1">CREATURE</h1>
-      <p class="rh-read-p">
-        In questa appendice sono raccolti i parametri e le statistiche per gli animali da compagnia, le cavalcature, i famigli e le creature evocate più diffuse durante le sessioni di gioco. Clicca su una creatura per consultarne i dati.
-      </p>
-
-      <div class="rh-creatures-grid">
-        ${creatureNames.map(cn => `
-          <button type="button" class="rh-creature-link" onclick="previewCreature('${esc(cn)}')">${esc(cn)}</button>
-        `).join('')}
-      </div>
-
-      <div id="creaturePreviewBox" style="margin-top:24px;"></div>
-    `;
-  } else if(activeReaderSection === 'app-c-glossary'){
-    pane.innerHTML = `
-      <div class="rh-read-kicker">Appendice C · Manuale del Giocatore 2024</div>
-      <h1 class="rh-read-h1">GLOSSARIO DELLE REGOLE</h1>
-      <p class="rh-read-p">Tutte le condizioni e i termini chiave dell'edizione 2024 per una rapida consultazione.</p>
-      <div style="display:grid;grid-template-columns:repeat(auto-fill, minmax(260px, 1fr));gap:12px;margin-top:16px;">
-        ${GLOSSARY.map(g => `
-          <div style="border:1px solid #dcd1be;padding:12px 14px;border-radius:6px;background:rgba(0,0,0,0.02);">
-            <div style="font:700 15px var(--sans);color:#7a2021;margin-bottom:4px;">${esc(g.it || g.name)} <span style="font-size:11px;color:#888;">(${esc(g.name)})</span></div>
-            <div style="font-size:12.5px;line-height:1.55;color:inherit;">${parseDiceInText(esc(g.text))}</div>
-          </div>
-        `).join('')}
-      </div>
-    `;
-  } else {
-    const current = XPHB_SECTIONS.find(s => s.id === activeReaderSection) || { title: activeReaderSection };
-    pane.innerHTML = `
-      <div class="rh-read-kicker">Manuale del Giocatore 2024 · ${esc(current.group || 'Sezione')}</div>
-      <h1 class="rh-read-h1">${esc(current.title.toUpperCase())}</h1>
-      <p class="rh-read-p">
-        Questo capitolo definisce in dettaglio i principi operativi di D&amp;D 5.5e (2024). 
-        Usa l'indice a sinistra o il pulsante dei capitoli successivi per navigare attraverso i contenuti ufficiali.
-      </p>
-      <div class="rh-callout-learn">
-        <div class="rh-callout-ribbon"><span>◄</span><span>REGOLE IN BREVE</span><span>►</span></div>
-        <div class="rh-callout-body">
-          Ogni volta che l'esito di un'azione è incerto nel gioco, il DM richiede un <b>Test D20</b>. Tira 1d20, aggiungi il modificatore di caratteristica appropriato e confronta il risultato con la Classe Difficoltà (CD) o la Classe Armatura (CA).
-        </div>
-      </div>
-    `;
-  }
-
-  bindDicePills();
-  window.scrollTo({top:0,behavior:'smooth'});
-}
-
-function readerPrevSection(){
-  if (window.PHB_CONTENT) {
-    const allSecs = [];
-    PHB_CONTENT.chapters.forEach(ch => {
-      allSecs.push(ch.id);
-      (ch.sections || []).forEach(s => allSecs.push(s.id));
-    });
-    const idx = allSecs.indexOf(activeReaderSection);
-    if (idx > 0) {
-      renderReaderSection(allSecs[idx - 1]);
-    }
-    return;
-  }
-  const idx = XPHB_SECTIONS.findIndex(s => s.id === activeReaderSection);
-  if(idx > 0){
-    renderReaderSection(XPHB_SECTIONS[idx - 1].id);
-  }
-}
-
-function readerNextSection(){
-  if (window.PHB_CONTENT) {
-    const allSecs = [];
-    PHB_CONTENT.chapters.forEach(ch => {
-      allSecs.push(ch.id);
-      (ch.sections || []).forEach(s => allSecs.push(s.id));
-    });
-    const idx = allSecs.indexOf(activeReaderSection);
-    if (idx >= 0 && idx < allSecs.length - 1) {
-      renderReaderSection(allSecs[idx + 1]);
-    }
-    return;
-  }
-  const idx = XPHB_SECTIONS.findIndex(s => s.id === activeReaderSection);
-  if(idx < XPHB_SECTIONS.length - 1){
-    renderReaderSection(XPHB_SECTIONS[idx + 1].id);
-  }
-}
-
 function previewCreature(name){
   triggerHaptic('light');
   const box = $('#creaturePreviewBox');
@@ -10767,6 +10589,7 @@ function previewCreature(name){
   bindDicePills();
   box.scrollIntoView({behavior:'smooth', block:'nearest'});
 }
+
 
 /* Event listeners */
 $$('.category[data-view]').forEach(b=>b.addEventListener('click',()=>category(b.dataset.view)));

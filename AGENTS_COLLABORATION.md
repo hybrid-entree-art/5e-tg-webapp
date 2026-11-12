@@ -90,6 +90,26 @@ Il motore di contenuti formatta il testo del Player's Handbook generando element
 
 ## 4. Registro Modifiche & Novità (Changelog)
 
+### [2026-11-12] - Nuova UX & UI Lettore Manuale Integrale (Ruleholder Book Reader)
+* **Autore:** Agente Contenuti & Agente Grafica & UI
+* **Riferimento UX:** Screenshot di Ruleholder `media_1794441659988_e723283c.jpg` (Lettura completa di *Capitolo 2: Creazione del personaggio*).
+* **Novità:**
+  * **Layout a Due Colonne Immersivo (`.rh-reader-container`):**
+    * **Colonna Sinistra: Sidebar Sticky a Fisarmonica (`.rh-reader-sidebar`):**
+      * **Header Stepper Compatto (`.rh-reader-stepper`):** Pulsante `‹ CAP. PREC.` (`#prevChapterBtn`), icona centrale `📖` per l'indice generale (`#readerTocBtn`), e pulsante `CAP. SUCC. ›` (`#nextChapterBtn`).
+      * **Albero dei Capitoli ad Accordion (`.rh-reader-accordion`):** Elenco ordinato dei 12 capitoli con etichette bilingue (italiano e inglese).
+      * **Stato Capitolo Attivo (`.rh-accordion-item.active`):** Bordo sinistro cremisi spesso 3px (`border-left: 3px solid #8b1820`), sfondo caldo a contrasto, chevron rivolto verso il basso (`▾`) e font in grassetto.
+      * **Sotto-sezioni del Capitolo Attivo (`.rh-chap-sections`):** Lista dei capitoli/sezioni figlie (es. per il Cap. 2: *Preparazione / Get Ready*, *Crea il tuo personaggio*, *Avanzamento di livello*, *Iniziare a livelli superiori*, *Multiclasse*, *Bazzecole*).
+      * **Smooth Scroll alle Sezioni (`readerJumpSection`):** Il click su una voce di sezione fa scorrere fluidamente la vista del manuale all'intestazione corrispondente (`document.getElementById(secId)?.scrollIntoView({behavior: 'smooth'})`) ed evidenzia la voce attiva in cremisi.
+    * **Colonna Destra: Foglio di Lettura del Manuale (`.rh-reader-sheet`):**
+      * **Impaginazione Pergamena & Tipografia D&D:** Titoli H1, H2, H3 in maiuscoletto cremisi (`#7a161d`), kicker editoriale con capitolo e sorgente, e testo giustificato leggibile (`line-height: 1.68`).
+      * **Box di Approfondimento Stile Ruleholder (`aside.rh-book-inset`):** Riquadro con cartiglio/etichetta a nastro superiore in ardesia scura (`.rh-inset-title`, es. *SESSION ZERO* / *NULEVAYA VSTRECHA* con testo bianco in maiuscolo) per le note dei designer e le regole opzionali.
+      * **Collegamenti Ipertestuali Blu (`.rh-ref-link`):** Riferimenti a condizioni, incantesimi, mostri, equipaggiamento e classi formattati in blu (`#1976d2`, dark `#64b5f6`), con anteprima popover al passaggio del mouse e apertura rapida al click.
+      * **Footer Stepper a Card Grandi (`.rh-reader-chapter-footer`):** Schede `‹ CAPITOLO PRECEDENTE` e `PROSSIMO CAPITOLO ›` a fondo pagina per consentire una lettura continua da inizio a fine manuale.
+    * **Indice Generale a 3 Colonne (`#readerTocOverview`):** Cassetto/modale su foglio di pergamena attivabile tramite il pulsante `📋 Indice generale` o l'icona `📖` dello stepper, con suddivisione equilibrata dei capitoli su tre colonne e collegamenti diretti a tutti i sottoparagrafi.
+    * **Modalità Mobile Ergonomica (`@media(max-width: 860px)`):** Barra di commutazione capitoli rapida (`.rh-reader-mobile-bar`) che apre e chiude la sidebar senza occupare spazio visivo sul foglio di lettura.
+  * **Test Suite Dedicata (`tests/test_reader_ui_ruleholder.js`):** Valida al 100% l'integrità del DOM HTML (30 elementi), delle regole CSS (30 selettori), delle funzioni JavaScript (16 API) e della fedeltà al Capitolo 2 autentico in inglese.
+
 ### [2026-11-12] - Integrazione Home v2 (Grafica & UI) e Ripristino Schede / Robustezza Listener
 * **Autore:** Agente Contenuti & Agente Grafica & UI
 * **Novità:**
