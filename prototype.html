@@ -4954,6 +4954,145 @@ body:not(.dark-reader) .rh-popover-nav-btn:hover {
   .category.wide{min-height:104px;padding:14px}
 }
 
+
+/* =====================================================================
+   ATMOSFERA DELLA HOME — luce ambientale + grana (niente "fondo vuoto")
+   ===================================================================== */
+body{
+  background:
+    radial-gradient(140% 72% at 50% -16%, rgba(245,158,11,.11), transparent 62%),
+    radial-gradient(85% 52% at 106% 6%, rgba(234,88,12,.085), transparent 60%),
+    radial-gradient(75% 48% at -8% 26%, rgba(126,94,196,.055), transparent 62%),
+    radial-gradient(120% 70% at 50% 108%, rgba(245,158,11,.05), transparent 65%),
+    var(--rh-bg-app);
+  background-attachment:fixed;
+}
+/* grana finissima sopra tutto: toglie il "piatto" digitale */
+body:after{
+  content:'';
+  position:fixed;
+  inset:0;
+  z-index:9998;
+  pointer-events:none;
+  opacity:.035;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='160' height='160' filter='url(%23n)'/></svg>");
+  background-size:160px 160px;
+}
+.hero-plate{
+  box-shadow:0 1px 0 rgba(255,255,255,.035) inset,
+             0 18px 40px -28px rgba(0,0,0,.9),
+             0 60px 140px -70px rgba(245,158,11,.55);
+}
+.warm body, body.warm{
+  background:
+    radial-gradient(140% 72% at 50% -16%, rgba(184,108,18,.12), transparent 62%),
+    radial-gradient(85% 52% at 106% 6%, rgba(164,60,8,.07), transparent 60%),
+    var(--rh-bg-app);
+}
+.warm .hero-plate{box-shadow:0 1px 0 rgba(255,255,255,.7) inset, 0 18px 40px -32px rgba(90,60,20,.5), 0 60px 140px -80px rgba(184,108,18,.5)}
+
+/* =====================================================================
+   CARD: conteggio al posto del sottotitolo (via eyebrow/frecce/sottotitoli)
+   ===================================================================== */
+.cat-count{
+  position:absolute;
+  left:11px;
+  top:11px;
+  z-index:4;
+  padding:2px 7px;
+  border-radius:var(--radius-pill);
+  font:700 10.5px/1.55 var(--condensed);
+  letter-spacing:.04em;
+  font-variant-numeric:tabular-nums;
+  color:rgba(245,240,232,.88);
+  background:rgba(11,9,8,.55);
+  border:1px solid rgba(245,240,232,.14);
+  -webkit-backdrop-filter:blur(6px);
+  backdrop-filter:blur(6px);
+}
+.cat-bottom{margin-top:0}
+.cat-title{font-size:16.5px;letter-spacing:-.015em}
+.warm .cat-count{color:#241d18;background:rgba(255,252,247,.78);border-color:rgba(36,29,24,.14)}
+
+/* =====================================================================
+   SPECIE — artwork locale (cutout) che esce dai bordi al passaggio
+   ===================================================================== */
+.spec-card-rh[data-spec$="-aasimar"]{--art:url(assets/species/aasimar.webp)}
+.spec-card-rh[data-spec$="-dragonborn"]{--art:url(assets/species/dragonborn.webp)}
+.spec-card-rh[data-spec$="-dwarf"]{--art:url(assets/species/dwarf.webp)}
+.spec-card-rh[data-spec$="-elf"]{--art:url(assets/species/elf.webp)}
+.spec-card-rh[data-spec$="-gnome"]{--art:url(assets/species/gnome.webp)}
+.spec-card-rh[data-spec$="-goliath"]{--art:url(assets/species/goliath.webp)}
+.spec-card-rh[data-spec$="-halfling"]{--art:url(assets/species/halfling.webp)}
+.spec-card-rh[data-spec$="-human"]{--art:url(assets/species/human.webp)}
+.spec-card-rh[data-spec$="-orc"]{--art:url(assets/species/orc.webp)}
+.spec-card-rh[data-spec$="-tiefling"]{--art:url(assets/species/tiefling.webp)}
+
+.spec-card-rh{
+  overflow:hidden;
+  isolation:isolate;
+  background:linear-gradient(180deg, var(--rh-bg-surface-elevated), var(--rh-bg-surface));
+  transition:transform .16s ease, border-color .16s ease, box-shadow .16s ease;
+}
+.spec-card-rh .spec-card-art{display:none}
+.spec-card-rh:before{
+  content:'';
+  position:absolute;
+  right:-3%;
+  bottom:-5%;
+  width:58%;
+  height:108%;
+  z-index:1;
+  pointer-events:none;
+  background:var(--art) no-repeat right bottom/contain;
+  transform-origin:100% 92%;
+  transform:translate(-2%,0) scale(1);
+  filter:drop-shadow(0 8px 14px rgba(0,0,0,.55));
+  transition:transform .38s cubic-bezier(.2,.8,.2,1), filter .38s ease;
+}
+.spec-card-rh:after{
+  content:'';
+  position:absolute;
+  inset:0;
+  z-index:2;
+  pointer-events:none;
+  background:linear-gradient(90deg, rgba(11,9,8,.95) 0%, rgba(11,9,8,.74) 40%, rgba(11,9,8,0) 74%);
+}
+.spec-card-rh .spec-card-left{position:relative;z-index:3}
+.spec-card-rh:hover,
+.spec-card-rh:focus-visible{
+  overflow:visible;
+  z-index:6;
+  border-color:rgba(245,158,11,.55);
+  box-shadow:0 0 0 1px rgba(245,158,11,.28), 0 22px 42px -18px rgba(0,0,0,.9), 0 0 44px rgba(245,158,11,.20);
+}
+.spec-card-rh:hover:before,
+.spec-card-rh:focus-visible:before{
+  transform:translate(-6%,-9%) scale(1.18);
+  filter:drop-shadow(0 0 16px rgba(245,158,11,.5)) drop-shadow(0 14px 20px rgba(0,0,0,.6));
+}
+.spec-card-rh:active{overflow:visible;z-index:6;border-color:rgba(245,158,11,.55)}
+.spec-card-rh:active:before{transform:translate(-5%,-7%) scale(1.12);filter:drop-shadow(0 0 16px rgba(245,158,11,.5))}
+.warm .spec-card-rh:after{background:linear-gradient(90deg, rgba(255,253,249,.96) 0%, rgba(255,253,249,.72) 40%, rgba(255,253,249,0) 74%)}
+.warm .spec-card-rh:before{filter:drop-shadow(0 8px 12px rgba(90,60,20,.4))}
+
+/* =====================================================================
+   CLASSI — artwork rettangolare: zoom + glow (niente cutout)
+   ===================================================================== */
+.class-card{transition:transform .18s ease, border-color .18s ease, box-shadow .18s ease}
+.class-art{overflow:hidden}
+.class-art-img{transition:transform .5s cubic-bezier(.2,.8,.2,1), filter .5s ease}
+.class-card:hover,
+.class-card:focus-visible{
+  border-color:rgba(245,158,11,.5);
+  box-shadow:0 0 0 1px rgba(245,158,11,.22), 0 20px 40px -18px rgba(0,0,0,.9), 0 0 38px rgba(245,158,11,.18);
+}
+.class-card:hover .class-art-img,
+.class-card:focus-visible .class-art-img,
+.class-card:active .class-art-img{transform:scale(1.09);filter:saturate(1.06) brightness(1.06)}
+.class-card:active{border-color:rgba(245,158,11,.5)}
+.warm .class-card:hover,.warm .class-card:focus-visible{box-shadow:0 0 0 1px rgba(184,108,18,.3), 0 20px 40px -20px rgba(90,60,20,.5), 0 0 34px rgba(184,108,18,.14)}
+
 </style>
 </head>
 <body>
@@ -4974,7 +5113,6 @@ body:not(.dark-reader) .rh-popover-nav-btn:hover {
   <main id="homeView">
     <section class="hero">
       <div class="hero-plate">
-        <div class="eyebrow">La biblioteca dell’avventuriero</div>
         <h1>Le regole, <em>a portata di mano</em>.</h1>
         <p class="intro">Consulta incantesimi, creature e classi mentre giochi. Tutto il materiale 2024, senza sfogliare il manuale.</p>
         <div class="search-wrap">
@@ -5001,8 +5139,7 @@ body:not(.dark-reader) .rh-popover-nav-btn:hover {
     <section id="directory">
       <div class="section-head">
         <h2>Esplora il compendio</h2>
-        <span>D&amp;D 5.5e (2024) · fonti selezionate</span>
-      </div>
+        </div>
 
       <div class="dir-group">
         <div class="dir-group-head"><span class="dir-group-label">Manuali</span><span class="dir-group-rule" aria-hidden="true"></span></div>
@@ -5010,8 +5147,8 @@ body:not(.dark-reader) .rh-popover-nav-btn:hover {
           <button class="category wide cat-rules" data-view="books" type="button">
             <span class="cat-art" aria-hidden="true"></span>
             <span class="cat-glyph" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg></span>
-            <span class="cat-top"><span class="cat-kicker">Biblioteca</span><span class="cat-arrow" aria-hidden="true">↗</span></span>
-            <span class="cat-bottom"><span class="cat-title">Libri di regole</span><span class="cat-sub">19 manuali · 2024+</span></span>
+            <span class="cat-bottom"><span class="cat-title">Libri di regole</span></span><span class="cat-count" aria-label="19 manuali · 2024+">19</span>
+           
           </button>
         </div>
       </div>
@@ -5022,26 +5159,26 @@ body:not(.dark-reader) .rh-popover-nav-btn:hover {
           <button class="category cat-classes" data-view="classes" type="button">
             <span class="cat-art" aria-hidden="true"></span>
             <span class="cat-glyph" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 11 2 2 4-4"/></svg></span>
-            <span class="cat-top"><span class="cat-kicker">Creazione</span><span class="cat-arrow" aria-hidden="true">↗</span></span>
-            <span class="cat-bottom"><span class="cat-title">Classi</span><span class="cat-sub">12 archetipi</span></span>
+            <span class="cat-bottom"><span class="cat-title">Classi</span></span><span class="cat-count" aria-label="12 archetipi">12</span>
+           
           </button>
           <button class="category cat-backgrounds" data-view="backgrounds" type="button">
             <span class="cat-art" aria-hidden="true"></span>
             <span class="cat-glyph" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m15.5 8.5-2 5-5 2 2-5z"/></svg></span>
-            <span class="cat-top"><span class="cat-kicker">Creazione</span><span class="cat-arrow" aria-hidden="true">↗</span></span>
-            <span class="cat-bottom"><span class="cat-title">Retaggi</span><span class="cat-sub">16 origini · PHB 2024</span></span>
+            <span class="cat-bottom"><span class="cat-title">Retaggi</span></span><span class="cat-count" aria-label="16 origini · PHB 2024">16</span>
+           
           </button>
           <button class="category cat-species" data-view="species" type="button">
             <span class="cat-art" aria-hidden="true"></span>
             <span class="cat-glyph" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
-            <span class="cat-top"><span class="cat-kicker">Creazione</span><span class="cat-arrow" aria-hidden="true">↗</span></span>
-            <span class="cat-bottom"><span class="cat-title">Specie</span><span class="cat-sub">10 popoli · PHB 2024</span></span>
+            <span class="cat-bottom"><span class="cat-title">Specie</span></span><span class="cat-count" aria-label="10 popoli · PHB 2024">10</span>
+           
           </button>
           <button class="category cat-feats" data-view="feats" type="button">
             <span class="cat-art" aria-hidden="true"></span>
             <span class="cat-glyph" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="9" r="6"/><path d="m8.5 14.5-1.5 7 5-3 5 3-1.5-7"/></svg></span>
-            <span class="cat-top"><span class="cat-kicker">Creazione</span><span class="cat-arrow" aria-hidden="true">↗</span></span>
-            <span class="cat-bottom"><span class="cat-title">Talenti</span><span class="cat-sub">77 doti · PHB 2024</span></span>
+            <span class="cat-bottom"><span class="cat-title">Talenti</span></span><span class="cat-count" aria-label="77 doti · PHB 2024">77</span>
+           
           </button>
         </div>
       </div>
@@ -5052,38 +5189,38 @@ body:not(.dark-reader) .rh-popover-nav-btn:hover {
           <button class="category cat-spells" data-view="spells" type="button">
             <span class="cat-art" aria-hidden="true"></span>
             <span class="cat-glyph" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M15 4V2"/><path d="M15 16v-2"/><path d="M8 9h2"/><path d="M20 9h2"/><path d="M17.8 11.8 19 13"/><path d="M15 9h.01"/><path d="M17.8 6.2 19 5"/><path d="M3 21l9-9"/><path d="M12.2 6.2 11 5"/></svg></span>
-            <span class="cat-top"><span class="cat-kicker">Magia</span><span class="cat-arrow" aria-hidden="true">↗</span></span>
-            <span class="cat-bottom"><span class="cat-title">Incantesimi</span><span class="cat-sub">391 voci · PHB 2024</span></span>
+            <span class="cat-bottom"><span class="cat-title">Incantesimi</span></span><span class="cat-count" aria-label="391 voci · PHB 2024">391</span>
+           
           </button>
           <button class="category cat-monsters" data-view="monsters" type="button">
             <span class="cat-art" aria-hidden="true"></span>
             <span class="cat-glyph" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 2a9 9 0 0 0-9 9c0 3 1.4 5 3 6.5V21h12v-3.5C19.6 16 21 14 21 11a9 9 0 0 0-9-9z"/><circle cx="9" cy="11" r="1.4"/><circle cx="15" cy="11" r="1.4"/><path d="M10 21v-3"/><path d="M14 21v-3"/></svg></span>
-            <span class="cat-top"><span class="cat-kicker">Bestiario</span><span class="cat-arrow" aria-hidden="true">↗</span></span>
-            <span class="cat-bottom"><span class="cat-title">Mostri</span><span class="cat-sub">503 creature · MM 2024</span></span>
+            <span class="cat-bottom"><span class="cat-title">Mostri</span></span><span class="cat-count" aria-label="503 creature · MM 2024">503</span>
+           
           </button>
           <button class="category cat-equipment" data-view="equipment" type="button">
             <span class="cat-art" aria-hidden="true"></span>
             <span class="cat-glyph" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 10a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"/><path d="M9 6V4a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2"/><path d="M8 21v-4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v4"/></svg></span>
-            <span class="cat-top"><span class="cat-kicker">Equipaggiamento</span><span class="cat-arrow" aria-hidden="true">↗</span></span>
-            <span class="cat-bottom"><span class="cat-title">Attrezzatura</span><span class="cat-sub">123 oggetti · PHB 2024</span></span>
+            <span class="cat-bottom"><span class="cat-title">Attrezzatura</span></span><span class="cat-count" aria-label="123 oggetti · PHB 2024">123</span>
+           
           </button>
           <button class="category cat-magic" data-view="magic" type="button">
             <span class="cat-art" aria-hidden="true"></span>
             <span class="cat-glyph" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 3h12l4 6-10 13L2 9z"/><path d="M11 3 8 9l4 13 4-13-3-6"/><path d="M2 9h20"/></svg></span>
-            <span class="cat-top"><span class="cat-kicker">Tesori</span><span class="cat-arrow" aria-hidden="true">↗</span></span>
-            <span class="cat-bottom"><span class="cat-title">Oggetti magici</span><span class="cat-sub">584 meraviglie · DMG 2024</span></span>
+            <span class="cat-bottom"><span class="cat-title">Oggetti magici</span></span><span class="cat-count" aria-label="584 meraviglie · DMG 2024">584</span>
+           
           </button>
           <button class="category cat-bastions" data-view="bastions" type="button">
             <span class="cat-art" aria-hidden="true"></span>
             <span class="cat-glyph" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 21V9l4 3V9l4 3 4-3v3l4-3v12"/><path d="M10 21v-5h4v5"/></svg></span>
-            <span class="cat-top"><span class="cat-kicker">Avventura</span><span class="cat-arrow" aria-hidden="true">↗</span></span>
-            <span class="cat-bottom"><span class="cat-title">Bastioni</span><span class="cat-sub">35 strutture · DMG 2024</span></span>
+            <span class="cat-bottom"><span class="cat-title">Bastioni</span></span><span class="cat-count" aria-label="35 strutture · DMG 2024">35</span>
+           
           </button>
           <button class="category cat-glossary" data-view="glossary" type="button">
             <span class="cat-art" aria-hidden="true"></span>
             <span class="cat-glyph" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 7V4h16v3"/><path d="M9 20h6"/><path d="M12 4v16"/></svg></span>
-            <span class="cat-top"><span class="cat-kicker">Riferimento</span><span class="cat-arrow" aria-hidden="true">↗</span></span>
-            <span class="cat-bottom"><span class="cat-title">Glossario</span><span class="cat-sub">15 condizioni · PHB 2024</span></span>
+            <span class="cat-bottom"><span class="cat-title">Glossario</span></span><span class="cat-count" aria-label="15 condizioni · PHB 2024">15</span>
+           
           </button>
         </div>
       </div>
