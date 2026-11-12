@@ -146,6 +146,13 @@ Il motore di contenuti formatta il testo del Player's Handbook generando element
     * **Modalità Mobile Ergonomica (`@media(max-width: 860px)`):** Barra di commutazione capitoli rapida (`.rh-reader-mobile-bar`) che apre e chiude la sidebar senza occupare spazio visivo sul foglio di lettura.
   * **Test Suite Dedicata (`tests/test_reader_ui_ruleholder.js`):** Valida al 100% l'integrità del DOM HTML (30 elementi), delle regole CSS (30 selettori), delle funzioni JavaScript (16 API) e della fedeltà al Capitolo 2 autentico in inglese.
 
+### [2026-11-12] - Home senza numeri, card Specie allineate al riferimento, immagini Classi corrette
+* **Autore:** Agente Grafica & UI
+* **Home:** rimossi i badge numerici (`.cat-count`) introdotti nel giro precedente: le card restano titolo + artwork.
+* **Specie:** la card ora replica la tecnica di ruleholder.com — l'artwork è il `background` della card (`background-size:auto 100%`, `top right`, nessuna maschera né velo), quindi è la trasparenza del cutout a fondere il personaggio nel fondo. Altezza 146px come il riferimento, badge sorgente compatto e monocromatico in basso a sinistra, testo con `padding-right:42%` per non finire sotto la figura. Hover/pressione: il soggetto esce dai bordi (scale 1.14, ancorato in alto a destra) con alone ambra.
+* **Classi:** l'immagine era resa con `object-fit:contain` dentro un riquadro 16:10, quindi restava pillarboxata con bande nere e doppia cornice. Ora `object-fit:cover` + `object-position:50% 0%` (come il riferimento) e artwork locale `assets/classes/*.webp` (stessa fonte di ruleholder) al posto del ritratto remoto di 5e.tools, via `content:url()` per `[data-class]`: nessuna modifica al renderer JS.
+* **Verifica:** profilo di luminanza della card Specie confrontato con lo screenshot di ruleholder → correlazione **0.99** (picco a 78% della larghezza, centro di massa 65% vs 66%); card Classe: immagine 356×190 che riempie il riquadro (dev. luminanza 38.8, nessuna banda nera); home senza overflow a 320/390/768/1280; test suite verde.
+
 ### [2026-11-12] - Artwork su Specie e Classi, atmosfera della home, rimozione slop
 * **Autore:** Agente Grafica & UI
 * **Asset:** `assets/species/*.webp` — 10 cutout con trasparenza da `media.ruleholder.com/images/species/`. Attribuzione in `assets/species/README.md`.
