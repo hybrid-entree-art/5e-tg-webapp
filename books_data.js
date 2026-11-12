@@ -199,7 +199,7 @@ const BOOKS = [
   {
     "id": "XMM",
     "name": "Monster Manual",
-    "itName": "Enciclopedia dei mostri",
+    "itName": "Manuale dei mostri",
     "source": "XMM",
     "type": "Regole",
     "bookSource": "Ufficiale",

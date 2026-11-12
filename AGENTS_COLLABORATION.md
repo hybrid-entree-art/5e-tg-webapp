@@ -10,6 +10,18 @@ Questo documento definisce l'architettura, la divisione dei ruoli e il protocoll
 
 ## 1. Divisione dei Ruoli & Responsabilità
 
+> ### 🎯 DIRETTIVA PRIORITARIA: IMPLEMENTAZIONE PERFETTA DEI 3 MANUALI CORE (2024)
+> **Obiettivo primario e vincolante per tutti gli agenti (Contenuti, Grafica & UI):**
+> Il focus assoluto dello sviluppo deve essere rivolto all'implementazione **perfetta ed esaustiva** dei 3 manuali base ufficiali di D&D 2024:
+> 1. 📖 **Player's Handbook / Manuale del Giocatore (2024)** (`XPHB`)
+> 2. 🧙‍♂️ **Dungeon Master's Guide / Guida del Dungeon Master (2024)** (`XDMG`)
+> 3. 🐉 **Monster Manual / Manuale dei Mostri (2024)** (`XMM`)
+>
+> **Comportamento UI Attuale (Filtro Catalogo):**
+> * Nella vista Biblioteca (`renderBooksGrid`), vengono mostrati **esclusivamente questi 3 manuali core** (`CORE_BOOK_IDS = ['XPHB', 'XDMG', 'XMM']`), ordinati canonicamente (`XPHB` -> `XDMG` -> `XMM`).
+> * Tutti gli altri manuali (supplementi, ambientazioni, avventure e homebrew) rimangono temporaneamente esclusi dalla visualizzazione grafica e archiviati nei dataset (`books_data.js`).
+> * **Roadmap:** Solo quando i 3 manuali core saranno stati completamente integrati, verificati e rifiniti alla perfezione (struttura capitoli, regole, tabelle, blocchi statistiche, collegamenti ipertestuali ed entità popover), si procederà ad abilitare e perfezionare il resto della biblioteca.
+
 Per evitare conflitti, sovrascritture accidentali o regressioni, il lavoro è strettamente suddiviso:
 
 ### 📗 Agente Contenuti (Content Agent)
@@ -89,6 +101,19 @@ Il motore di contenuti formatta il testo del Player's Handbook generando element
 ---
 
 ## 4. Registro Modifiche & Novità (Changelog)
+
+### [2026-11-12] - Direttiva Manuali Core 2024 & Visualizzazione Esclusiva Biblioteca (PHB, DMG, MM)
+* **Autore:** Agente Contenuti & Agente Grafica & UI
+* **Decisione Architetturale:**
+  * Tutti gli sforzi di sviluppo sono focalizzati sull'implementazione impeccabile ed esaustiva dei 3 manuali base ufficiali D&D 2024:
+    1. *Player's Handbook / Manuale del Giocatore* (`XPHB`)
+    2. *Dungeon Master's Guide / Guida del Dungeon Master* (`XDMG`)
+    3. *Monster Manual / Manuale dei Mostri* (`XMM`)
+  * **Filtro UI Biblioteca:** Il catalogo "Biblioteca / Libri di regole" (`renderBooksGrid` in `prototype.html` e `index.html`) visualizza **esclusivamente** i 3 manuali core, ordinati secondo la sequenza ufficiale canonica (`XPHB` -> `XDMG` -> `XMM`).
+  * Aggiornato il metadato `itName` di `XMM` in `books_data.js` a `"Manuale dei mostri"`.
+  * Aggiornati i badge della home directory a `"3 manuali core · 2024"`.
+  * Tutti gli altri 27 manuali rimangono salvaguardati nel dataset `books_data.js` ma nascosti dalla vista catalogo fino al completamento e alla validazione perfetta dei 3 manuali base.
+  * Suite di test aggiornata e validata in `tests/test_books_ui_ruleholder.js`.
 
 ### [2026-11-12] - Restyling Totale Badge (Eliminazione Stili "AI Slop" & Allineamento Ruleholder)
 * **Autore:** Agente Grafica & UI

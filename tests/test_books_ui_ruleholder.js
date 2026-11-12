@@ -27,7 +27,7 @@ const expectedTop10 = [
   { it: 'Trattenere i morti', id: 'HoldDead' },
   { it: 'La bisaccia del Grifone, Libro 1', id: 'TGS1' },
   { it: 'Sale del Drago', id: 'FTD' },
-  { it: 'Enciclopedia dei mostri', id: 'XMM' }
+  { it: 'Manuale dei mostri', id: 'XMM' }
 ];
 
 expectedTop10.forEach((exp, idx) => {
@@ -139,6 +139,23 @@ const sortedAsc = BOOKS.slice().sort((a, b) => (a.itName || a.name).localeCompar
 assert.strictEqual(sortedAsc[0].itName, 'Banchetto degli Eroi: Leggende della Tavola');
 assert.strictEqual(sortedAsc[sortedAsc.length - 1].itName, 'World of Warcraft');
 console.log('[PASS] Alphabetical sorting verified.');
+
+console.log('\n=== 5. VERIFYING CORE BOOKS FILTERING IN RENDER GRID ===');
+const CORE_BOOK_IDS = ['XPHB', 'XDMG', 'XMM'];
+const coreBooks = BOOKS.filter(b => CORE_BOOK_IDS.includes(b.id));
+assert.strictEqual(coreBooks.length, 3, 'Must have exactly 3 core books');
+coreBooks.sort((a, b) => CORE_BOOK_IDS.indexOf(a.id) - CORE_BOOK_IDS.indexOf(b.id));
+assert.strictEqual(coreBooks[0].id, 'XPHB', 'First core book must be Player\'s Handbook (XPHB)');
+assert.strictEqual(coreBooks[1].id, 'XDMG', 'Second core book must be Dungeon Master\'s Guide (XDMG)');
+assert.strictEqual(coreBooks[2].id, 'XMM', 'Third core book must be Monster Manual (XMM)');
+assert.strictEqual(coreBooks[2].itName, 'Manuale dei mostri', 'XMM itName must be Manuale dei mostri');
+
+['prototype.html', 'index.html'].forEach(filename => {
+  const html = fs.readFileSync(path.join(__dirname, '..', filename), 'utf8');
+  assert.ok(html.includes("const CORE_BOOK_IDS = ['XPHB', 'XDMG', 'XMM'];"), `${filename}: missing CORE_BOOK_IDS filter`);
+  assert.ok(html.includes('3 manuali core'), `${filename}: missing 3 manuali core label`);
+});
+console.log('[PASS] Core books filter and canonical ordering verified (XPHB -> XDMG -> XMM).');
 
 console.log('\n======================================================');
 console.log('SUCCESS: All Ruleholder Biblioteca UI tests PASSED!');

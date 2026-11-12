@@ -5158,7 +5158,6 @@ body:after{
             <span class="cat-art" aria-hidden="true"></span>
             <span class="cat-glyph" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg></span>
             <span class="cat-bottom"><span class="cat-title">Libri di regole</span></span>
-           
           </button>
         </div>
       </div>
@@ -9931,7 +9930,7 @@ const ITEMKINDS={
    meta:x=>[x.type,x.level?('Livello '+x.level):''].concat(x.orders||[]),match:(x,q)=>x.name.toLowerCase().includes(q)},
   glossary:{key:'GLOSSARY',coll:'termini',title:'Glossario',note:'15 condizioni · PHB 2024',kicker:'Condizione · PHB 2024',tag:x=>x.category||'Condizione',text:x=>x.text||'',
    meta:x=>[x.it||x.name],match:(x,q)=>x.name.toLowerCase().includes(q)||(x.it||'').toLowerCase().includes(q)},
-  books:{key:'BOOKS',coll:'manuali',title:'Biblioteca',note:(typeof BOOKS!=='undefined'?BOOKS.length:30)+' manuali · D&D 5.5e e 5e',kicker:'Biblioteca · Manuali',tag:x=>x.type||'Regole',text:x=>x.text||'',
+  books:{key:'BOOKS',coll:'manuali',title:'Biblioteca',note:'3 manuali core · D&D 2024',kicker:'Biblioteca · Manuali',tag:x=>x.type||'Regole',text:x=>x.text||'',
    meta:x=>[(x.year||''),(x.nchapters?x.nchapters+' capitoli':'indice completo'),x.author].filter(Boolean),match:(x,q)=>x.name.toLowerCase().includes(q)||(x.itName&&x.itName.toLowerCase().includes(q))}
 };
 let activeGroup=null,itemGroupFilter='Tutti';
@@ -10022,7 +10021,16 @@ function renderBooksGrid(){
   if(!grid) return;
   grid.className = 'rh-books-grid';
 
-  let list = (typeof BOOKS !== 'undefined' && Array.isArray(BOOKS)) ? BOOKS.slice() : [];
+  // Solo i 3 manuali core 2024 per direttiva di sviluppo: Player's Handbook, Dungeon Master's Guide, Monster Manual
+  const CORE_BOOK_IDS = ['XPHB', 'XDMG', 'XMM'];
+  let list = (typeof BOOKS !== 'undefined' && Array.isArray(BOOKS))
+    ? BOOKS.filter(b => CORE_BOOK_IDS.includes(b.id))
+    : [];
+
+  // Ordinamento canonico predefinito: Player's Handbook (XPHB) -> Dungeon Master's Guide (XDMG) -> Monster Manual (XMM)
+  if(!booksSortOrder || booksSortOrder === 'default'){
+    list.sort((a, b) => CORE_BOOK_IDS.indexOf(a.id) - CORE_BOOK_IDS.indexOf(b.id));
+  }
 
   // Filter by Type
   if(booksTypeFilter && booksTypeFilter !== 'Tutto'){
