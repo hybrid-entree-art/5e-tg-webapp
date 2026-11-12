@@ -90,6 +90,29 @@ Il motore di contenuti formatta il testo del Player's Handbook generando element
 
 ## 4. Registro Modifiche & Novità (Changelog)
 
+### [2026-11-12] - Nuova UX & UI Dettaglio Bastioni & Schede Oggetti (Ruleholder Spec Card)
+* **Autore:** Agente Contenuti & Agente Grafica & UI
+* **Riferimento UX:** Screenshot di Ruleholder `media_1794442074664_8f44693e.jpg` (Dettaglio Bastione *Semipiano / Demiplane*).
+* **Novità:**
+  * **Breadcrumbs Row con Warning & Back ergonomico (`.rh-detail-crumbs-row`):**
+    * Struttura: `🗂 Elenco > 🏰 Bastioni > [Nome Bastione]` con chevron `>` e badge icona `⚠️` allineata a destra.
+    * Pulsante compatto `← Elenco` per tornare rapidamente al catalogo.
+  * **Intestazione Titolo a Riquadro Ruleholder (`.rh-item-detail-header`):**
+    * Titolo prominente a sinistra (`.rh-item-title`, es. *Semipiano* / *Demiplane*).
+    * A destra allineato sulla riga: sottotitolo in lingua originale inglese (`.rh-item-en-sub`, es. *Demiplane*) affiancato dal badge sorgente a pillola (`.rh-badge-source`, es. `✓ DMG` o `✓ PHB`).
+  * **Card Specifica Struttura / Oggetto (`.rh-spec-box`):**
+    * **Griglia Metadati a Colonne (`.rh-spec-grid-header`):**
+      * `TIPO` (`Struttura speciale` / `Struttura base`).
+      * `LIVELLO` (`17° livello` / `Livello 17`).
+    * **Corpo Testuale con Paragrafi e Sotto-Incipit in Grassetto-Corsivo (`.rh-spec-desc-text`):**
+      * Formattazione automatica in paragrafi distinti (`<p class="rh-spec-p">`).
+      * Evidenziazione automatica dei comandi e capacità di bastione (es. `<i><b>Empower: Arcane Resilience.</b></i>`, `<i><b>Fabrication.</b></i>`, `<i><b>Research: Helpful Lore.</b></i>`, `<i><b>Craft Options.</b></i>`).
+      * Autolink a entità note (es. *Temporary Hit Points*, *Long Rest*, *Magic action*, *Size*) con card popover al passaggio del mouse.
+  * **Traduzione Integrata dei 35 Bastioni (`bastions_data.js`):**
+    * Tutte le 35 strutture del *Dungeon Master's Guide 2024* sono ora arricchite con il nome ufficiale italiano (`it`) per la ricerca e visualizzazione bilingue (es. *Demiplane* -> *Semipiano*, *Arcane Study* -> *Studio Arcano*, *Archive* -> *Archivio*).
+  * **Test Suite Dedicata (`tests/test_bastion_detail_ui.js`):**
+    * Copertura completa su sincronizzazione DOM HTML, regole CSS, helper JavaScript, integrità dei 35 bastioni e fedeltà al layout di *Demiplane*.
+
 ### [2026-11-12] - Nuova UX & UI Lettore Manuale Integrale (Ruleholder Book Reader)
 * **Autore:** Agente Contenuti & Agente Grafica & UI
 * **Riferimento UX:** Screenshot di Ruleholder `media_1794441659988_e723283c.jpg` (Lettura completa di *Capitolo 2: Creazione del personaggio*).

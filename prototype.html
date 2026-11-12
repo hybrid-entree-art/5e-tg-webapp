@@ -1607,6 +1607,172 @@ dialog input:focus,dialog select:focus{border-color:var(--rh-border-focus);outli
 }
 
 /* =====================================================================
+   RULEHOLDER ITEM & BASTION DETAIL VIEW (Screenshot media_1794442074664_8f44693e.jpg)
+   ===================================================================== */
+#itemDetailView {
+  width: 100%;
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 6px 0 32px;
+}
+.rh-detail-crumbs-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
+  gap: 12px;
+}
+.rh-detail-crumbs-row .nav-crumbs {
+  margin-bottom: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.rh-warn-badge {
+  background: transparent;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  padding: 4px;
+  opacity: 0.85;
+  transition: opacity 0.15s, transform 0.15s;
+  color: #f59e0b;
+}
+.rh-warn-badge:hover {
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+.rh-item-detail-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 20px;
+  padding-bottom: 4px;
+}
+.rh-item-title {
+  font-family: var(--sans);
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: #ffffff;
+  margin: 0;
+  line-height: 1.2;
+}
+.warm .rh-item-title {
+  color: #1a1715;
+}
+.rh-item-title-aside {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.rh-item-en-sub {
+  font-family: var(--sans);
+  font-size: 14.5px;
+  font-weight: 500;
+  color: #8e8697;
+}
+.warm .rh-item-en-sub {
+  color: #766e65;
+}
+.rh-badge-source {
+  background: #201b26;
+  border: 1px solid #362e3e;
+  color: #ded8ce;
+  font-family: var(--sans);
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  padding: 3px 8px;
+  border-radius: 4px;
+  display: inline-flex;
+  align-items: center;
+}
+.warm .rh-badge-source {
+  background: #ede6d8;
+  border-color: #d8ccb8;
+  color: #383025;
+}
+
+/* The Ruleholder Spec Card */
+.rh-spec-box {
+  background: #151218;
+  border: 1px solid #282230;
+  border-radius: 8px;
+  padding: 26px 28px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+  margin-bottom: 24px;
+}
+.warm .rh-spec-box {
+  background: #fdfaf3;
+  border-color: #e5ded2;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+}
+
+/* Grid Header inside Spec Card */
+.rh-spec-grid-header {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 24px;
+  margin-bottom: 24px;
+  padding-bottom: 4px;
+}
+.rh-spec-col {
+  display: flex;
+  flex-direction: column;
+}
+.rh-spec-col-label {
+  font-family: var(--sans);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #8e8697;
+  margin-bottom: 5px;
+}
+.warm .rh-spec-col-label {
+  color: #766e65;
+}
+.rh-spec-col-val {
+  font-family: var(--sans);
+  font-size: 14.5px;
+  font-weight: 500;
+  color: #ffffff;
+}
+.warm .rh-spec-col-val {
+  color: #1a1715;
+}
+
+/* Body Text inside Spec Card */
+.rh-spec-desc-text {
+  font-family: var(--sans);
+  font-size: 14px;
+  line-height: 1.68;
+  color: #ded8ce;
+}
+.warm .rh-spec-desc-text {
+  color: #2c2825;
+}
+.rh-spec-desc-text p, .rh-spec-p {
+  margin: 0 0 14px;
+}
+.rh-spec-desc-text p:last-child, .rh-spec-p:last-child {
+  margin-bottom: 0;
+}
+.rh-spec-desc-text i b, .rh-spec-desc-text b i, .rh-spec-desc-text em strong, .rh-spec-desc-text strong em {
+  font-style: italic;
+  font-weight: 700;
+  color: #ffffff;
+}
+.warm .rh-spec-desc-text i b, .warm .rh-spec-desc-text b i, .warm .rh-spec-desc-text em strong, .warm .rh-spec-desc-text strong em {
+  color: #1a1715;
+}
+
+/* =====================================================================
    RULEHOLDER MANUAL READER UX & UI (Screenshot media_1794441659988_e723283c.jpg)
    ===================================================================== */
 #bookReaderView {
@@ -5173,26 +5339,32 @@ body:not(.dark-reader) .rh-popover-nav-btn:hover {
       <div class="class-grid bg-grid" id="itemGrid"></div>
     </section>
 
+    <!-- Ruleholder Item & Bastion Detail View (Screenshot media_1794442074664_8f44693e.jpg) -->
     <section id="itemDetailView" class="hidden">
-      <div class="nav-crumbs">
-        <button type="button" class="nav-crumb-btn" onclick="goHomeDirectly(event)">📖 <span data-home-crumb>Elenco</span></button>
-        <span class="nav-crumb-sep">/</span>
-        <button type="button" class="nav-crumb-btn" onclick="backToItemList()" id="itemDetailParentCrumb">Catalogo</button>
-        <span class="nav-crumb-sep">/</span>
-        <span class="nav-crumb-current" id="itemDetailCrumbName">Dettaglio</span>
-      </div>
-      <button class="back detail-back" id="itemDetailBack" aria-label="Torna indietro" onclick="backToItemList()">← Indietro</button>
-      <div class="spell-detail-header-rh">
-        <div class="spell-detail-title-box">
-          <div class="eyebrow" id="itemDetailKicker"></div>
-          <h1 class="spell-detail-title" id="itemDetailName"></h1>
-          <div class="spell-detail-sub" id="itemDetailSub"></div>
+      <!-- Breadcrumbs Row with Warning Icon on the Far Right -->
+      <div class="rh-detail-crumbs-row">
+        <div class="nav-crumbs">
+          <button type="button" class="nav-crumb-btn" onclick="goHomeDirectly(event)">🗂 <span data-home-crumb>Elenco</span></button>
+          <span class="nav-crumb-sep">&gt;</span>
+          <button type="button" class="nav-crumb-btn" id="itemDetailParentCrumb" onclick="backToItemList()">🏰 Bastioni</button>
+          <span class="nav-crumb-sep">&gt;</span>
+          <span class="nav-crumb-current" id="itemDetailCrumbName">Demiplane</span>
         </div>
-        <div class="spell-detail-top-right">
-          <span class="rh-badge-phb" id="itemDetailSource">PHB</span>
-          <button type="button" class="rh-warn-badge" title="Verified source">⚠️</button>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <button type="button" class="back detail-back" id="itemDetailBack" aria-label="Torna indietro" onclick="backToItemList()" style="padding:4px 10px;font-size:12px;margin:0;">← Elenco</button>
+          <button type="button" class="rh-warn-badge" title="Segnala incongruenza o errore">⚠️</button>
         </div>
       </div>
+
+      <!-- Item Detail Header: Title on Left, Subtitle & Badge on Right (Screenshot media_1794442074664_8f44693e.jpg) -->
+      <div class="rh-item-detail-header">
+        <h1 class="rh-item-title" id="itemDetailName">Semipiano</h1>
+        <div class="rh-item-title-aside">
+          <span class="rh-item-en-sub" id="itemDetailSub">Demiplane</span>
+          <span class="rh-badge-source" id="itemDetailSource">✓ DMG</span>
+        </div>
+      </div>
+
       <div class="spec-pill-row hidden" id="itemDetailMeta"></div>
       <div id="itemDetailSpecBox"></div>
       <div id="itemDetailText" class="bg-text"></div>
@@ -8283,6 +8455,39 @@ function parseDiceInText(text){
    ===================================================================== */
 
 const CORE_RULES_REGISTRY = {
+  'temporary hit points': {
+    title: 'Temporary Hit Points',
+    sub: "Rules Glossary · Player's Handbook 2024",
+    source: 'PHB 2024',
+    badge: 'Regola',
+    text: "Temporary Hit Points aren't actual Hit Points; they are a buffer against damage, a pool of hit points that protect you from injury. They don't add to your current Hit Points, can't exceed your Hit Point maximum, and can't be healed.",
+    sectionId: 'temporary-hit-points'
+  },
+  'punti ferita temporanei': {
+    title: 'Punti Ferita Temporanei',
+    sub: "Glossario Regole · Player's Handbook 2024",
+    source: 'PHB 2024',
+    badge: 'Regola',
+    text: "I Punti Ferita Temporanei non sono veri punti ferita, ma un cuscinetto contro i danni che protegge il personaggio dalle ferite. Non si sommano ai punti ferita attuali e non possono essere curati.",
+    sectionId: 'temporary-hit-points'
+  },
+  'size': {
+    title: 'Size',
+    sub: "Rules Glossary · Player's Handbook 2024",
+    source: 'PHB 2024',
+    badge: 'Regola',
+    text: "Each creature and object belongs to a size category: Tiny, Small, Medium, Large, Huge, or Gargantuan. A creature's size determines the space it occupies on a grid in combat.",
+    sectionId: 'creature-size-and-space'
+  },
+  'taglia': {
+    title: 'Taglia',
+    sub: "Glossario Regole · Player's Handbook 2024",
+    source: 'PHB 2024',
+    badge: 'Regola',
+    text: "Ogni creatura e oggetto appartiene a una categoria di taglia: Minuscola, Piccola, Media, Grande, Enorme o Mastodontica.",
+    sectionId: 'creature-size-and-space'
+  },
+
   'long rest': {
     title: 'Long Rest',
     sub: "Rules Glossary · Player's Handbook 2024",
@@ -8630,7 +8835,8 @@ function linkKnownEntities(html) {
     'Bright Light', 'Dim Light', 'Darkvision', 'Scurovista',
     'Long Rest', 'Short Rest', 'Riposo Lungo', 'Riposo Breve',
     'Concentration', 'Concentrazione', 'Attunement', 'Sintonizzazione',
-    'Magic action', 'Azione Magica', 'Opportunity Attack', "Attacco d'Opportunità"
+    'Magic action', 'Azione Magica', 'Opportunity Attack', "Attacco d'Opportunità",
+    'Temporary Hit Points', 'Punti Ferita Temporanei', 'Size', 'Taglia'
   ].sort((a, b) => b.length - a.length);
   const ruleRegex = new RegExp(`\\b(${ruleTerms.map(r => r.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|')})\\b`, 'gi');
 
@@ -9960,118 +10166,177 @@ function renderItemList(){
   }
 }
 
+function cleanBastionText(t) {
+  if (!t) return '';
+  t = t.replace(/\|[A-Z0-9]+\|[^|]*\|([a-zA-Z0-9\s\'-]+)/g, ' $1');
+  t = t.replace(/\|[A-Z0-9]+\|[^|\s]+/g, '');
+  t = t.replace(/\{@[a-zA-Z]+\s+([^|}]+)[^}]*\}/g, '$1');
+  t = t.replace(/\b([A-Za-z]+)\s+\1\b/g, '$1');
+  return t;
+}
+
+function formatBastionParagraphs(t) {
+  if (!t) return '';
+  t = cleanBastionText(t);
+  t = t.replace(/(\.\s+)(Only you and your\b)/g, '$1\n\n$2');
+  const pattern = /(\.\s+)([A-Z][a-zA-Z0-9\s\'-]+:\s+[A-Z][a-zA-Z0-9\s\'-]+\.|\bFabrication\.|\bArcane Study Charm\.|\bCraft Options\.|\bTrade Options\.|\bHarvest Options\.|\bRecruit Options\.)/g;
+  t = t.replace(pattern, '$1\n\n$2');
+
+  const paras = t.split('\n\n').map(p => p.trim()).filter(Boolean);
+  const formatted = paras.map(p => {
+    const leadMatch = p.match(/^([A-Z][a-zA-Z0-9\s\'-]+:\s+[A-Z][a-zA-Z0-9\s\'-]+\.|\bFabrication\.|\bArcane Study Charm\.|\bCraft Options\.|\bTrade Options\.|\bHarvest Options\.|\bRecruit Options\.)\s*(.*)$/);
+    if (leadMatch) {
+      return `<p class="rh-spec-p"><i><b>${leadMatch[1]}</b></i> ${leadMatch[2]}</p>`;
+    }
+    return `<p class="rh-spec-p">${p}</p>`;
+  });
+  return formatted.join('\n');
+}
+
 function openItem(i){
-  const k=activeGroup;
-  activeItem=groupItems()[i];
-  if(!activeItem)return;
-  if(k.key==='BOOKS'){
+  const k = activeGroup;
+  activeItem = groupItems()[i];
+  if(!activeItem) return;
+  if(k.key === 'BOOKS'){
     openBookReader(activeItem.id || 'XPHB');
     return;
   }
   $('#itemListView').classList.add('hidden');
   $('#itemDetailView').classList.remove('hidden');
-  $('#itemDetailKicker').textContent=k.kicker;
-  $('#itemDetailName').textContent=activeItem.name;
-  if($('#itemDetailSub')) $('#itemDetailSub').textContent=activeItem.name;
-  $('#itemDetailCrumbName').textContent=activeItem.name;
-  $('#itemDetailParentCrumb').textContent=k.title;
-  if($('#itemDetailSource')) $('#itemDetailSource').textContent=activeItem.source || (k.key==='MAGIC'||k.key==='BASTIONS'?'DMG':'PHB');
-  $('#itemDetailMeta').innerHTML=k.meta(activeItem).map(x=>`<span class="spec-pill">${esc(x)}</span>`).join('');
+
+  const itName = activeItem.it || activeItem.name;
+  const enName = activeItem.name;
+  const displayTitle = (typeof currentLang !== 'undefined' && currentLang === 'en' || !activeItem.it) ? enName : itName;
+  const displaySub = (displayTitle !== enName) ? enName : '';
+
+  $('#itemDetailName').textContent = displayTitle;
+  if($('#itemDetailSub')) $('#itemDetailSub').textContent = displaySub;
+  $('#itemDetailCrumbName').textContent = displayTitle;
+  $('#itemDetailParentCrumb').textContent = (k.key === 'BASTIONS' ? '🏰 Bastioni' : k.title);
+
+  const sourceBadge = $('#itemDetailSource');
+  if(sourceBadge) {
+    const src = activeItem.source || (k.key==='MAGIC'||k.key==='BASTIONS'?'DMG':'PHB');
+    sourceBadge.textContent = '✓ ' + src;
+  }
 
   const specBox = $('#itemDetailSpecBox');
-  if(specBox){
-    if(k.key === 'EQUIPMENT'){
-      let costStr = activeItem.value != null ? (activeItem.value >= 100 ? `${Math.round(activeItem.value / 100)} gp` : `${activeItem.value} cp`) : '—';
-      let weightStr = activeItem.weight ? `${activeItem.weight} lb` : '—';
-      specBox.innerHTML = `
-        <div class="rh-spec-box">
-          <div class="rh-spec-grid-header">
-            <div class="rh-spec-col">
-              <span class="rh-spec-col-label">CATEGORY</span>
-              <span class="rh-spec-col-val">${esc(activeItem.type || 'Adventuring Gear')}</span>
-            </div>
-            <div class="rh-spec-col">
-              <span class="rh-spec-col-label">COST</span>
-              <span class="rh-spec-col-val">${esc(costStr)}</span>
-            </div>
-            <div class="rh-spec-col">
-              <span class="rh-spec-col-label">WEIGHT</span>
-              <span class="rh-spec-col-val">${esc(weightStr)}</span>
-            </div>
+  if(!specBox) return;
+
+  if(k.key === 'BASTIONS'){
+    const isSpecial = activeItem.type === 'Special' || activeItem.type === 'Speciale' || activeItem.type === 'Special Facility';
+    const typeLabel = (typeof currentLang !== 'undefined' && currentLang === 'en') ? 'TYPE' : 'TIPO';
+    const typeVal = (typeof currentLang !== 'undefined' && currentLang === 'en')
+      ? (isSpecial ? 'Special Facility' : 'Basic Facility')
+      : (isSpecial ? 'Struttura speciale' : 'Struttura base');
+    const levelLabel = (typeof currentLang !== 'undefined' && currentLang === 'en') ? 'LEVEL' : 'LIVELLO';
+    const levelVal = (typeof currentLang !== 'undefined' && currentLang === 'en') ? `Level ${activeItem.level || 5}` : `${activeItem.level || 5}° livello`;
+
+    specBox.innerHTML = `
+      <div class="rh-spec-box">
+        <div class="rh-spec-grid-header">
+          <div class="rh-spec-col">
+            <span class="rh-spec-col-label">${typeLabel}</span>
+            <span class="rh-spec-col-val">${esc(typeVal)}</span>
           </div>
-          <div class="rh-spec-desc-text">
-            <p>${linkKnownEntities(parseDiceInText(esc(activeItem.text || 'No description available.')))}</p>
-          </div>
-        </div>
-      `;
-      $('#itemDetailText').innerHTML = '';
-    } else if(k.key === 'MAGIC'){
-      specBox.innerHTML = `
-        <div class="rh-spec-box">
-          <div class="rh-spec-grid-header">
-            <div class="rh-spec-col">
-              <span class="rh-spec-col-label">CATEGORY</span>
-              <span class="rh-spec-col-val">${esc(activeItem.type || 'Wondrous Item')} · ${esc(activeItem.rarity || 'Uncommon')}</span>
-            </div>
-            <div class="rh-spec-col" style="align-items: flex-end; justify-content: center;">
-              <span class="rh-badge-amber-outline">Magic</span>
-            </div>
-          </div>
-          <div class="rh-spec-desc-text">
-            <p>${linkKnownEntities(parseDiceInText(esc(activeItem.text || 'No description available.')))}</p>
+          <div class="rh-spec-col">
+            <span class="rh-spec-col-label">${levelLabel}</span>
+            <span class="rh-spec-col-val">${esc(levelVal)}</span>
           </div>
         </div>
-      `;
-      $('#itemDetailText').innerHTML = '';
-    } else if(k.key === 'BASTIONS'){
-      specBox.innerHTML = `
-        <div class="rh-spec-box">
-          <div class="rh-spec-grid-header">
-            <div class="rh-spec-col">
-              <span class="rh-spec-col-label">FACILITY TYPE</span>
-              <span class="rh-spec-col-val">${esc(activeItem.type === 'Speciale' ? 'Special Facility' : (activeItem.type || 'Special Facility'))}</span>
-            </div>
-            <div class="rh-spec-col">
-              <span class="rh-spec-col-label">LEVEL REQUIRED</span>
-              <span class="rh-spec-col-val">Level ${esc(activeItem.level || 5)}</span>
-            </div>
+        <div class="rh-spec-desc-text">
+          ${linkKnownEntities(formatBastionParagraphs(activeItem.text || ''))}
+        </div>
+      </div>
+    `;
+    $('#itemDetailText').innerHTML = '';
+  } else if(k.key === 'EQUIPMENT'){
+    let costStr = activeItem.value != null ? (activeItem.value >= 100 ? `${Math.round(activeItem.value / 100)} gp` : `${activeItem.value} cp`) : '—';
+    let weightStr = activeItem.weight ? `${activeItem.weight} lb` : '—';
+    specBox.innerHTML = `
+      <div class="rh-spec-box">
+        <div class="rh-spec-grid-header">
+          <div class="rh-spec-col">
+            <span class="rh-spec-col-label">CATEGORY</span>
+            <span class="rh-spec-col-val">${esc(activeItem.type || 'Adventuring Gear')}</span>
           </div>
-          <div class="rh-spec-desc-text">
-            <p>${linkKnownEntities(parseDiceInText(esc(activeItem.text || 'No description available.')))}</p>
+          <div class="rh-spec-col">
+            <span class="rh-spec-col-label">COST</span>
+            <span class="rh-spec-col-val">${esc(costStr)}</span>
+          </div>
+          <div class="rh-spec-col">
+            <span class="rh-spec-col-label">WEIGHT</span>
+            <span class="rh-spec-col-val">${esc(weightStr)}</span>
           </div>
         </div>
-      `;
-      $('#itemDetailText').innerHTML = '';
-    } else if(k.key === 'GLOSSARY'){
-      specBox.innerHTML = `
-        <div class="rh-spec-box">
-          <div class="rh-spec-grid-header">
-            <div class="rh-spec-col">
-              <span class="rh-spec-col-label">RULE CATEGORY</span>
-              <span class="rh-spec-col-val">${esc(activeItem.category || 'Condition')}</span>
-            </div>
-            <div class="rh-spec-col">
-              <span class="rh-spec-col-label">SOURCE</span>
-              <span class="rh-spec-col-val">Player's Handbook 2024</span>
-            </div>
+        <div class="rh-spec-desc-text">
+          <p class="rh-spec-p">${linkKnownEntities(parseDiceInText(esc(activeItem.text || 'No description available.')))}</p>
+        </div>
+      </div>
+    `;
+    $('#itemDetailText').innerHTML = '';
+  } else if(k.key === 'MAGIC'){
+    specBox.innerHTML = `
+      <div class="rh-spec-box">
+        <div class="rh-spec-grid-header">
+          <div class="rh-spec-col">
+            <span class="rh-spec-col-label">CATEGORY</span>
+            <span class="rh-spec-col-val">${esc(activeItem.type || 'Wondrous Item')} · ${esc(activeItem.rarity || 'Uncommon')}</span>
           </div>
-          <div class="rh-spec-desc-text">
-            <p>${linkKnownEntities(parseDiceInText(esc(activeItem.text || 'No description available.')))}</p>
+          <div class="rh-spec-col">
+            <span class="rh-spec-col-label">ATTUNEMENT</span>
+            <span class="rh-spec-col-val">${activeItem.attunement ? 'Requires Attunement' : 'None'}</span>
           </div>
         </div>
-      `;
-      $('#itemDetailText').innerHTML = '';
-    } else {
-      specBox.innerHTML = '';
-      $('#itemDetailText').innerHTML='<p>'+linkKnownEntities(parseDiceInText(esc(activeItem.text||'No description available.')))+'</p>';
-    }
-  } else {
-    $('#itemDetailText').innerHTML='<p>'+linkKnownEntities(parseDiceInText(esc(activeItem.text||'No description available.')))+'</p>';
+        <div class="rh-spec-desc-text">
+          <p class="rh-spec-p">${linkKnownEntities(parseDiceInText(esc(activeItem.text || 'No description available.')))}</p>
+        </div>
+      </div>
+    `;
+    $('#itemDetailText').innerHTML = '';
+  } else if(k.key === 'FEATS'){
+    specBox.innerHTML = `
+      <div class="rh-spec-box">
+        <div class="rh-spec-grid-header">
+          <div class="rh-spec-col">
+            <span class="rh-spec-col-label">CATEGORY</span>
+            <span class="rh-spec-col-val">${esc(activeItem.category || 'General Feat')}</span>
+          </div>
+          <div class="rh-spec-col">
+            <span class="rh-spec-col-label">PREREQUISITE</span>
+            <span class="rh-spec-col-val">${esc(activeItem.prereq || 'None')}</span>
+          </div>
+        </div>
+        <div class="rh-spec-desc-text">
+          <p class="rh-spec-p">${linkKnownEntities(parseDiceInText(esc(activeItem.text || 'No description available.')))}</p>
+        </div>
+      </div>
+    `;
+    $('#itemDetailText').innerHTML = '';
+  } else if(k.key === 'GLOSSARY'){
+    specBox.innerHTML = `
+      <div class="rh-spec-box">
+        <div class="rh-spec-grid-header">
+          <div class="rh-spec-col">
+            <span class="rh-spec-col-label">RULE CATEGORY</span>
+            <span class="rh-spec-col-val">${esc(activeItem.category || 'Condition')}</span>
+          </div>
+          <div class="rh-spec-col">
+            <span class="rh-spec-col-label">SOURCE</span>
+            <span class="rh-spec-col-val">Player's Handbook 2024</span>
+          </div>
+        </div>
+        <div class="rh-spec-desc-text">
+          <p class="rh-spec-p">${linkKnownEntities(parseDiceInText(esc(activeItem.text || 'No description available.')))}</p>
+        </div>
+      </div>
+    `;
+    $('#itemDetailText').innerHTML = '';
   }
 
   bindDicePills();
   updateTelegramBackButton();
-  window.scrollTo({top:0,behavior:'smooth'});
+  window.scrollTo({top: 0, behavior: 'smooth'});
 }
 
 function backToItemList(){
