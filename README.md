@@ -49,6 +49,8 @@ Set-ExecutionPolicy -Scope Process Bypass
 
 Poi avvia con `npm run serve:dev` dentro `~/5etools-src` e apri http://localhost:5050/index.html. Genera la cache offline con `-BuildServiceWorker`; salta le immagini con `-SkipImages`. Dettagli in `scripts/Update-5etools.ps1`.
 
+- **Collaborazione agenti:** prima di modifiche significative leggi `AGENTS_COLLABORATION.md`, controlla `git status`/branch, dichiara lì ambito e file in `Lavori in corso`, poi aggiorna il registro al completamento. È un handoff asincrono; non manda notifiche automatiche agli altri agenti.
+
 ## Sviluppo e test
 
 ```bash

@@ -102,6 +102,11 @@ Il motore di contenuti formatta il testo del Player's Handbook generando element
 
 ## 4. Registro Modifiche & Novità (Changelog)
 
+### [2026-11-12] - Protocollo persistente di handoff multi-agente
+* **Autore:** Agente Contenuti
+* **Novità:** aggiunta la sezione `Lavori in corso` e la procedura di avviso pre-intervento in `AGENTS_COLLABORATION.md`.
+* **Regola:** prima di modifiche significative, leggere il registro e lo stato Git, dichiarare ambito/file/branch/test, controllare sovrapposizioni; a fine lavoro registrare commit e verifiche. Il file è asincrono e non genera notifiche push automatiche.
+
 ### [2026-11-12] - Direttiva Manuali Core 2024 & Visualizzazione Esclusiva Biblioteca (PHB, DMG, MM)
 * **Autore:** Agente Contenuti & Agente Grafica & UI
 * **Decisione Architetturale:**
@@ -296,3 +301,17 @@ Il motore di contenuti formatta il testo del Player's Handbook generando element
    node tests/test_entity_lookup.js
    ```
 4. Aggiornare la sezione *Registro Modifiche* di questo file dopo ogni implementazione significativa.
+
+## 6. Protocollo di Avviso & Handoff tra Agenti
+
+Questo file è il **registro condiviso asincrono**: prima di un intervento significativo, l'agente deve leggere il changelog e lo stato Git più recente, poi aggiungere una nota nella sezione `Lavori in corso` qui sotto indicando agente, obiettivo, file/aree coinvolti, branch e test previsti. Gli altri agenti devono controllare tale sezione prima di iniziare e non modificare in parallelo gli stessi file senza accordarsi.
+
+Quando il lavoro è concluso, l'agente aggiorna lo stato della nota a `completato`, registra commit e verifiche nel changelog, esegue i test richiesti e aggiorna/pusha il branch condiviso. Se un blocco o una sovrapposizione impedisce il lavoro, segnala il problema nella stessa nota invece di sovrascrivere modifiche altrui.
+
+Il file GitHub rende la comunicazione persistente ma **non invia notifiche push automatiche**: ogni agente deve sincronizzare/pullare e rileggere il registro prima di lavorare. Se esiste un canale di messaggistica condiviso con un agente specifico, inviare anche lì un breve avviso con commit/branch e aree toccate.
+
+### Lavori in corso
+
+| Stato | Agente | Obiettivo | File/aree | Branch / commit | Verifiche |
+|---|---|---|---|---|---|
+| Nessuno dichiarato | — | — | — | — | — |
