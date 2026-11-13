@@ -58,7 +58,12 @@ const requiredHtmlElements = [
   'id="readerCoverChipImg"',
   'id="readerCoverChipFallback"',
   'class="rh-reader-cover-chip"',
-  'class="rh-reader-cover-fallback hidden"'
+  'class="rh-reader-cover-fallback hidden"',
+  'id="readerTocScrim"',
+  'class="rh-reader-scrim"',
+  'class="rh-reader-drawer-head"',
+  'class="rh-reader-drawer-close"',
+  'aria-label="Indice dei capitoli"'
 ];
 
 for (const elem of requiredHtmlElements) {
@@ -110,7 +115,17 @@ const requiredCssClasses = [
   '.dark .rh-hero-cover-frame',
   '.dark .rh-cover-caption',
   'aspect-ratio: 1 / 1.44',
-  '@media (max-width: 380px)'
+  '@media (max-width: 380px)',
+  '.rh-reader-scrim',
+  '.rh-reader-scrim.mobile-open',
+  '.rh-reader-drawer-head',
+  '.rh-reader-drawer-close',
+  'width: 80%',
+  'transform: translateX(-102%)',
+  'background: rgba(8, 6, 10, 0.42)',
+  'aspect-ratio: 16 / 9',
+  'prefers-reduced-motion',
+  '@media (min-width: 861px)'
 ];
 
 for (const css of requiredCssClasses) {
@@ -142,7 +157,9 @@ const requiredJsFunctions = [
   'function readerCoverFallback',
   'function applyReaderCoverToImg',
   'function setReaderCoverImages',
-  'function buildReaderMastheadCover'
+  'function buildReaderMastheadCover',
+  'function isReaderDrawerViewport',
+  'function closeReaderMobileTOC'
 ];
 
 for (const fn of requiredJsFunctions) {
@@ -236,6 +253,49 @@ assert.strictEqual(protoHtml, indexHtml,
   'prototype.html and index.html must be byte-identical');
 
 console.log('[PASS] Reader Cover Identity: chip, masthead, fallback chain, core URLs and file sync verified.');
+
+// 7. Mobile responsive contract: TOC drawer + single-column landscape intro
+const responsiveContract = [
+  'id="readerTocScrim"',
+  'closeReaderMobileTOC(true)',
+  'background: rgba(8, 6, 10, 0.42)',
+  'transform: translateX(-102%)',
+  'width: 80%',
+  'aspect-ratio: 16 / 9',
+  'prefers-reduced-motion',
+  "e.key === 'Escape'",
+  "sidebar.setAttribute('aria-modal', 'true')"
+];
+for (const token of responsiveContract) {
+  assert(protoHtml.includes(token), `prototype.html missing responsive contract: ${token}`);
+  assert(indexHtml.includes(token), `index.html missing responsive contract: ${token}`);
+}
+
+// Il vecchio comportamento "sidebar in flusso" deve essere stato rimosso.
+assert(!protoHtml.includes('display: none;\n    position: static;\n    max-height: none;\n    margin-bottom: 16px;'),
+  'legacy in-flow mobile sidebar must be replaced by the fixed drawer');
+assert(!protoHtml.includes('.rh-reader-sidebar.mobile-open {\n    display: block;\n  }'),
+  'legacy display:block .mobile-open must be replaced');
+
+// Desktop: due colonne sticky intatte.
+assert(protoHtml.includes('grid-template-columns: 280px minmax(0, 1fr)'),
+  'desktop two-column reader layout must be preserved');
+assert(protoHtml.includes('position: sticky'), 'desktop sticky sidebar must be preserved');
+
+// Il pulsante Capitoli resta sull'header e sul foglio.
+assert(protoHtml.includes('id="readerMobileTocBtn"'), 'Capitoli button must stay in mobile header');
+assert(protoHtml.includes('class="rh-reader-mobile-toggle"'), 'Capitoli toggle must stay on the sheet');
+assert(protoHtml.includes('onclick="toggleReaderMobileTOC()"'), 'mobile toggle wiring must be preserved');
+
+// La navigazione ai capitoli chiude anche lo scrim.
+const closeCalls = (protoHtml.match(/closeReaderMobileTOC\(\);/g) || []).length;
+assert(closeCalls >= 3, 'chapter navigation / view reset must close the drawer and scrim');
+
+// L'immagine introduttiva landscape resta confinata al solo frontmatter.
+assert(protoHtml.includes("chMeta.id === '00_intro' ? buildReaderMastheadCover"),
+  'landscape intro image must remain gated on 00_intro only');
+
+console.log('[PASS] Mobile responsive: left drawer (~80%) + scrim, single column, landscape intro, desktop sticky preserved.');
 
 console.log('\n======================================================');
 console.log('SUCCESS: All Ruleholder Book Reader UI tests PASSED!');

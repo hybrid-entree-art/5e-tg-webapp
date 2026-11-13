@@ -1940,10 +1940,27 @@ dialog input:focus,dialog select:focus{border-color:var(--rh-border-focus);outli
 }
 .dark .rh-cover-caption, .dark-reader .rh-cover-caption{ color: #a89e90; }
 
-/* 4) Viewport piccoli: chip e masthead si riducono, nessun overflow */
+/* 4) Viewport piccoli: chip compatto, immagine introduttiva landscape
+      a tutta larghezza e caption leggibile (riferimento screenshot mobile).
+      Il desktop mantiene la cover ritratto da 168px. */
 @media (max-width: 860px){
   .rh-reader-cover-chip{ width: 30px; height: 43px; }
-  .rh-hero-cover-frame{ width: 140px; max-width: 52%; }
+  .rh-reader-masthead{ margin: 0 0 26px; }
+  .rh-hero-cover-frame{
+    width: 100%;
+    max-width: 100%;
+    aspect-ratio: 16 / 9;
+    border-radius: 8px;
+    margin: 2px 0 12px;
+  }
+  .rh-hero-cover-frame img{ object-position: 50% 34%; }
+  .rh-cover-caption{
+    max-width: 100%;
+    font-size: 13px;
+    line-height: 1.6;
+    font-style: normal;
+    color: #5c5349;
+  }
 }
 @media (max-width: 380px){
   .rh-reader-cover-chip{ width: 28px; height: 40px; }
@@ -2502,26 +2519,112 @@ dialog input:focus,dialog select:focus{border-color:var(--rh-border-focus);outli
   display: none;
   margin-bottom: 12px;
 }
+/* Scrim e testata drawer: nascosti su desktop, attivi solo <=860px */
+.rh-reader-scrim{ display: none; }
+.rh-reader-drawer-head{ display: none; }
+
 @media (max-width: 860px) {
   .rh-reader-mobile-bar {
     display: block;
   }
+  .rh-mobile-toc-btn, .rh-reader-mobile-toggle{ min-height: 44px; }
   .rh-reader-container {
     grid-template-columns: 1fr;
     gap: 16px;
   }
-  .rh-reader-sidebar {
-    display: none;
-    position: static;
-    max-height: none;
-    margin-bottom: 16px;
-  }
-  .rh-reader-sidebar.mobile-open {
-    display: block;
-  }
   .reader-toc-grid {
     grid-template-columns: 1fr;
   }
+  /* Foglio a tutta larghezza: padding ridotto per dare spazio all'articolo */
+  .rh-reader-sheet{ padding: 20px 16px 36px; }
+
+  /* La pagina resta sotto, leggibile: il TOC non e' piu' in flusso ma un
+     drawer fixed da sinistra (~78% larghezza) con backdrop scuro. */
+  .rh-reader-sidebar {
+    display: block;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 80%;
+    min-width: 0;
+    margin: 0;
+    max-height: none;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    border-radius: 0 10px 10px 0;
+    box-shadow: 8px 0 32px rgba(0, 0, 0, 0.45);
+    z-index: 60;
+    visibility: hidden;
+    transform: translateX(-102%);
+    transition: transform 260ms cubic-bezier(0.32, 0.72, 0, 1), visibility 260ms;
+    will-change: transform;
+  }
+  .rh-reader-sidebar.mobile-open {
+    visibility: visible;
+    transform: translateX(0);
+  }
+  .rh-reader-scrim {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 55;
+    background: rgba(8, 6, 10, 0.42);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 260ms ease, visibility 260ms;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .rh-reader-scrim.mobile-open {
+    opacity: 1;
+    visibility: visible;
+  }
+  .rh-reader-drawer-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 12px 14px;
+    border-bottom: 1px solid #e5ded2;
+    font-family: var(--sans);
+    font-size: 13px;
+    font-weight: 700;
+    color: #2c2825;
+  }
+  .dark .rh-reader-drawer-head, .dark-reader .rh-reader-drawer-head {
+    border-bottom-color: #2b2433;
+    color: #ded8ce;
+  }
+  .rh-reader-drawer-close {
+    flex: 0 0 auto;
+    min-width: 44px;
+    min-height: 44px;
+    border: 1px solid #d9ccb8;
+    border-radius: 6px;
+    background: transparent;
+    color: inherit;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  .dark .rh-reader-drawer-close, .dark-reader .rh-reader-drawer-close {
+    border-color: #3b3145;
+  }
+}
+
+/* Desktop: sidebar sticky a due colonne, scrim mai visibile */
+@media (min-width: 861px) {
+  .rh-reader-scrim{ display: none !important; }
+}
+
+/* Movimento ridotto: nessuno scorrimento, solo fade breve */
+@media (max-width: 860px) and (prefers-reduced-motion: reduce) {
+  .rh-reader-sidebar {
+    transform: none;
+    opacity: 0;
+    transition: opacity 150ms ease, visibility 150ms ease;
+  }
+  .rh-reader-sidebar.mobile-open{ opacity: 1; }
+  .rh-reader-scrim{ transition: opacity 150ms ease, visibility 150ms ease; }
 }
 .rh-reader-mobile-toggle {
   width: 100%;
@@ -5868,10 +5971,18 @@ body:after{
         </div>
       </div>
 
+      <!-- Backdrop del drawer TOC mobile: chiude al tap esterno -->
+      <div class="rh-reader-scrim" id="readerTocScrim" onclick="closeReaderMobileTOC(true)" aria-hidden="true"></div>
+
       <!-- Ruleholder Reader Layout (Screenshot media_1794441659988_e723283c.jpg) -->
       <div class="rh-reader-container" id="readerSplitView">
         <!-- Left Column: Chapter Accordion Sidebar -->
-        <aside class="rh-reader-sidebar" id="readerSidebar">
+        <aside class="rh-reader-sidebar" id="readerSidebar" aria-label="Indice dei capitoli">
+          <!-- Testata del drawer (visibile solo <=860px) -->
+          <div class="rh-reader-drawer-head">
+            <span>📖 Indice capitoli</span>
+            <button type="button" class="rh-reader-drawer-close" onclick="closeReaderMobileTOC(true)" aria-label="Chiudi indice capitoli">✕</button>
+          </div>
           <!-- Stepper Header: < CAP. PREC. | 📖 | CAP. SUCC. > -->
           <div class="rh-reader-stepper">
             <button type="button" class="rh-stepper-nav-btn" id="prevChapterBtn" onclick="readerPrevChapter()" title="Capitolo precedente">
@@ -11159,7 +11270,7 @@ function readerSelectChapter(chId){
   renderReaderCurrentChapter();
 
   // Close mobile sidebar if open
-  $('#readerSidebar')?.classList.remove('mobile-open');
+  closeReaderMobileTOC();
 
   window.scrollTo({top: 0, behavior: 'smooth'});
 }
@@ -11184,7 +11295,7 @@ function readerJumpSection(chapterId, sectionId, event){
     if(el) el.scrollIntoView({behavior: 'smooth', block: 'start'});
   }
 
-  $('#readerSidebar')?.classList.remove('mobile-open');
+  closeReaderMobileTOC();
 }
 
 function readerPrevChapter(){
@@ -11229,10 +11340,53 @@ function toggleReaderTOCView(){
   if(tocOverview) tocOverview.classList.toggle('hidden');
 }
 
+function isReaderDrawerViewport(){
+  return typeof window.matchMedia === 'function' && window.matchMedia('(max-width: 860px)').matches;
+}
+
+function closeReaderMobileTOC(restoreFocus){
+  const sidebar = $('#readerSidebar');
+  const scrim = $('#readerTocScrim');
+  if(sidebar){
+    sidebar.classList.remove('mobile-open');
+    sidebar.removeAttribute('role');
+    sidebar.removeAttribute('aria-modal');
+  }
+  if(scrim) scrim.classList.remove('mobile-open');
+  if(restoreFocus){
+    const t = $('#readerMobileTocBtn') || document.querySelector('.rh-reader-mobile-toggle');
+    if(t) try { t.focus({preventScroll:true}); } catch(e){}
+  }
+}
+
 function toggleReaderMobileTOC(){
   triggerHaptic('light');
-  $('#readerSidebar')?.classList.toggle('mobile-open');
+  const sidebar = $('#readerSidebar');
+  const scrim = $('#readerTocScrim');
+  if(!sidebar) return;
+  const willOpen = !sidebar.classList.contains('mobile-open');
+  sidebar.classList.toggle('mobile-open', willOpen);
+  if(scrim) scrim.classList.toggle('mobile-open', willOpen);
+  if(willOpen && isReaderDrawerViewport()){
+    sidebar.setAttribute('role', 'dialog');
+    sidebar.setAttribute('aria-modal', 'true');
+    const first = sidebar.querySelector('.rh-reader-drawer-close, .rh-stepper-nav-btn, button, [tabindex]');
+    if(first) try { first.focus({preventScroll:true}); } catch(e){}
+  } else if(!willOpen){
+    sidebar.removeAttribute('role');
+    sidebar.removeAttribute('aria-modal');
+    const t = $('#readerMobileTocBtn') || document.querySelector('.rh-reader-mobile-toggle');
+    if(t) try { t.focus({preventScroll:true}); } catch(e){}
+  }
 }
+
+/* Escape chiude il drawer e riporta il focus al pulsante Capitoli */
+document.addEventListener('keydown', (e) => {
+  if(e.key === 'Escape'){
+    const sb = $('#readerSidebar');
+    if(sb && sb.classList.contains('mobile-open')) closeReaderMobileTOC(true);
+  }
+});
 
 function readerJump(secOrChapId){
   triggerHaptic('light');
@@ -11416,8 +11570,7 @@ function goHomeDirectly(e){
   if(searchModal && searchModal.close) { try { searchModal.close(); } catch(err){} }
   const diceDialog = $('#diceDialog');
   if(diceDialog && diceDialog.close) { try { diceDialog.close(); } catch(err){} }
-  const readerSidebar = $('#readerSidebar');
-  if(readerSidebar) readerSidebar.classList.remove('mobile-open');
+  closeReaderMobileTOC();
 
   $('#q').value = '';
   query = '';
