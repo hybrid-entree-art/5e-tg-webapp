@@ -1905,9 +1905,9 @@ dialog input:focus,dialog select:focus{border-color:var(--rh-border-focus);outli
 }
 .rh-hero-cover-frame{
   position: relative;
-  width: 168px;
+  width: 240px;
   max-width: 46%;
-  aspect-ratio: 1 / 1.44;
+  height: auto;
   border-radius: 6px;
   overflow: hidden;
   border: 1px solid #d9ccb8;
@@ -1917,9 +1917,9 @@ dialog input:focus,dialog select:focus{border-color:var(--rh-border-focus);outli
 }
 .rh-hero-cover-frame img{
   width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: 50% 20%;
+  height: auto;
+  object-fit: contain;
+  object-position: 50% 50%;
   display: block;
 }
 .rh-hero-cover-frame .rh-reader-cover-fallback{ font-size: 30px; }
@@ -1940,13 +1940,49 @@ dialog input:focus,dialog select:focus{border-color:var(--rh-border-focus);outli
 }
 .dark .rh-cover-caption, .dark-reader .rh-cover-caption{ color: #a89e90; }
 
+/* Figure dei capitoli: orientation naturale (portrait/landscape) derivata
+   dalle dimensioni originali width/height del mapping. Nessun aspect-ratio
+   forzato e nessun crop: l'immagine mantiene il proprio rapporto. */
+.rh-book-figure{
+  margin: 24px 0;
+  padding: 0;
+  max-width: 100%;
+}
+.rh-book-figure-img{
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  border-radius: 6px;
+  border: 1px solid #d9ccb8;
+  background: #ece3d3;
+}
+.rh-book-figure--portrait .rh-book-figure-img{ max-width: 360px; }
+.rh-book-figure-caption{
+  font-family: var(--sans);
+  font-size: 11.5px;
+  line-height: 1.55;
+  color: #6b6157;
+  margin-top: 8px;
+  max-width: 560px;
+}
+.rh-book-figure-credit{ font-style: italic; }
+.rh-book-figures{
+  margin-top: 28px;
+  padding-top: 18px;
+  border-top: 1px solid var(--rh-border-subtle);
+}
+.dark .rh-book-figure-img, .dark-reader .rh-book-figure-img{
+  border-color: #3b3145;
+  background: #251f2b;
+}
+.dark .rh-book-figure-caption, .dark-reader .rh-book-figure-caption{ color: #a89e90; }
+
 /* 4) Viewport piccoli: chip compatto + artwork di apertura ritratto reale
       (1700x2182) a larghezza piena. Il frame NON forza alcun aspect-ratio:
       l'img usa il ratio naturale dagli attributi width/height con
       object-fit:contain -> zero crop, zero deformazione. La cover quadrata
-      ufficiale resta integrale nella miniatura e nel masthead desktop. */
-.rh-hero-cover-frame .rh-masthead-art{ display: none; }
-
+      ufficiale resta integrale nella sola miniatura della toolbar. */
 @media (max-width: 860px){
   .rh-reader-cover-chip{ width: 30px; height: 43px; }
   .rh-reader-masthead{ margin: 0 0 26px; }
@@ -1958,7 +1994,6 @@ dialog input:focus,dialog select:focus{border-color:var(--rh-border-focus);outli
     border-radius: 8px;
     margin: 2px 0 12px;
   }
-  .rh-hero-cover-frame .rh-masthead-cover{ display: none; }
   .rh-hero-cover-frame .rh-masthead-art{
     display: block;
     width: 100%;
@@ -1966,9 +2001,6 @@ dialog input:focus,dialog select:focus{border-color:var(--rh-border-focus);outli
     object-fit: contain;
     object-position: 50% 50%;
   }
-  /* Su mobile l'artwork e' gia' visibile: il fallback testuale della cover
-     (che e' nascosta) non deve sovrapporsi. */
-  .rh-hero-cover-frame > .rh-reader-cover-fallback{ display: none !important; }
   .rh-cover-caption{
     max-width: 100%;
     font-size: 13px;
@@ -1976,6 +2008,8 @@ dialog input:focus,dialog select:focus{border-color:var(--rh-border-focus);outli
     font-style: normal;
     color: #5c5349;
   }
+  .rh-book-figure-caption{ font-size: 13px; }
+  .rh-book-figure--portrait .rh-book-figure-img{ max-width: 100%; }
 }
 @media (max-width: 380px){
   .rh-reader-cover-chip{ width: 28px; height: 40px; }
@@ -6220,6 +6254,7 @@ body:after{
 <script src="data/phb/10_rules_glossary.js"></script>
 <script src="data/phb/11_credits.js"></script>
 <script src="phb_content.js"></script>
+<script src="phb_images.js"></script>
 <script>
 const schools={A:'Abiurazione',V:'Invocazione',C:'Convocazione',D:'Divinazione',EN:'Ammaliamento',EV:'Invocazione',I:'Illusione',N:'Necromanzia',T:'Trasmutazione'};
 if(typeof XP_SPELLS!=='undefined'&&XP_SPELLS&&XP_SPELLS.length){DATA.spells=XP_SPELLS;}
@@ -11079,6 +11114,7 @@ function strip5eToolsMarkup(s){
 
 function getReaderIntroImage(b){
   const m = (typeof window !== 'undefined') ? window.BOOK_IMAGE_MANIFEST : null;
+  const map = (typeof window !== 'undefined') ? window.PHB_IMAGES : null;
   const bookId = (b && b.id) || 'XPHB';
   let e = null;
   if(m && m[bookId]){
@@ -11086,9 +11122,13 @@ function getReaderIntroImage(b){
       || (m[bookId].byChapter && m[bookId].byChapter['00_intro'] && m[bookId].byChapter['00_intro'][0])
       || null;
   }
+  // Priorita' al manifest separato, poi al mapping statico phb_images.js,
+  // infine all'asset validato (nessuna scansione JSON a runtime).
+  if(!e && map && map.intro) e = map.intro;
   const src = e || READER_INTRO_ART_FALLBACK;
+  const base = (map && map.base) || READER_IMG_BASE;
   return {
-    url: src.url || (READER_IMG_BASE + (src.path || '')),
+    url: src.url || (base + (src.path || '')),
     width: src.width || 1700,
     height: src.height || 2182,
     title: strip5eToolsMarkup(src.title),
@@ -11097,24 +11137,63 @@ function getReaderIntroImage(b){
 }
 
 function buildReaderMastheadCover(b, title){
-  const url = getReaderCoverUrl(b);
   const art = getReaderLocalCoverArt(b);
   const img = getReaderIntroImage(b);
   const src = (b && (b.source || b.id)) || 'XPHB';
   const caption = (b && (b.itName || b.it || b.name)) || "Player's Handbook";
-  // Mobile: artwork ritratto reale (1700x2182) a larghezza piena con ratio
-  // naturale e object-fit:contain -> nessun crop e nessuna deformazione della
-  // cover quadrata ufficiale, che resta integrale nel chip e su desktop.
+  // Masthead intro: illustrazione di apertura autentica (ritratto 1700x2182),
+  // ratio naturale + object-fit:contain, su desktop e mobile. Nessuna cover
+  // quadrata sostitutiva: la cover ufficiale resta solo nella miniatura.
   return `
     <figure class="rh-reader-masthead">
       <div class="rh-hero-cover-frame">
-        <img class="rh-reader-cover-img rh-masthead-cover" src="${esc(url)}" alt="Copertina: ${esc(title || caption)}" loading="lazy" decoding="async" data-cover-art="${esc(art)}" onerror="readerCoverFallback(this)">
         <img class="rh-reader-cover-img rh-masthead-art" src="${esc(img.url)}" width="${img.width}" height="${img.height}" title="${esc(img.title || 'Illustrazione di apertura')}" alt="${esc(img.title || 'Illustrazione di apertura')}" data-cover-art="${esc(art)}" onerror="readerCoverFallback(this)">
         <div class="rh-reader-cover-fallback hidden">📚<span class="rh-reader-cover-fb-txt">${esc(src)}</span></div>
       </div>
       <figcaption class="rh-cover-caption">${esc(caption)} · D&amp;D 5.5e (2024)${img.credit ? ' · Illustrazione di ' + esc(img.credit) : ''}</figcaption>
     </figure>
   `;
+}
+
+/* ---- Figure dei capitoli dal mapping statico phb_images.js ---- */
+function buildReaderFigure(im){
+  const M = window.PHB_IMAGES;
+  const base = (M && M.base) || READER_IMG_BASE;
+  const url = im.url || (base + (im.path || ''));
+  const w = im.width || 850, h = im.height || 1100;
+  const title = strip5eToolsMarkup(im.title);
+  const credit = strip5eToolsMarkup(im.credit);
+  const orient = w >= h ? 'landscape' : 'portrait';
+  return `
+    <figure class="rh-book-figure rh-book-figure--${orient}">
+      <img class="rh-book-figure-img" src="${esc(url)}" width="${w}" height="${h}" alt="${esc(title || 'Illustrazione del manuale')}" loading="lazy" decoding="async">
+      <figcaption class="rh-book-figure-caption">${title ? esc(title) + (credit ? ' · ' : '') : ''}${credit ? '<span class="rh-book-figure-credit">Illustrazione di ' + esc(credit) + '</span>' : ''}</figcaption>
+    </figure>
+  `;
+}
+
+/* Gate per chapter: un'immagine e' resa solo nel capitolo a cui appartiene. */
+function renderChapterSectionFigures(chId, secId){
+  const M = window.PHB_IMAGES;
+  if(!M || !M.bySection || !secId) return '';
+  const list = (M.bySection[secId] || []).filter(im => im.chapterId === chId && !im.isFrontispiece);
+  return list.map(buildReaderFigure).join('');
+}
+
+function renderChapterFigureGallery(chId, renderedSecIds){
+  const M = window.PHB_IMAGES;
+  if(!M || !M.byChapter) return '';
+  // Segna le immagini gia' piazzate nelle sezioni: tutto il resto del
+  // capitolo finisce in galleria, cosi' nessun nodo va perso.
+  const done = new Set();
+  (renderedSecIds || []).forEach(sid => {
+    (M.bySection[sid] || []).forEach(im => {
+      if(im.chapterId === chId && !im.isFrontispiece) done.add(im.ordinal);
+    });
+  });
+  const list = (M.byChapter[chId] || []).filter(im => !im.isFrontispiece && !done.has(im.ordinal));
+  if(!list.length) return '';
+  return `<div class="rh-book-figures">${list.map(buildReaderFigure).join('')}</div>`;
 }
 
 function openBookReader(bookId, sectionOrChapId){
@@ -11253,12 +11332,21 @@ function renderReaderCurrentChapter(){
           ${chData.sections.map(sec => `
             <section class="rh-book-section" id="${sec.id}">
               ${linkKnownEntities(sec.html)}
+              ${renderChapterSectionFigures(chMeta.id, sec.id)}
             </section>
           `).join('\n')}
+          ${renderChapterFigureGallery(chMeta.id, chData.sections.map(s => s.id))}
         </div>
       `;
     } else {
-      pane.innerHTML = `<div class="rh-read-kicker">Player's Handbook (2024)</div><h1 class="rh-read-h1">${esc(chMeta.title)}</h1><p>Contenuto del capitolo in caricamento...</p>`;
+      // Capitoli senza sections (es. Credits): mostra comunque l'html e le
+      // figure del mapping, cosi' nessuna immagine autentica resta fuori.
+      pane.innerHTML = `
+        <div class="rh-read-kicker">Player's Handbook (2024) · ${esc(chMeta.title)}</div>
+        <h1 class="rh-read-h1">${esc(getItalianChapterName(chMeta.id) || chMeta.title)}</h1>
+        <div class="rh-book-body">${chData && chData.html ? linkKnownEntities(chData.html) : ''}</div>
+        ${renderChapterFigureGallery(chMeta.id, [])}
+      `;
     }
 
     bindDicePills();
