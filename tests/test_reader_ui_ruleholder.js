@@ -125,8 +125,13 @@ const requiredCssClasses = [
   'width: 80%',
   'transform: translateX(-102%)',
   'background: rgba(8, 6, 10, 0.42)',
-  'aspect-ratio: 900 / 520',
+  'aspect-ratio: auto',
   'object-fit: contain',
+  'const READER_IMG_BASE',
+  'window.BOOK_IMAGE_MANIFEST',
+  'book/XPHB/000-01-013.opening-art.webp',
+  'Antonio José Manzanedo',
+  'width="${img.width}" height="${img.height}"',
   '.rh-hero-cover-frame .rh-masthead-art',
   '.rh-hero-cover-frame .rh-masthead-cover',
   'prefers-reduced-motion',
@@ -164,7 +169,9 @@ const requiredJsFunctions = [
   'function setReaderCoverImages',
   'function buildReaderMastheadCover',
   'function isReaderDrawerViewport',
-  'function closeReaderMobileTOC'
+  'function closeReaderMobileTOC',
+  'function getReaderIntroImage',
+  'function strip5eToolsMarkup'
 ];
 
 for (const fn of requiredJsFunctions) {
@@ -259,15 +266,17 @@ assert.strictEqual(protoHtml, indexHtml,
 
 console.log('[PASS] Reader Cover Identity: chip, masthead, fallback chain, core URLs and file sync verified.');
 
-// 7. Mobile responsive contract: TOC drawer + single-column landscape intro
+// 7. Mobile responsive contract: TOC drawer + single-column intro artwork
 const responsiveContract = [
   'id="readerTocScrim"',
   'closeReaderMobileTOC(true)',
   'background: rgba(8, 6, 10, 0.42)',
   'transform: translateX(-102%)',
   'width: 80%',
-  'aspect-ratio: 900 / 520',
+  'aspect-ratio: auto',
   'object-fit: contain',
+  'book/XPHB/000-01-013.opening-art.webp',
+  'window.BOOK_IMAGE_MANIFEST',
   'prefers-reduced-motion',
   "e.key === 'Escape'",
   "sidebar.setAttribute('aria-modal', 'true')"
@@ -301,20 +310,32 @@ assert(closeCalls >= 3, 'chapter navigation / view reset must close the drawer a
 assert(protoHtml.includes("chMeta.id === '00_intro' ? buildReaderMastheadCover"),
   'landscape intro image must remain gated on 00_intro only');
 
-// Nessuna deformazione della cover quadrata: il frame mobile ha lo stesso
-// rapporto dell'artwork locale (900/520) e l'immagine e' contain, non cover.
-assert(protoHtml.includes('aspect-ratio: 900 / 520'),
-  'mobile frame ratio must match the 900x520 local artwork exactly');
+// Nessuna deformazione: il frame mobile NON forza aspect-ratio e l'img usa
+// il ratio naturale (attributi 1700x2182) con object-fit:contain.
+assert(protoHtml.includes('aspect-ratio: auto'),
+  'mobile frame must not force an aspect-ratio (natural ratio from width/height attrs)');
+assert(protoHtml.includes('width="${img.width}" height="${img.height}"'),
+  'intro img must carry intrinsic dimensions: no CLS, no stretch');
 assert(protoHtml.includes('object-fit: contain'),
   'mobile intro artwork must be contained, never cropped/stretched');
-assert(protoHtml.includes('getReaderLocalCoverArt(b)'),
-  'mobile wide artwork must reuse the existing local asset, not invent one');
-assert(protoHtml.includes('rh-masthead-cover"'),
-  'official square cover must remain in the desktop masthead');
 assert(!protoHtml.includes('aspect-ratio: 16 / 9'),
   '16/9 crop of the square cover must be removed');
 
-console.log('[PASS] Mobile responsive: left drawer (~80%) + scrim, single column, 900/520 landscape artwork (no square-cover crop), desktop sticky preserved.');
+// Artwork reale upstream, hook per il manifest e credit dal JSON sorgente.
+assert(protoHtml.includes('book/XPHB/000-01-013.opening-art.webp'),
+  'validated upstream XPHB 2024 opening art must be the intro artwork');
+assert(protoHtml.includes('Antonio José Manzanedo'),
+  'caption credit must come from the source JSON');
+assert(protoHtml.includes('window.BOOK_IMAGE_MANIFEST'),
+  'reader must consume the separate image mapping manifest when available');
+assert(protoHtml.includes('function strip5eToolsMarkup'),
+  '5etools {@...} markup in titles must be sanitised');
+assert(protoHtml.includes('getReaderCoverUrl(b)'),
+  'official square cover URL must remain for the toolbar chip fallback');
+assert(protoHtml.includes('rh-masthead-cover"'),
+  'official square cover must remain in the desktop masthead');
+
+console.log('[PASS] Mobile responsive: left drawer (~80%) + scrim, single column, real 1700x2182 intro art (natural ratio, no crop) + manifest hook, desktop sticky preserved.');
 
 console.log('\n======================================================');
 console.log('SUCCESS: All Ruleholder Book Reader UI tests PASSED!');

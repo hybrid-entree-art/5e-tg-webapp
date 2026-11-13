@@ -1940,9 +1940,10 @@ dialog input:focus,dialog select:focus{border-color:var(--rh-border-focus);outli
 }
 .dark .rh-cover-caption, .dark-reader .rh-cover-caption{ color: #a89e90; }
 
-/* 4) Viewport piccoli: chip compatto + artwork landscape larga con caption.
-      L'artwork locale e' 900x520: il frame usa lo STESSO rapporto, quindi
-      object-fit:contain non ritaglia ne' deforma nulla. La cover quadrata
+/* 4) Viewport piccoli: chip compatto + artwork di apertura ritratto reale
+      (1700x2182) a larghezza piena. Il frame NON forza alcun aspect-ratio:
+      l'img usa il ratio naturale dagli attributi width/height con
+      object-fit:contain -> zero crop, zero deformazione. La cover quadrata
       ufficiale resta integrale nella miniatura e nel masthead desktop. */
 .rh-hero-cover-frame .rh-masthead-art{ display: none; }
 
@@ -1952,13 +1953,16 @@ dialog input:focus,dialog select:focus{border-color:var(--rh-border-focus);outli
   .rh-hero-cover-frame{
     width: 100%;
     max-width: 100%;
-    aspect-ratio: 900 / 520;
+    aspect-ratio: auto;
+    height: auto;
     border-radius: 8px;
     margin: 2px 0 12px;
   }
   .rh-hero-cover-frame .rh-masthead-cover{ display: none; }
   .rh-hero-cover-frame .rh-masthead-art{
     display: block;
+    width: 100%;
+    height: auto;
     object-fit: contain;
     object-position: 50% 50%;
   }
@@ -11047,22 +11051,68 @@ function setReaderCoverImages(b, title){
   applyReaderCoverToImg($('#readerCoverChipImg'), b, title);
 }
 
+/* =====================================================================
+   READER INTRO ARTWORK (5etools upstream, manifest-driven)
+   Un eventuale manifest separato (window.BOOK_IMAGE_MANIFEST) ha priorita';
+   in sua assenza si usa l'unica asset del frontispizio XPHB 2024 validata.
+   ===================================================================== */
+const READER_IMG_BASE = 'https://raw.githubusercontent.com/5etools-mirror-3/5etools-img/main/';
+const READER_INTRO_ART_FALLBACK = {
+  path: 'book/XPHB/000-01-013.opening-art.webp',
+  width: 1700, height: 2182,
+  title: 'While adventuring in the Dragonlance setting, the siblings Caramon Majere, Raistlin Majere, and Kitiara uth Matar provoke the rage of a wyvern',
+  credit: 'Antonio José Manzanedo'
+};
+
+/* I titoli del JSON 5etools contengono markup {@dice ...} / {@rule A|B}:
+   va rimosto prima di mostrarlo in una caption. */
+function strip5eToolsMarkup(s){
+  return String(s || '').replace(/\{@[^}]*\}/g, (m) => {
+    const inner = m.slice(2, -1);
+    if(inner.indexOf('|') !== -1){
+      return inner.split('|')[0].replace(/^\S+\s/, '');
+    }
+    const parts = inner.split(' ');
+    return parts.slice(1).join(' ') || inner;
+  }).trim();
+}
+
+function getReaderIntroImage(b){
+  const m = (typeof window !== 'undefined') ? window.BOOK_IMAGE_MANIFEST : null;
+  const bookId = (b && b.id) || 'XPHB';
+  let e = null;
+  if(m && m[bookId]){
+    e = m[bookId].intro
+      || (m[bookId].byChapter && m[bookId].byChapter['00_intro'] && m[bookId].byChapter['00_intro'][0])
+      || null;
+  }
+  const src = e || READER_INTRO_ART_FALLBACK;
+  return {
+    url: src.url || (READER_IMG_BASE + (src.path || '')),
+    width: src.width || 1700,
+    height: src.height || 2182,
+    title: strip5eToolsMarkup(src.title),
+    credit: strip5eToolsMarkup(src.credit)
+  };
+}
+
 function buildReaderMastheadCover(b, title){
   const url = getReaderCoverUrl(b);
   const art = getReaderLocalCoverArt(b);
+  const img = getReaderIntroImage(b);
   const src = (b && (b.source || b.id)) || 'XPHB';
   const caption = (b && (b.itName || b.it || b.name)) || "Player's Handbook";
-  // Mobile: il riquadro largo usa l'artwork landscape locale (900x520) con
-  // aspect-ratio identico e object-fit:contain -> nessun crop, nessuna
-  // deformazione della cover quadrata ufficiale (che resta nel chip e su desktop).
+  // Mobile: artwork ritratto reale (1700x2182) a larghezza piena con ratio
+  // naturale e object-fit:contain -> nessun crop e nessuna deformazione della
+  // cover quadrata ufficiale, che resta integrale nel chip e su desktop.
   return `
     <figure class="rh-reader-masthead">
       <div class="rh-hero-cover-frame">
         <img class="rh-reader-cover-img rh-masthead-cover" src="${esc(url)}" alt="Copertina: ${esc(title || caption)}" loading="lazy" decoding="async" data-cover-art="${esc(art)}" onerror="readerCoverFallback(this)">
-        ${art ? `<img class="rh-reader-cover-img rh-masthead-art" src="${esc(art)}" alt="" aria-hidden="true">` : ''}
+        <img class="rh-reader-cover-img rh-masthead-art" src="${esc(img.url)}" width="${img.width}" height="${img.height}" title="${esc(img.title || 'Illustrazione di apertura')}" alt="${esc(img.title || 'Illustrazione di apertura')}" data-cover-art="${esc(art)}" onerror="readerCoverFallback(this)">
         <div class="rh-reader-cover-fallback hidden">📚<span class="rh-reader-cover-fb-txt">${esc(src)}</span></div>
       </div>
-      <figcaption class="rh-cover-caption">${esc(caption)} · D&amp;D 5.5e (2024) · Immagine di apertura del manuale.</figcaption>
+      <figcaption class="rh-cover-caption">${esc(caption)} · D&amp;D 5.5e (2024)${img.credit ? ' · Illustrazione di ' + esc(img.credit) : ''}</figcaption>
     </figure>
   `;
 }
