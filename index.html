@@ -1940,20 +1940,31 @@ dialog input:focus,dialog select:focus{border-color:var(--rh-border-focus);outli
 }
 .dark .rh-cover-caption, .dark-reader .rh-cover-caption{ color: #a89e90; }
 
-/* 4) Viewport piccoli: chip compatto, immagine introduttiva landscape
-      a tutta larghezza e caption leggibile (riferimento screenshot mobile).
-      Il desktop mantiene la cover ritratto da 168px. */
+/* 4) Viewport piccoli: chip compatto + artwork landscape larga con caption.
+      L'artwork locale e' 900x520: il frame usa lo STESSO rapporto, quindi
+      object-fit:contain non ritaglia ne' deforma nulla. La cover quadrata
+      ufficiale resta integrale nella miniatura e nel masthead desktop. */
+.rh-hero-cover-frame .rh-masthead-art{ display: none; }
+
 @media (max-width: 860px){
   .rh-reader-cover-chip{ width: 30px; height: 43px; }
   .rh-reader-masthead{ margin: 0 0 26px; }
   .rh-hero-cover-frame{
     width: 100%;
     max-width: 100%;
-    aspect-ratio: 16 / 9;
+    aspect-ratio: 900 / 520;
     border-radius: 8px;
     margin: 2px 0 12px;
   }
-  .rh-hero-cover-frame img{ object-position: 50% 34%; }
+  .rh-hero-cover-frame .rh-masthead-cover{ display: none; }
+  .rh-hero-cover-frame .rh-masthead-art{
+    display: block;
+    object-fit: contain;
+    object-position: 50% 50%;
+  }
+  /* Su mobile l'artwork e' gia' visibile: il fallback testuale della cover
+     (che e' nascosta) non deve sovrapporsi. */
+  .rh-hero-cover-frame > .rh-reader-cover-fallback{ display: none !important; }
   .rh-cover-caption{
     max-width: 100%;
     font-size: 13px;
@@ -11041,13 +11052,17 @@ function buildReaderMastheadCover(b, title){
   const art = getReaderLocalCoverArt(b);
   const src = (b && (b.source || b.id)) || 'XPHB';
   const caption = (b && (b.itName || b.it || b.name)) || "Player's Handbook";
+  // Mobile: il riquadro largo usa l'artwork landscape locale (900x520) con
+  // aspect-ratio identico e object-fit:contain -> nessun crop, nessuna
+  // deformazione della cover quadrata ufficiale (che resta nel chip e su desktop).
   return `
     <figure class="rh-reader-masthead">
       <div class="rh-hero-cover-frame">
-        <img class="rh-reader-cover-img" src="${esc(url)}" alt="Copertina: ${esc(title || caption)}" loading="lazy" decoding="async" data-cover-art="${esc(art)}" onerror="readerCoverFallback(this)">
+        <img class="rh-reader-cover-img rh-masthead-cover" src="${esc(url)}" alt="Copertina: ${esc(title || caption)}" loading="lazy" decoding="async" data-cover-art="${esc(art)}" onerror="readerCoverFallback(this)">
+        ${art ? `<img class="rh-reader-cover-img rh-masthead-art" src="${esc(art)}" alt="" aria-hidden="true">` : ''}
         <div class="rh-reader-cover-fallback hidden">📚<span class="rh-reader-cover-fb-txt">${esc(src)}</span></div>
       </div>
-      <figcaption class="rh-cover-caption">${esc(caption)} · D&amp;D 5.5e (2024) · Copertina ufficiale. In caso di indisponibilità viene mostrata la cover art locale.</figcaption>
+      <figcaption class="rh-cover-caption">${esc(caption)} · D&amp;D 5.5e (2024) · Immagine di apertura del manuale.</figcaption>
     </figure>
   `;
 }

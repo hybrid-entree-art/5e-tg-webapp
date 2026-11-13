@@ -63,7 +63,9 @@ const requiredHtmlElements = [
   'class="rh-reader-scrim"',
   'class="rh-reader-drawer-head"',
   'class="rh-reader-drawer-close"',
-  'aria-label="Indice dei capitoli"'
+  'aria-label="Indice dei capitoli"',
+  'rh-masthead-cover"',
+  'rh-masthead-art"'
 ];
 
 for (const elem of requiredHtmlElements) {
@@ -123,7 +125,10 @@ const requiredCssClasses = [
   'width: 80%',
   'transform: translateX(-102%)',
   'background: rgba(8, 6, 10, 0.42)',
-  'aspect-ratio: 16 / 9',
+  'aspect-ratio: 900 / 520',
+  'object-fit: contain',
+  '.rh-hero-cover-frame .rh-masthead-art',
+  '.rh-hero-cover-frame .rh-masthead-cover',
   'prefers-reduced-motion',
   '@media (min-width: 861px)'
 ];
@@ -261,7 +266,8 @@ const responsiveContract = [
   'background: rgba(8, 6, 10, 0.42)',
   'transform: translateX(-102%)',
   'width: 80%',
-  'aspect-ratio: 16 / 9',
+  'aspect-ratio: 900 / 520',
+  'object-fit: contain',
   'prefers-reduced-motion',
   "e.key === 'Escape'",
   "sidebar.setAttribute('aria-modal', 'true')"
@@ -295,7 +301,20 @@ assert(closeCalls >= 3, 'chapter navigation / view reset must close the drawer a
 assert(protoHtml.includes("chMeta.id === '00_intro' ? buildReaderMastheadCover"),
   'landscape intro image must remain gated on 00_intro only');
 
-console.log('[PASS] Mobile responsive: left drawer (~80%) + scrim, single column, landscape intro, desktop sticky preserved.');
+// Nessuna deformazione della cover quadrata: il frame mobile ha lo stesso
+// rapporto dell'artwork locale (900/520) e l'immagine e' contain, non cover.
+assert(protoHtml.includes('aspect-ratio: 900 / 520'),
+  'mobile frame ratio must match the 900x520 local artwork exactly');
+assert(protoHtml.includes('object-fit: contain'),
+  'mobile intro artwork must be contained, never cropped/stretched');
+assert(protoHtml.includes('getReaderLocalCoverArt(b)'),
+  'mobile wide artwork must reuse the existing local asset, not invent one');
+assert(protoHtml.includes('rh-masthead-cover"'),
+  'official square cover must remain in the desktop masthead');
+assert(!protoHtml.includes('aspect-ratio: 16 / 9'),
+  '16/9 crop of the square cover must be removed');
+
+console.log('[PASS] Mobile responsive: left drawer (~80%) + scrim, single column, 900/520 landscape artwork (no square-cover crop), desktop sticky preserved.');
 
 console.log('\n======================================================');
 console.log('SUCCESS: All Ruleholder Book Reader UI tests PASSED!');
