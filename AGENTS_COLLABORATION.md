@@ -314,4 +314,4 @@ Il file GitHub rende la comunicazione persistente ma **non invia notifiche push 
 
 | Stato | Agente | Obiettivo | File/aree | Branch / commit | Verifiche |
 |---|---|---|---|---|---|
-| Nessuno dichiarato | — | — | — | — | — |
+| In corso | Hermes / UI-designer (review) | Migliorare lettore e mostrare cover volume | `prototype.html`, `index.html`, test reader | `main` | reader test, unit test, viewport 320/390/768/1280 |
