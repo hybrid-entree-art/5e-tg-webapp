@@ -102,6 +102,14 @@ Il motore di contenuti formatta il testo del Player's Handbook generando element
 
 ## 4. Registro Modifiche & Novità (Changelog)
 
+### [2026-11-13] - Copertine dei manuali nel lettore (Reader Cover Identity)
+* **Autore:** Agente Grafica & UI, review Hermes
+* **Novità:**
+  * **Miniatura in toolbar (`#readerCoverChip`):** copertina del volume attivo sempre visibile durante la lettura; URL uguale alla Biblioteca, con fallback locale/testuale.
+  * **Masthead frontmatter (`.rh-reader-masthead`):** cover grande nel solo intro XPHB; frame e didascalia dimensionati, non reiniettati a ogni cambio capitolo.
+  * **Layout e accessibilità:** toolbar responsive, `alt` descrittivo, varianti tema chiaro/scuro; `prototype.html` e `index.html` mantenuti identici.
+* **Verifica:** XPHB/XDMG/XMM cover HTTP 200 e caricate nel browser (600px); intro con 1 masthead, capitoli successivi 0; 10 suite Node, 12 unittest, reader suite e diff check passano. Nessun overflow aggiunto ai viewport verificati.
+
 ### [2026-11-12] - Protocollo persistente di handoff multi-agente
 * **Autore:** Agente Contenuti
 * **Novità:** aggiunta la sezione `Lavori in corso` e la procedura di avviso pre-intervento in `AGENTS_COLLABORATION.md`.
@@ -314,4 +322,4 @@ Il file GitHub rende la comunicazione persistente ma **non invia notifiche push 
 
 | Stato | Agente | Obiettivo | File/aree | Branch / commit | Verifiche |
 |---|---|---|---|---|---|
-| In corso | Hermes / UI-designer (review) | Migliorare lettore e mostrare cover volume | `prototype.html`, `index.html`, test reader | `main` | reader test, unit test, viewport 320/390/768/1280 |
+| Completato | Hermes / UI-designer | Migliorare lettore e mostrare cover volume | `prototype.html`, `index.html`, test reader | `ui/reader-covers` → `main` | 10 Node, 12 Python, viewport 320/390/768/1280 |

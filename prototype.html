@@ -1802,6 +1802,153 @@ dialog input:focus,dialog select:focus{border-color:var(--rh-border-focus);outli
   margin-top: 6px;
   width: 100%;
 }
+
+/* =====================================================================
+   READER COVER IDENTITY — miniatura toolbar + masthead frontmatter
+   Coerente con .rh-book-cover-img della Biblioteca (aspect-ratio 1/1.44).
+   ===================================================================== */
+
+/* 1) Toolbar: riga compatta. La miniatura occupa spazio fisso e non
+      sposta il testo del capitolo; i pulsanti restano raggiungibili. */
+.reader-toolbar{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.reader-toolbar-left{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  flex: 1 1 auto;
+}
+.reader-toolbar-actions{
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 0 0 auto;
+}
+.reader-toolbar-left .detail-back{ margin: 0; }
+.reader-toolbar-left .reader-book-heading{
+  margin: 0;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* 2) Miniatura copertina (sempre visibile durante la lettura) */
+.rh-reader-cover-chip{
+  position: relative;
+  flex: 0 0 auto;
+  width: 34px;
+  height: 49px;
+  border-radius: 4px;
+  overflow: hidden;
+  background: #ece3d3;
+  border: 1px solid #d9ccb8;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+}
+.rh-reader-cover-chip img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 18%;
+  display: block;
+}
+.rh-reader-cover-fallback{
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  box-sizing: border-box;
+  padding: 3px;
+  text-align: center;
+  background: radial-gradient(120% 90% at 20% 10%, rgba(245,158,11,0.18), rgba(18,16,23,0.92) 70%), linear-gradient(160deg, #2b151a, #0d0b10);
+  color: #e8dcc6;
+  font-size: 15px;
+  line-height: 1;
+}
+.rh-reader-cover-fb-txt{
+  font-family: var(--sans);
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  line-height: 1.2;
+}
+.warm .rh-reader-cover-fallback{
+  background: radial-gradient(120% 90% at 20% 10%, rgba(245,158,11,0.25), rgba(244,239,230,0.95) 70%), linear-gradient(160deg,#f7efe2,#e5dbcb);
+  color: #4a433a;
+}
+.dark .rh-reader-cover-chip, .dark-reader .rh-reader-cover-chip{
+  background: #251f2b;
+  border-color: #3b3145;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.5);
+}
+
+/* 3) Masthead: solo nel frontmatter (cap. 00_intro), mai ripetuto a
+      ogni cambio capitolo. Frame e caption finalmente dimensionati. */
+.rh-reader-masthead{
+  margin: 0 0 22px;
+  padding: 0;
+  max-width: 100%;
+}
+.rh-hero-cover-frame{
+  position: relative;
+  width: 168px;
+  max-width: 46%;
+  aspect-ratio: 1 / 1.44;
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1px solid #d9ccb8;
+  background: #ece3d3;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+  margin: 4px 0 10px;
+}
+.rh-hero-cover-frame img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 20%;
+  display: block;
+}
+.rh-hero-cover-frame .rh-reader-cover-fallback{ font-size: 30px; }
+.rh-hero-cover-frame .rh-reader-cover-fb-txt{ font-size: 10px; }
+.rh-cover-caption{
+  font-family: var(--sans);
+  font-size: 11.5px;
+  line-height: 1.5;
+  font-style: italic;
+  color: #6b6157;
+  max-width: 340px;
+  margin: 0;
+}
+.dark .rh-hero-cover-frame, .dark-reader .rh-hero-cover-frame{
+  border-color: #3b3145;
+  background: #251f2b;
+  box-shadow: 0 4px 18px rgba(0,0,0,0.55);
+}
+.dark .rh-cover-caption, .dark-reader .rh-cover-caption{ color: #a89e90; }
+
+/* 4) Viewport piccoli: chip e masthead si riducono, nessun overflow */
+@media (max-width: 860px){
+  .rh-reader-cover-chip{ width: 30px; height: 43px; }
+  .rh-hero-cover-frame{ width: 140px; max-width: 52%; }
+}
+@media (max-width: 380px){
+  .rh-reader-cover-chip{ width: 28px; height: 40px; }
+  .reader-toolbar{ gap: 8px; }
+}
 .rh-reader-container {
   display: grid;
   grid-template-columns: 280px minmax(0, 1fr);
@@ -5693,6 +5840,10 @@ body:after{
 
       <div class="reader-toolbar" style="margin-bottom:12px;padding-bottom:10px;">
         <div class="reader-toolbar-left">
+          <div class="rh-reader-cover-chip" id="readerCoverChip">
+            <img id="readerCoverChipImg" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="" onerror="readerCoverFallback(this)">
+            <div class="rh-reader-cover-fallback hidden" id="readerCoverChipFallback">📚<span class="rh-reader-cover-fb-txt">XPHB</span></div>
+          </div>
           <button class="back detail-back" id="readerBackBtn" onclick="backToItemList()">← Biblioteca</button>
           <span class="rh-badge-phb" id="readerSourceBadge">✓ PHB</span>
           <h2 class="reader-book-heading" id="readerBookHeading">Libro del giocatore</h2>
@@ -10719,6 +10870,77 @@ function getItalianSectionName(secId){
   return secNames[secId] || '';
 }
 
+/* =====================================================================
+   READER COVER IDENTITY
+   Catena: copertina 5e.tools -> cover art locale (SVG) -> fallback testuale.
+   Nessuna modifica alle API dati (BOOKS / PHB_CONTENT restano intatti).
+   ===================================================================== */
+const READER_COVER_BASE = 'https://5e.tools/img/covers/';
+
+function getReaderCoverUrl(b){
+  if(!b) return READER_COVER_BASE + 'XPHB.webp';
+  return b.coverUrl || READER_COVER_BASE + (b.source || b.id || 'XPHB') + '.webp';
+}
+
+function getReaderLocalCoverArt(b){
+  // La cover art vettoriale locale e' specifica del Player's Handbook:
+  // per gli altri volumi si passa direttamente al fallback testuale,
+  // evitando di mostrare un'illustrazione fuorviante.
+  if(b && (b.source || b.id) !== 'XPHB') return '';
+  try {
+    return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(getPhbCoverSvg()).replace(/'/g, '%27');
+  } catch(e) { return ''; }
+}
+
+function readerCoverFallback(img){
+  if(!img) return;
+  const art = img.getAttribute('data-cover-art') || '';
+  if(img.dataset.fbStage !== 'art' && art){
+    img.dataset.fbStage = 'art';
+    img.src = art;
+    return;
+  }
+  img.dataset.fbStage = 'done';
+  img.style.display = 'none';
+  const fb = img.parentElement ? img.parentElement.querySelector('.rh-reader-cover-fallback') : null;
+  if(fb) fb.classList.remove('hidden');
+}
+
+function applyReaderCoverToImg(img, b, title){
+  if(!img) return;
+  img.dataset.fbStage = '';
+  img.style.display = '';
+  img.setAttribute('alt', 'Copertina: ' + (title || 'Manuale'));
+  img.setAttribute('data-cover-art', getReaderLocalCoverArt(b));
+  const fb = img.parentElement ? img.parentElement.querySelector('.rh-reader-cover-fallback') : null;
+  if(fb){
+    fb.classList.add('hidden');
+    const txt = fb.querySelector('.rh-reader-cover-fb-txt');
+    if(txt) txt.textContent = (b && (b.source || b.id)) || '—';
+  }
+  img.src = getReaderCoverUrl(b);
+}
+
+function setReaderCoverImages(b, title){
+  applyReaderCoverToImg($('#readerCoverChipImg'), b, title);
+}
+
+function buildReaderMastheadCover(b, title){
+  const url = getReaderCoverUrl(b);
+  const art = getReaderLocalCoverArt(b);
+  const src = (b && (b.source || b.id)) || 'XPHB';
+  const caption = (b && (b.itName || b.it || b.name)) || "Player's Handbook";
+  return `
+    <figure class="rh-reader-masthead">
+      <div class="rh-hero-cover-frame">
+        <img class="rh-reader-cover-img" src="${esc(url)}" alt="Copertina: ${esc(title || caption)}" loading="lazy" decoding="async" data-cover-art="${esc(art)}" onerror="readerCoverFallback(this)">
+        <div class="rh-reader-cover-fallback hidden">📚<span class="rh-reader-cover-fb-txt">${esc(src)}</span></div>
+      </div>
+      <figcaption class="rh-cover-caption">${esc(caption)} · D&amp;D 5.5e (2024) · Copertina ufficiale. In caso di indisponibilità viene mostrata la cover art locale.</figcaption>
+    </figure>
+  `;
+}
+
 function openBookReader(bookId, sectionOrChapId){
   triggerHaptic('light');
   activeBookReader = bookId || 'XPHB';
@@ -10744,6 +10966,7 @@ function openBookReader(bookId, sectionOrChapId){
   $('#readerBookHeading').textContent = displayBookTitle;
   $('#readerBookCrumb').textContent = displayBookTitle;
   $('#readerSourceBadge').textContent = '✓ ' + ((b && b.source) || 'PHB');
+  setReaderCoverImages(b, displayBookTitle);
 
   // Render 3-column TOC for quick access
   if (b) renderReaderTOC(b);
@@ -10849,10 +11072,7 @@ function renderReaderCurrentChapter(){
       pane.innerHTML = `
         <div class="rh-read-kicker">Player's Handbook (2024) · ${esc(chMeta.title)}</div>
         <h1 class="rh-read-h1">${esc(getItalianChapterName(chMeta.id) || chMeta.title)}</h1>
-        ${chMeta.id === '00_intro' ? `
-          <div class="rh-hero-cover-frame">${getPhbCoverSvg()}</div>
-          <div class="rh-cover-caption">Player's Handbook 2024 (D&amp;D 5.5e Core Rulebook). Art by Tyler Jacobson.</div>
-        ` : ''}
+        ${chMeta.id === '00_intro' ? buildReaderMastheadCover(b, (b && (b.itName || b.it || b.name)) || 'Libro del giocatore') : ''}
         <div class="rh-book-body">
           ${chData.sections.map(sec => `
             <section class="rh-book-section" id="${sec.id}">
