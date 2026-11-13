@@ -1978,11 +1978,11 @@ dialog input:focus,dialog select:focus{border-color:var(--rh-border-focus);outli
 }
 .dark .rh-book-figure-caption, .dark-reader .rh-book-figure-caption{ color: #a89e90; }
 
-/* 4) Viewport piccoli: chip compatto + artwork di apertura ritratto reale
-      (1700x2182) a larghezza piena. Il frame NON forza alcun aspect-ratio:
-      l'img usa il ratio naturale dagli attributi width/height con
-      object-fit:contain -> zero crop, zero deformazione. La cover quadrata
-      ufficiale resta integrale nella sola miniatura della toolbar. */
+/* 4) Viewport piccoli: chip compatto + masthead con la cover ufficiale
+      XPHB (ratio naturale quadrato) e figure dei capitoli con orientamento
+      originale. Il frame NON forza aspect-ratio: l'img usa width/height con
+      object-fit:contain -> zero crop, zero deformazione. La opening art
+      000-01-013 NON e' qui: appartiene al Chapter 1 (position 0). */
 @media (max-width: 860px){
   .rh-reader-cover-chip{ width: 30px; height: 43px; }
   .rh-reader-masthead{ margin: 0 0 26px; }
@@ -1994,7 +1994,7 @@ dialog input:focus,dialog select:focus{border-color:var(--rh-border-focus);outli
     border-radius: 8px;
     margin: 2px 0 12px;
   }
-  .rh-hero-cover-frame .rh-masthead-art{
+  .rh-hero-cover-frame .rh-masthead-cover{
     display: block;
     width: 100%;
     height: auto;
@@ -11087,17 +11087,11 @@ function setReaderCoverImages(b, title){
 }
 
 /* =====================================================================
-   READER INTRO ARTWORK (5etools upstream, manifest-driven)
-   Un eventuale manifest separato (window.BOOK_IMAGE_MANIFEST) ha priorita';
-   in sua assenza si usa l'unica asset del frontispizio XPHB 2024 validata.
+   READER COVER & BOOK IMAGES (5etools upstream)
+   L'introduzione ha 0 immagini nel JSON: mostra la cover ufficiale XPHB.
+   Le 63 illustrazioni sono mappate in phb_images.js al capitolo reale.
    ===================================================================== */
 const READER_IMG_BASE = 'https://raw.githubusercontent.com/5etools-mirror-3/5etools-img/main/';
-const READER_INTRO_ART_FALLBACK = {
-  path: 'book/XPHB/000-01-013.opening-art.webp',
-  width: 1700, height: 2182,
-  title: 'While adventuring in the Dragonlance setting, the siblings Caramon Majere, Raistlin Majere, and Kitiara uth Matar provoke the rage of a wyvern',
-  credit: 'Antonio José Manzanedo'
-};
 
 /* I titoli del JSON 5etools contengono markup {@dice ...} / {@rule A|B}:
    va rimosto prima di mostrarlo in una caption. */
@@ -11112,45 +11106,34 @@ function strip5eToolsMarkup(s){
   }).trim();
 }
 
-function getReaderIntroImage(b){
+function getReaderCoverArt(b){
+  // L'Introduction: Welcome to Adventure (id '000') non ha immagini nel JSON:
+  // il masthead mostra la copertina ufficiale, intera e non ritagliata.
   const m = (typeof window !== 'undefined') ? window.BOOK_IMAGE_MANIFEST : null;
-  const map = (typeof window !== 'undefined') ? window.PHB_IMAGES : null;
   const bookId = (b && b.id) || 'XPHB';
-  let e = null;
-  if(m && m[bookId]){
-    e = m[bookId].intro
-      || (m[bookId].byChapter && m[bookId].byChapter['00_intro'] && m[bookId].byChapter['00_intro'][0])
-      || null;
-  }
-  // Priorita' al manifest separato, poi al mapping statico phb_images.js,
-  // infine all'asset validato (nessuna scansione JSON a runtime).
-  if(!e && map && map.intro) e = map.intro;
-  const src = e || READER_INTRO_ART_FALLBACK;
-  const base = (map && map.base) || READER_IMG_BASE;
+  const e = (m && m[bookId] && m[bookId].cover) || null;
   return {
-    url: src.url || (base + (src.path || '')),
-    width: src.width || 1700,
-    height: src.height || 2182,
-    title: strip5eToolsMarkup(src.title),
-    credit: strip5eToolsMarkup(src.credit)
+    url: (e && e.url) || getReaderCoverUrl(b),
+    width: (e && e.width) || 600,
+    height: (e && e.height) || 600,
+    title: (b && (b.itName || b.it || b.name)) || "Player's Handbook"
   };
 }
 
 function buildReaderMastheadCover(b, title){
   const art = getReaderLocalCoverArt(b);
-  const img = getReaderIntroImage(b);
+  const img = getReaderCoverArt(b);
   const src = (b && (b.source || b.id)) || 'XPHB';
   const caption = (b && (b.itName || b.it || b.name)) || "Player's Handbook";
-  // Masthead intro: illustrazione di apertura autentica (ritratto 1700x2182),
-  // ratio naturale + object-fit:contain, su desktop e mobile. Nessuna cover
-  // quadrata sostitutiva: la cover ufficiale resta solo nella miniatura.
+  // Intro: cover ufficiale XPHB (ratio naturale quadrato, object-fit:contain).
+  // L'opening art NON appartiene all'intro: e' in Chapter 1, position 0.
   return `
     <figure class="rh-reader-masthead">
       <div class="rh-hero-cover-frame">
-        <img class="rh-reader-cover-img rh-masthead-art" src="${esc(img.url)}" width="${img.width}" height="${img.height}" title="${esc(img.title || 'Illustrazione di apertura')}" alt="${esc(img.title || 'Illustrazione di apertura')}" data-cover-art="${esc(art)}" onerror="readerCoverFallback(this)">
+        <img class="rh-reader-cover-img rh-masthead-cover" src="${esc(img.url)}" width="${img.width}" height="${img.height}" alt="Copertina: ${esc(title || caption)}" data-cover-art="${esc(art)}" onerror="readerCoverFallback(this)">
         <div class="rh-reader-cover-fallback hidden">📚<span class="rh-reader-cover-fb-txt">${esc(src)}</span></div>
       </div>
-      <figcaption class="rh-cover-caption">${esc(caption)} · D&amp;D 5.5e (2024)${img.credit ? ' · Illustrazione di ' + esc(img.credit) : ''}</figcaption>
+      <figcaption class="rh-cover-caption">${esc(caption)} · D&amp;D 5.5e (2024) · Copertina ufficiale.</figcaption>
     </figure>
   `;
 }
@@ -11172,28 +11155,41 @@ function buildReaderFigure(im){
   `;
 }
 
+/* Piazzamento fedele al JSON: ogni immagine resta nel capitolo reale.
+   position === 0 = primo nodo del capitolo nel libro (es. opening art in
+   Chapter 1), quindi va in testa al capitolo; le altre per sezione o in coda. */
+function getChapterImagePlacement(chId, renderedSecIds){
+  const M = window.PHB_IMAGES;
+  if(!M || !M.byChapter) return { lead: [], rest: [] };
+  const all = M.byChapter[chId] || [];
+  const done = new Set();
+  (renderedSecIds || []).forEach(sid => {
+    ((M.bySection && M.bySection[sid]) || []).forEach(im => {
+      if(im.chapterId === chId) done.add(im.ordinal);
+    });
+  });
+  const lead = all.filter(im => im.position === 0 && !done.has(im.ordinal));
+  lead.forEach(im => done.add(im.ordinal));
+  const rest = all.filter(im => !done.has(im.ordinal));
+  return { lead, rest };
+}
+
+function renderChapterLeadFigures(chId, renderedSecIds){
+  return getChapterImagePlacement(chId, renderedSecIds).lead.map(buildReaderFigure).join('');
+}
+
 /* Gate per chapter: un'immagine e' resa solo nel capitolo a cui appartiene. */
 function renderChapterSectionFigures(chId, secId){
   const M = window.PHB_IMAGES;
   if(!M || !M.bySection || !secId) return '';
-  const list = (M.bySection[secId] || []).filter(im => im.chapterId === chId && !im.isFrontispiece);
+  const list = (M.bySection[secId] || []).filter(im => im.chapterId === chId);
   return list.map(buildReaderFigure).join('');
 }
 
 function renderChapterFigureGallery(chId, renderedSecIds){
-  const M = window.PHB_IMAGES;
-  if(!M || !M.byChapter) return '';
-  // Segna le immagini gia' piazzate nelle sezioni: tutto il resto del
-  // capitolo finisce in galleria, cosi' nessun nodo va perso.
-  const done = new Set();
-  (renderedSecIds || []).forEach(sid => {
-    (M.bySection[sid] || []).forEach(im => {
-      if(im.chapterId === chId && !im.isFrontispiece) done.add(im.ordinal);
-    });
-  });
-  const list = (M.byChapter[chId] || []).filter(im => !im.isFrontispiece && !done.has(im.ordinal));
-  if(!list.length) return '';
-  return `<div class="rh-book-figures">${list.map(buildReaderFigure).join('')}</div>`;
+  const rest = getChapterImagePlacement(chId, renderedSecIds).rest;
+  if(!rest.length) return '';
+  return `<div class="rh-book-figures">${rest.map(buildReaderFigure).join('')}</div>`;
 }
 
 function openBookReader(bookId, sectionOrChapId){
@@ -11329,6 +11325,7 @@ function renderReaderCurrentChapter(){
         <h1 class="rh-read-h1">${esc(getItalianChapterName(chMeta.id) || chMeta.title)}</h1>
         ${chMeta.id === '00_intro' ? buildReaderMastheadCover(b, (b && (b.itName || b.it || b.name)) || 'Libro del giocatore') : ''}
         <div class="rh-book-body">
+          ${renderChapterLeadFigures(chMeta.id, chData.sections.map(s => s.id))}
           ${chData.sections.map(sec => `
             <section class="rh-book-section" id="${sec.id}">
               ${linkKnownEntities(sec.html)}
@@ -11344,8 +11341,11 @@ function renderReaderCurrentChapter(){
       pane.innerHTML = `
         <div class="rh-read-kicker">Player's Handbook (2024) · ${esc(chMeta.title)}</div>
         <h1 class="rh-read-h1">${esc(getItalianChapterName(chMeta.id) || chMeta.title)}</h1>
-        <div class="rh-book-body">${chData && chData.html ? linkKnownEntities(chData.html) : ''}</div>
-        ${renderChapterFigureGallery(chMeta.id, [])}
+        <div class="rh-book-body">
+          ${chData && chData.html ? linkKnownEntities(chData.html) : ''}
+          ${renderChapterLeadFigures(chMeta.id, [])}
+          ${renderChapterFigureGallery(chMeta.id, [])}
+        </div>
       `;
     }
 

@@ -64,7 +64,7 @@ const requiredHtmlElements = [
   'class="rh-reader-drawer-head"',
   'class="rh-reader-drawer-close"',
   'aria-label="Indice dei capitoli"',
-  'rh-masthead-art"',
+  'rh-masthead-cover"',
   'rh-book-figure-img"',
   '<script src="phb_images.js"></script>'
 ];
@@ -134,11 +134,13 @@ const requiredCssClasses = [
   'object-fit: contain',
   'const READER_IMG_BASE',
   'window.BOOK_IMAGE_MANIFEST',
-  'book/XPHB/000-01-013.opening-art.webp',
-  'Antonio José Manzanedo',
   'width="${img.width}" height="${img.height}"',
-  '.rh-hero-cover-frame .rh-masthead-art',
+  '.rh-hero-cover-frame .rh-masthead-cover',
   'window.PHB_IMAGES',
+  'function getReaderCoverArt',
+  'function getChapterImagePlacement',
+  'function renderChapterLeadFigures',
+  'im.position === 0',
   'function buildReaderFigure',
   'function renderChapterSectionFigures',
   'function renderChapterFigureGallery',
@@ -181,9 +183,11 @@ const requiredJsFunctions = [
   'function buildReaderMastheadCover',
   'function isReaderDrawerViewport',
   'function closeReaderMobileTOC',
-  'function getReaderIntroImage',
+  'function getReaderCoverArt',
   'function strip5eToolsMarkup',
   'function buildReaderFigure',
+  'function getChapterImagePlacement',
+  'function renderChapterLeadFigures',
   'function renderChapterSectionFigures',
   'function renderChapterFigureGallery'
 ];
@@ -280,7 +284,7 @@ assert.strictEqual(protoHtml, indexHtml,
 
 console.log('[PASS] Reader Cover Identity: chip, masthead, fallback chain, core URLs and file sync verified.');
 
-// 7. Mobile responsive contract: TOC drawer + single-column intro artwork
+// 7. Mobile responsive contract: TOC drawer + single column + cover intro
 const responsiveContract = [
   'id="readerTocScrim"',
   'closeReaderMobileTOC(true)',
@@ -289,8 +293,8 @@ const responsiveContract = [
   'width: 80%',
   'aspect-ratio: auto',
   'object-fit: contain',
-  'book/XPHB/000-01-013.opening-art.webp',
   'window.BOOK_IMAGE_MANIFEST',
+  'renderChapterLeadFigures(chMeta.id',
   'prefers-reduced-motion',
   "e.key === 'Escape'",
   "sidebar.setAttribute('aria-modal', 'true')"
@@ -320,40 +324,46 @@ assert(protoHtml.includes('onclick="toggleReaderMobileTOC()"'), 'mobile toggle w
 const closeCalls = (protoHtml.match(/closeReaderMobileTOC\(\);/g) || []).length;
 assert(closeCalls >= 3, 'chapter navigation / view reset must close the drawer and scrim');
 
-// L'immagine introduttiva landscape resta confinata al solo frontmatter.
+// Intro: cover ufficiale XPHB. L'opening art NON appartiene all'intro/TOC.
 assert(protoHtml.includes("chMeta.id === '00_intro' ? buildReaderMastheadCover"),
-  'landscape intro image must remain gated on 00_intro only');
+  'masthead must be gated on 00_intro only');
+assert(protoHtml.includes('function getReaderCoverArt'),
+  'intro masthead must use the official XPHB cover');
+assert(protoHtml.includes('rh-masthead-cover'),
+  'official cover must be present in the intro masthead');
+assert(!protoHtml.includes('getReaderIntroImage'),
+  'no intro-artwork misattribution helper may remain');
+assert(!protoHtml.includes('book/XPHB/000-01-013.opening-art.webp'),
+  'opening art must NOT be attributed to the intro/TOC in reader HTML');
+assert(!protoHtml.includes('READER_INTRO_ART_FALLBACK'),
+  'no hardcoded intro artwork fallback may remain');
 
-// Nessuna deformazione: il frame mobile NON forza aspect-ratio e l'img usa
-// il ratio naturale (attributi 1700x2182) con object-fit:contain.
+// Nessuna deformazione: nessun aspect-ratio forzato, img con dimensioni
+// naturali e object-fit:contain.
 assert(protoHtml.includes('aspect-ratio: auto'),
-  'mobile frame must not force an aspect-ratio (natural ratio from width/height attrs)');
+  'mobile frame must not force an aspect-ratio');
 assert(protoHtml.includes('width="${img.width}" height="${img.height}"'),
-  'intro img must carry intrinsic dimensions: no CLS, no stretch');
+  'masthead img must carry intrinsic dimensions: no CLS, no stretch');
 assert(protoHtml.includes('object-fit: contain'),
-  'mobile intro artwork must be contained, never cropped/stretched');
+  'images must be contained, never cropped/stretched');
 assert(!protoHtml.includes('aspect-ratio: 16 / 9'),
   '16/9 crop of the square cover must be removed');
 
-// Artwork reale upstream, hook per il manifest e credit dal JSON sorgente.
-assert(protoHtml.includes('book/XPHB/000-01-013.opening-art.webp'),
-  'validated upstream XPHB 2024 opening art must be the intro artwork');
-assert(protoHtml.includes('Antonio José Manzanedo'),
-  'caption credit must come from the source JSON');
+// Le immagini vengono dal mapping statico, non da path hardcoded nell'HTML.
 assert(protoHtml.includes('window.BOOK_IMAGE_MANIFEST'),
-  'reader must consume the separate image mapping manifest when available');
+  'optional separate manifest override must remain available');
 assert(protoHtml.includes('function strip5eToolsMarkup'),
   '5etools {@...} markup in titles must be sanitised');
 assert(protoHtml.includes('getReaderCoverUrl(b)'),
-  'official square cover URL must remain for the toolbar chip fallback');
-assert(!protoHtml.includes('rh-masthead-cover'),
-  'square cover must NOT be used as intro masthead substitute');
-assert(protoHtml.includes('getReaderCoverUrl(b)'),
-  'official square cover URL must remain for the toolbar chip only');
+  'official cover URL must remain for chip and intro masthead');
 assert(protoHtml.includes('window.PHB_IMAGES'),
   'reader must consume the static phb_images.js mapping');
+assert(protoHtml.includes('renderChapterLeadFigures(chMeta.id'),
+  'chapter lead figure (position 0) must be rendered in flow');
+assert(protoHtml.includes('im.position === 0'),
+  'position 0 from source JSON must drive chapter-lead placement');
 
-console.log('[PASS] Mobile responsive: left drawer (~80%) + scrim, single column, real 1700x2182 intro art (natural ratio, no crop), no square-cover masthead, desktop sticky preserved.');
+console.log('[PASS] Mobile responsive: left drawer (~80%) + scrim, single column, official XPHB cover intro, opening art in Chapter 1 flow, desktop sticky preserved.');
 
 // 8. phb_images.js mapping: 63 immagini autentiche XPHB 2024
 const phbImagesPath = path.join(__dirname, '..', 'phb_images.js');
@@ -368,14 +378,31 @@ assert.strictEqual(PHB_IMAGES.all.length, 63, 'flat list must contain all 63 nod
 assert(PHB_IMAGES.base.includes('5etools-img/main/'), 'base URL must point to 5etools-img');
 assert.strictEqual(Object.keys(PHB_IMAGES.byChapter).length, 12, 'mapping must cover all 12 chapters');
 assert(Object.keys(PHB_IMAGES.bySection).length > 0, 'per-section mapping must exist');
-const front = PHB_IMAGES.intro;
-assert.strictEqual(front.path, 'book/XPHB/000-01-013.opening-art.webp',
-  'intro must use the authentic portrait opening art');
-assert.strictEqual(front.width, 1700);
-assert.strictEqual(front.height, 2182);
-assert.strictEqual(front.orientation, 'portrait');
-assert.strictEqual(front.credit, 'Antonio José Manzanedo', 'caption credit must come from source JSON');
-assert.strictEqual(front.isFrontispiece, true, 'opening art must be flagged as frontispiece');
+// Attribuzione FEDELE al JSON: Introduction (id '000') ha 0 immagini.
+assert.strictEqual(PHB_IMAGES.byChapter['00_intro'].length, 0,
+  'Introduction: Welcome to Adventure must have 0 images per source JSON');
+assert(!PHB_IMAGES.intro, 'mapping must not expose an intro image');
+const ch1 = PHB_IMAGES.byChapter['01_playing_the_game'];
+assert(ch1.length > 0, 'Chapter 1 must carry its own images');
+const opening = ch1[0];
+assert.strictEqual(opening.path, 'book/XPHB/000-01-013.opening-art.webp',
+  'opening art must be attributed to Chapter 1, position 0');
+assert.strictEqual(opening.sourceChapterId, '007',
+  'sourceChapterId must match the raw JSON Chapter 1 id');
+assert.strictEqual(opening.position, 0, 'opening art is the first node of Chapter 1');
+assert.strictEqual(opening.width, 1700);
+assert.strictEqual(opening.height, 2182);
+assert.strictEqual(opening.orientation, 'portrait');
+assert.strictEqual(opening.credit, 'Antonio José Manzanedo',
+  'caption credit must come from source JSON');
+assert(PHB_IMAGES.all.every(im => !('isFrontispiece' in im)),
+  'no frontispiece misattribution flag may remain');
+assert(PHB_IMAGES.all.every(im => typeof im.position === 'number'),
+  'every node must carry its position within the chapter');
+assert(PHB_IMAGES.all.every(im => typeof im.sourceChapterId === 'string'),
+  'every node must carry the raw source chapter id');
+assert(PHB_IMAGES.all.every(im => Object.prototype.hasOwnProperty.call(PHB_IMAGES.byChapter, im.chapterId)),
+  'every chapterId must resolve in byChapter');
 assert(PHB_IMAGES.all.every(im => im.path.indexOf('book/XPHB/') === 0),
   'every path must be a XPHB book path');
 assert(PHB_IMAGES.all.every(im => typeof im.title === 'string' && im.title.indexOf('{@') === -1),
@@ -399,8 +426,12 @@ assert(protoHtml.includes('<script src="phb_images.js"></script>'),
   'phb_images.js must be loaded by both pages');
 assert(indexHtml.includes('<script src="phb_images.js"></script>'),
   'index.html must load phb_images.js too');
-assert(!protoHtml.includes('rh-masthead-cover'),
-  'no square cover substitute allowed in the intro masthead');
+assert(protoHtml.includes('rh-masthead-cover'),
+  'official XPHB cover must be used in the intro masthead');
+assert(protoHtml.includes('renderChapterLeadFigures(chMeta.id, [])'),
+  'chapters without sections must still render lead figures');
+assert(protoHtml.includes('renderChapterFigureGallery(chMeta.id, chData.sections.map(s => s.id))'),
+  'gallery must receive rendered section ids so no image is dropped');
 assert(protoHtml.includes('renderChapterFigureGallery(chMeta.id, [])'),
   'chapters without sections (Credits) must still render their figures');
 assert(!protoHtml.includes('Contenuto del capitolo in caricamento'),
@@ -408,7 +439,7 @@ assert(!protoHtml.includes('Contenuto del capitolo in caricamento'),
 assert(protoHtml.includes('linkKnownEntities(chData.html)'),
   'credits chapter HTML must be rendered');
 
-console.log('[PASS] phb_images.js: 63 authentic XPHB images, paths/credits/orientation, per-chapter gate and reader wiring verified.');
+console.log('[PASS] phb_images.js: 63 authentic XPHB images, faithful chapter attribution (intro=0, opening art in Ch1 pos0), credits/orientation, per-chapter gate and reader wiring verified.');
 
 console.log('\n======================================================');
 console.log('SUCCESS: All Ruleholder Book Reader UI tests PASSED!');
