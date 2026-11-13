@@ -322,4 +322,5 @@ Il file GitHub rende la comunicazione persistente ma **non invia notifiche push 
 
 | Stato | Agente | Obiettivo | File/aree | Branch / commit | Verifiche |
 |---|---|---|---|---|---|
-| Completato | Hermes / UI-designer | Migliorare lettore e mostrare cover volume | `prototype.html`, `index.html`, test reader | `ui/reader-covers` → `main` | 10 Node, 12 Python, viewport 320/390/768/1280 |
+| Completato | Hermes / UI-designer | Copertine nel lettore | `prototype.html`, `index.html`, test reader | `ui/reader-covers` → `main` | 10 Node, 12 Python |
+| In corso | Hermes / UI-designer (implementazione/review) | Lettore mobile conforme ai nuovi riferimenti | `prototype.html`, `index.html`, test reader | `ui/reader-mobile-drawer` | test reader, tutte le suite, viewport 320/390/768/1280 |
