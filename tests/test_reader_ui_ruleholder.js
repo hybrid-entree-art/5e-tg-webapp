@@ -53,7 +53,12 @@ const requiredHtmlElements = [
   'id="footerPrevBtn"',
   'id="footerNextBtn"',
   'id="footerPrevTitle"',
-  'id="footerNextTitle"'
+  'id="footerNextTitle"',
+  'id="readerCoverChip"',
+  'id="readerCoverChipImg"',
+  'id="readerCoverChipFallback"',
+  'class="rh-reader-cover-chip"',
+  'class="rh-reader-cover-fallback hidden"'
 ];
 
 for (const elem of requiredHtmlElements) {
@@ -93,7 +98,19 @@ const requiredCssClasses = [
   '.reader-toc-grid',
   '.toc-heading-red',
   '.rh-reader-mobile-bar',
-  '.rh-reader-mobile-toggle'
+  '.rh-reader-mobile-toggle',
+  '.rh-reader-cover-chip',
+  '.rh-reader-cover-fallback',
+  '.rh-reader-cover-fb-txt',
+  '.warm .rh-reader-cover-fallback',
+  '.dark .rh-reader-cover-chip',
+  '.rh-reader-masthead',
+  '.rh-hero-cover-frame',
+  '.rh-cover-caption',
+  '.dark .rh-hero-cover-frame',
+  '.dark .rh-cover-caption',
+  'aspect-ratio: 1 / 1.44',
+  '@media (max-width: 380px)'
 ];
 
 for (const css of requiredCssClasses) {
@@ -119,7 +136,13 @@ const requiredJsFunctions = [
   'function renderReaderTOC',
   'function readerJump',
   'function getPhbCoverSvg',
-  'function previewCreature'
+  'function previewCreature',
+  'function getReaderCoverUrl',
+  'function getReaderLocalCoverArt',
+  'function readerCoverFallback',
+  'function applyReaderCoverToImg',
+  'function setReaderCoverImages',
+  'function buildReaderMastheadCover'
 ];
 
 for (const fn of requiredJsFunctions) {
@@ -165,6 +188,54 @@ assert(getReadyHtml.includes('Talk with Your DM'), 'Must contain Talk with Your 
 assert(getReadyHtml.includes('Choose a Character Sheet'), 'Must contain Choose a Character Sheet');
 
 console.log('[PASS] Chapter 2: Creating a Character authentic English text, headings, and Session Zero callout box verified.');
+
+// 6. Reader Cover Identity contract (toolbar chip + intro masthead)
+const coverContract = [
+  "const READER_COVER_BASE = 'https://5e.tools/img/covers/'",
+  "READER_COVER_BASE + (b.source || b.id || 'XPHB') + '.webp'",
+  'onerror="readerCoverFallback(this)"',
+  'setReaderCoverImages(b, displayBookTitle)',
+  "chMeta.id === '00_intro' ? buildReaderMastheadCover",
+  'class="rh-reader-masthead"',
+  'class="rh-hero-cover-frame"',
+  'class="rh-cover-caption"',
+  'data-cover-art=',
+  'getPhbCoverSvg()'
+];
+for (const token of coverContract) {
+  assert(protoHtml.includes(token), `prototype.html missing cover contract: ${token}`);
+  assert(indexHtml.includes(token), `index.html missing cover contract: ${token}`);
+}
+
+// La vecchia iniezione SVG full-width senza stile deve essere sostituita.
+assert(!protoHtml.includes('<div class="rh-hero-cover-frame">${getPhbCoverSvg()}</div>'),
+  'legacy unstyled full-width SVG cover must be replaced by the framed masthead');
+
+// La cover grande NON e' inserita a ogni cambio capitolo: una sola chiamata,
+// confinata al ramo frontmatter 00_intro.
+const mastheadCallCount = (protoHtml.match(/buildReaderMastheadCover\(/g) || []).length;
+assert.strictEqual(mastheadCallCount, 2,
+  'buildReaderMastheadCover must appear exactly twice: definition + single 00_intro call');
+
+// Coerenza con la griglia Biblioteca e URL dei 3 manuali core 2024.
+const booksDataRaw = fs.readFileSync(path.join(__dirname, '..', 'books_data.js'), 'utf8');
+for (const src of ['XPHB', 'XDMG', 'XMM']) {
+  assert(booksDataRaw.includes('"source": "' + src + '"'),
+    `books_data.js missing core source ${src}`);
+}
+assert(protoHtml.includes('https://5e.tools/img/covers/${bk.source || bk.id}.webp'),
+  'library grid cover URL pattern must be preserved');
+
+// Catena di fallback: remoto -> cover art locale -> testo, con guardia anti-loop.
+assert(protoHtml.includes("img.dataset.fbStage = 'art'"), 'local cover-art fallback stage missing');
+assert(protoHtml.includes("img.dataset.fbStage = 'done'"), 'final text fallback stage missing');
+assert(protoHtml.includes('function getPhbCoverSvg'), 'local vector cover art must remain available');
+
+// Sincronizzazione reale (non solo lunghezza) tra i due file di publishing.
+assert.strictEqual(protoHtml, indexHtml,
+  'prototype.html and index.html must be byte-identical');
+
+console.log('[PASS] Reader Cover Identity: chip, masthead, fallback chain, core URLs and file sync verified.');
 
 console.log('\n======================================================');
 console.log('SUCCESS: All Ruleholder Book Reader UI tests PASSED!');
